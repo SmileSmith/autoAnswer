@@ -1,331 +1,410 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
-        <title>【简单搜索】智能答题直播间，围观Dan哥答题闯关。</title>
-        <meta name="keywords" content="简单,搜索,上网,浏览器,简单搜索,百度搜索" />
-        <meta name="description" content="简单搜索，最小最快的搜索app" />
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-            }
-            html{
-                font-size: 100px;
-            }
-            body {
-                padding-top: 76px;
-                background: url("https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/bg.c302c1c8.png") no-repeat;
-                background-size: contain;
-            }
 
-            .dt {
-                font-size: 12px;
-            }
-            .dtpadding {
-                padding: 0 .24rem;
-            }
-            .title {
-                font-size: 14px;
-                color: #000;
-                padding-bottom: 54px;
-            }
-            .headertitle {
-                font-size: 34px;
-            }
-            .smalltitle {
-                font-size: 24px;
-                margin-left: -.1rem;
-            }
-            .answerBox {
-                margin-bottom: 16px;
-             }
-            .answerBox .answerText {
-                background: #fff;
-                border:1px solid #f1f1f1;
-                box-shadow: 0 6px 14px 2px rgba(0,0,0,0.05);
-                position: relative;
-                margin-bottom: 13px;
-                padding: 12px 80px 12px 17px;
-            }
-            .answerBox .answerText.active {
-                color: #FE0060;
-                border-left: solid 2px #ff2376;
-            }
-             .answerBox .answerText span{
-                 position: absolute;
-                right: 17px;
-             }
-             .query {
-                font-size: 18px;
-                color: #000;
-                line-height:29px;
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 3;
-                overflow: hidden;
-            }
-            .answerText {
-                overflow: hidden;
-                opacity: 0.8;
-                font-size: 18px;
-                color: #999999;
-                overflow: hidden;
-                text-overflow:ellipsis;
-                white-space: nowrap;
-                position: relative;
-            }
-            .rightBox {
-                font-size: 13px;
-                opacity:0.8;
-                color: #999;
-            }
-            .rightBox p {
-                padding-bottom: 10px;
-            }
-            .rightBox_tip {
-                color:#555555;
-            }
-            .other {
-                line-height: 1.5;
-            }
-            .querytitle {
-                font-size: 18px;
-                color: #000000;
-                margin-bottom: 30px;
-                line-height: 29px;
-            }
-            .endbox {
-                margin-bottom: 10px;
-            }
-            .otherBox {
-                position: relative;
-            }
-            .moreshare {
-                font-size: 14px;
-                color: #3388ff;
-             }
-             .nostart a{
-                display: block;
-                height: 50px;
-                line-height: 50px;
-                font-size: 18px;
-                color: #fff;
-                text-align: center;
-                text-decoration: none;
-                background: #FF2376;
-                box-shadow: 0 6px 14px 2px rgba(0,0,0,0.04);
-                border-radius: 5px;
-            }
-            .showrender {
-                text-align: center;
-                padding-top: 14px;
-                font-size: 13px;
-                color:#999;
-            }
-            .broadcast {
-                position: relative;
-                overflow: hidden;
-                padding-right: .24rem;
-             }
-            .otherboxImg {
-                width: 70px;
-                position: absolute;
-                right: 0;
-                left: 0;
-                bottom: 0;
-                margin: auto;
-                top: 0;
-                padding-top: 22px;
-            }
-            .broadcast-wrap img {
-                 width: 100%;
-                display: none;
-            }
-            .broadcast-wrap img.active {
-                display: block;
-            }
-            .broadcast-wrap {
-                float: left;
-                margin-right: 70px;
-            }
-            .otherimgbox {
-                width: 70px;
-                position: absolute;
-                top: 0;
-                right: 24px;
-                height: 100%;
-            }
-            .broadcast-text {
-                position: absolute;
-                bottom: 33px;
-                left: 35px;
-                font-size: 15px;
-                color: #000;
-            }
-            .clickto a{
-             color: #3388ff;
-            }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+  <title>【简单搜索】智能答题直播间，围观Dan哥答题闯关。</title>
+  <meta name="keywords" content="简单,搜索,上网,浏览器,简单搜索,百度搜索" />
+  <meta name="description" content="简单搜索，最小最快的搜索app" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      font-size: 100px;
+    }
+    
+    body {
+      padding-top: 76px;
+      background: url("https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/bg.c302c1c8.png") no-repeat;
+      background-size: contain;
+    }
+    
+    .dt {
+      font-size: 12px;
+    }
+    
+    .dtpadding {
+      padding: 0 .24rem;
+    }
+    
+    .title {
+      font-size: 14px;
+      color: #000;
+      padding-bottom: 54px;
+    }
+    
+    .headertitle {
+      font-size: 34px;
+    }
+    
+    .smalltitle {
+      font-size: 24px;
+      margin-left: -.1rem;
+    }
+    
+    .answerBox {
+      margin-bottom: 16px;
+    }
+    
+    .answerBox .answerText {
+      background: #fff;
+      border: 1px solid #f1f1f1;
+      box-shadow: 0 6px 14px 2px rgba(0, 0, 0, 0.05);
+      position: relative;
+      margin-bottom: 13px;
+      padding: 12px 80px 12px 17px;
+    }
+    
+    .answerBox .answerText.active {
+      color: #FE0060;
+      border-left: solid 2px #ff2376;
+    }
+    
+    .answerBox .answerText span {
+      position: absolute;
+      right: 17px;
+    }
+    
+    .query {
+      font-size: 18px;
+      color: #000;
+      line-height: 29px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+    }
+    
+    .answerText {
+      overflow: hidden;
+      opacity: 0.8;
+      font-size: 18px;
+      color: #999999;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      position: relative;
+    }
+    
+    .rightBox {
+      font-size: 13px;
+      opacity: 0.8;
+      color: #999;
+    }
+    
+    .rightBox p {
+      padding-bottom: 10px;
+    }
+    
+    .rightBox_tip {
+      color: #555555;
+    }
+    
+    .other {
+      line-height: 1.5;
+    }
+    
+    .querytitle {
+      font-size: 18px;
+      color: #000000;
+      margin-bottom: 30px;
+      line-height: 29px;
+    }
+    
+    .endbox {
+      margin-bottom: 10px;
+    }
+    
+    .otherBox {
+      position: relative;
+    }
+    
+    .moreshare {
+      font-size: 14px;
+      color: #3388ff;
+    }
+    
+    .nostart a {
+      display: block;
+      height: 50px;
+      line-height: 50px;
+      font-size: 18px;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      background: #FF2376;
+      box-shadow: 0 6px 14px 2px rgba(0, 0, 0, 0.04);
+      border-radius: 5px;
+    }
+    
+    .showrender {
+      text-align: center;
+      padding-top: 14px;
+      font-size: 13px;
+      color: #999;
+    }
+    
+    .broadcast {
+      position: relative;
+      overflow: hidden;
+      padding-right: .24rem;
+    }
+    
+    .otherboxImg {
+      width: 70px;
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      margin: auto;
+      top: 0;
+      padding-top: 22px;
+    }
+    
+    .broadcast-wrap img {
+      width: 100%;
+      display: none;
+    }
+    
+    .broadcast-wrap img.active {
+      display: block;
+    }
+    
+    .broadcast-wrap {
+      float: left;
+      margin-right: 70px;
+    }
+    
+    .otherimgbox {
+      width: 70px;
+      position: absolute;
+      top: 0;
+      right: 24px;
+      height: 100%;
+    }
+    
+    .broadcast-text {
+      position: absolute;
+      bottom: 33px;
+      left: 35px;
+      font-size: 15px;
+      color: #000;
+    }
+    
+    .clickto a {
+      color: #3388ff;
+    }
+    
+    @media screen and (max-width: 375px) {
+      body {
+        padding-top: 30px;
+        transform: scale(.9);
+      }
+      .broadcast-text {
+        bottom: 27px;
+      }
+    }
+    
+    @media screen and (max-width: 320px) {
+      .broadcast-text {
+        font-size: 12px;
+        bottom: 19px;
+        left: 25px;
+      }
+      .otherboxImg {
+        padding-top: 0;
+      }
+    }
+  </style>
+</head>
 
-             @media screen and (max-width: 375px){
-                 body {
-                          padding-top: 30px;
-                      transform: scale(.9);
-                 }
-                .broadcast-text {
-                     bottom: 27px;
-                }
-            }
+<body>
+  <div class="dt">
+    <div class="title dtpadding">
+      <p class="headertitle">Dan哥答题直播间</p>
+      <p class="smalltitle">「百万英雄」专场</p>
+    </div>
+    <div class="querytitle dtpadding">蛋哥热身中,题目还在路上</div>
+    <div class="answerBox dtpadding">
+      <p class='answerText'>暂无答案<span class='care'>0%</span></p>
+      <p class='answerText'>暂无答案<span class='care'>0%</span></p>
+      <p class='answerText'>暂无答案<span class='care'>0%</span></p>
+    </div>
+    <div class="broadcast">
+      <div class="broadcast-wrap">
+        <img class="dtwks active" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/dthws.686efb77.png" />
+        <img class="error" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/error.44f0b96a.png" />
+        <img class="ok" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/ok.7d63fdc8.png" />
+        <img class="pageerror" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/pageerror.516eeed8.png" />
+        <p class="broadcast-text">社会我Dan哥，人美话还多</p>
+      </div>
+      <p class="otherimgbox"><img class="otherboxImg" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/ewm.c09d3952.png"></p>
+    </div>
+    <div class="otherBox dtpadding">
+      <div class="rightBox">
+        <p class="rightBox_tip">直播间观看须知</p>
+        <p>各位观众，上面这位是简单搜索首席AI侠：dandan，江湖人称dan哥。</p>
+        <p>每天dandan会在这个直播间进行『百万英雄』答题直播，欢迎围观吐槽。</p>
+        <p>为了更好的观看体验，以下tips建议您瞅一眼：</p>
+        <p>1.每道题目，dandan会先认真审题，思考每个答案可能正确的概率；</p>
+        <p>2.审题结束，dandan会选择一个最佳答案，最佳答案会变成醒目的红色；</p>
+        <p>3.dandan虽然很聪明，但还在不断成长学习，所以每个选择仅供参考，选错求轻喷，下一次他会做的更好~</p>
+      </div>
+      <div class="rightBox endbox">
+        <p class="rightBox_tip">友情提示：</p>
+        <p class='other'>答案由智能算法从百度搜索结果中自动生成，仅供参考；由百度知识联合开发。</p>
+        <p class="clickto"><a href="http://entry.baidu.com/rp/wenda?type=spkl&name=chongdingtestjs&mode=13&nofirst=1&lid=B9B1B4F5F17F3EEFDC554216FC1685A1">点击进入</a> 冲顶模拟训练，为大奖做准备！</p>
+      </div>
+    </div>
+  </div>
+  <script src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/zepto.a3f1b96e.js"></script>
+  <script src="./nv/js/socket.io.js"></script>
+  <script>
+    $(function() {
+      var socket = io.connect('//secr.baidu.com/nv/answer', {
+        path: '/nv/answer.sock',
+        transports: ['polling']
+      });
+/*       // 测试代码
+      $.post('/reply-answer', {
+        "question": {
+          "text": "我们常吃的鸡胗是鸡的哪一器官？",
+          "url": "",
+          "questionId": 9
+        },
+        "answers": [{
+          "text": "肝",
+          "url": "",
+          "prop": 3,
+          "count": 0
+        }, {
+          "text": "胃",
+          "url": "",
+          "prop": 94,
+          "count": 0
+        }, {
+          "text": "肾",
+          "url": "",
+          "prop": 3,
+          "count": 0
+        }],
+        "step": 2,
+        "status": 0,
+        "dqa_index": ["1"],
+        "dqa_status": "100",
+        "tips": "嗯，我决定了，就选B",
+        "result": "1",
+        "human_status_makeup": "yes_yes"
+      }, function(response) {
+        console.log('reply success ...')
+          // process response
+      }) */
+      socket.on('answer', function(data) {
+        // 题目到位
+        if (data.step == 0) {
+          stepOne(data);
+        } else if (data.step == 1) {
+          stepTow(data);
+        } else if (data.step == 2) {
+          $.post('/reply-answer', data, function(response) {
+            console.log('reply success ...' + JSON.stringify(data))
+              // process response
+          })
+          stepThree(data)
+        } else if (data.step == 3) {
+          stepFour(data)
+        } else if (data.step == 5) {
+          nostart();
+        } else {
+          steperror();
+        }
+      });
 
-            @media screen and (max-width: 320px){
-                .broadcast-text {
-                    font-size: 12px;
-                    bottom: 19px;
-                    left:25px;
-                }
-                .otherboxImg {
-                    padding-top: 0;
-                }
-            }
+      function stepOne(data) {
+        spliHtml(
+          data.question.questionId + '.' + data.question.text,
+          data.answers,
+          "社会我Dan哥，人美话还多"
+        );
+      }
 
-        </style>
-    </head>
+      // dqa出来了
+      function stepTow(data) {
+        spliHtml(
+          data.question.questionId + '.' + data.question.text,
+          data.answers,
+          data.tips
+        );
+      }
 
-    <body>
-        <div class="dt">
-            <div class="title dtpadding">
-                <p class="headertitle">Dan哥答题直播间</p>
-                <p class="smalltitle">「百万英雄」专场</p>
-            </div>
-            <div class="querytitle dtpadding">蛋哥热身中,题目还在路上</div>
-            <div class="answerBox dtpadding">
-                 <p class='answerText'>暂无答案<span class='care'>0%</span></p>
-                 <p class='answerText'>暂无答案<span class='care'>0%</span></p>
-                 <p class='answerText'>暂无答案<span class='care'>0%</span></p>
-            </div>
-            <div class="broadcast">
-                <div class="broadcast-wrap">
-                    <img class="dtwks active" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/dthws.686efb77.png"/>
-                    <img class="error" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/error.44f0b96a.png"/>
-                    <img class="ok" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/ok.7d63fdc8.png"/>
-                    <img class="pageerror" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/pageerror.516eeed8.png"/>
-                    <p class="broadcast-text">社会我Dan哥，人美话还多</p>
-                </div>
-                <p class="otherimgbox"><img class="otherboxImg" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/ewm.c09d3952.png"></p>
-            </div>
-            <div class="otherBox dtpadding">
-                <div class="rightBox">
-                    <p class="rightBox_tip">直播间观看须知</p>
-                    <p>各位观众，上面这位是简单搜索首席AI侠：dandan，江湖人称dan哥。</p>
-                    <p>每天dandan会在这个直播间进行『百万英雄』答题直播，欢迎围观吐槽。</p>
-                    <p>为了更好的观看体验，以下tips建议您瞅一眼：</p>
-                    <p>1.每道题目，dandan会先认真审题，思考每个答案可能正确的概率；</p>
-                    <p>2.审题结束，dandan会选择一个最佳答案，最佳答案会变成醒目的红色；</p>
-                    <p>3.dandan虽然很聪明，但还在不断成长学习，所以每个选择仅供参考，选错求轻喷，下一次他会做的更好~</p>
-                </div>
-                <div class="rightBox endbox">
-                    <p class="rightBox_tip">友情提示：</p>
-                    <p class='other'>答案由智能算法从百度搜索结果中自动生成，仅供参考；由百度知识联合开发。</p>
-                    <p class="clickto"><a href="http://entry.baidu.com/rp/wenda?type=spkl&name=chongdingtestjs&mode=13&nofirst=1&lid=B9B1B4F5F17F3EEFDC554216FC1685A1">点击进入</a> 冲顶模拟训练，为大奖做准备！</p>
-                </div>
-            </div>
-        </div>
-        <script src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/zepto.a3f1b96e.js"></script>
-       <script src="./nv/js/socket.io.js"></script>
-        <script>
-            $(function(){
-                var socket = io.connect('//secr.baidu.com/nv/answer', {
-                        path: '/nv/answer.sock',
-                        transports: ['polling']
-                 });
-                socket.on('answer', function(data) {
-                    $.post('/reply-answer', data, function (response) {
-                        console.log('reply success ...' + JSON.stringify(data))
-                        // process response
-                    })
-                    // 题目到位
-                    if(data.step == 0) {
-                        stepOne(data);
-                    }else if(data.step == 1) {
-                        stepTow(data);
-                    }else if(data.step == 2) {
-                        stepThree(data)
-                    }else if(data.step == 3) {
-                        stepFour(data)
-                    }else if(data.step == 5){
-                        nostart();
-                    }else{
-                        steperror();
-                    }
-                });
+      // 人工介入
+      function stepThree(data) {
+        spliHtml(
+          data.question.questionId + '.' + data.question.text,
+          data.answers,
+          data.tips,
+          Number(data.result) + 1
+        );
+      }
 
-               function stepOne(data) {
-                   spliHtml(
-                       data.question.questionId + '.' +  data.question.text,
-                       data.answers,
-                       "社会我Dan哥，人美话还多"
-                   );
-               }
+      function stepFour(data) {
+        spliHtml(
+          data.question.questionId + '.' + data.question.text,
+          data.answers,
+          data.tips,
+          Number(data.result) + 1
+        );
+      }
 
-               // dqa出来了
-               function stepTow(data) {
-                   spliHtml(
-                       data.question.questionId + '.' +  data.question.text,
-                       data.answers,
-                       data.tips
-                   );
-                }
+      function nostart(data) {
+        spliHtml(
+          "蛋哥热身中,题目还在路上", [{
+            'text': "暂无答案",
+            "prop": "0"
+          }, {
+            'text': "暂无答案",
+            "prop": "0"
+          }, {
+            'text': "暂无答案",
+            "prop": "0"
+          }],
+          "社会我Dan哥，人美话还多"
+        )
+      }
 
-               // 人工介入
-               function stepThree(data) {
-                    spliHtml(
-                       data.question.questionId + '.' +  data.question.text, 
-                       data.answers, 
-                       data.tips, 
-                       Number(data.result) + 1
-                   );
-               }
-               function stepFour(data){
-                   spliHtml(
-                       data.question.questionId + '.' +  data.question.text,
-                       data.answers,
-                       data.tips,
-                       Number(data.result) + 1
-                   );
-               }
+      function steperror(data) {}
 
-               function nostart(data) {
-                    spliHtml(
-                        "蛋哥热身中,题目还在路上",
-                        [{'text':"暂无答案","prop":"0"},{'text':"暂无答案","prop":"0"},{'text':"暂无答案","prop":"0"}],
-                         "社会我Dan哥，人美话还多"
-                   )
-               }
+      function spliHtml(title, answer, showText, high) {
+        // 显示title部分
+        $(".querytitle").html(title);
+        // 拼接答案list
+        var answerStr = "";
+        var chose = ["A", "B", "C", "D"];
+        for (var i = 0; i < answer.length; i++) {
+          answerStr += "<p class='answerText'>" + chose[i] + answer[i].text + "<span class='care'>" + answer[i].prop + "%</span></p>";
+        };
+        $(".answerBox").html(answerStr);
 
-                function steperror(data) {
-                }
+        $(".broadcast-text").html(showText);
 
-               function spliHtml(title, answer, showText, high) {
-                     // 显示title部分
-                    $(".querytitle").html(title);
-                    // 拼接答案list
-                    var answerStr = "";
-                    var chose = ["A","B","C","D"];
-                    for(var i =0; i< answer.length; i++){
-                        answerStr += "<p class='answerText'>"+chose[i] + answer[i].text+"<span class='care'>"+answer[i].prop+"%</span></p>";
-                    };
-                    $(".answerBox").html(answerStr);
+        if (high) {
+          $($(".answerText").get(high - 1)).addClass('active');
+        }
+      }
+    })
+  </script>
+</body>
 
-                    $(".broadcast-text").html(showText);
-
-                    if(high) {
-                         $($(".answerText").get(high-1)).addClass('active');
-                    }
-               }
-            })
-        </script>
-    </body>
-</html><!--35607611580508674570011214-->
-<script> var _trace_page_logid = 3560761158; </script><!--35607603520434163722011214-->
-<script> var _trace_page_logid = 3560760352; </script>
+</html>
+<!--35607611580508674570011214-->
+<script>
+  var _trace_page_logid = 3560761158;
+</script>
+<!--35607603520434163722011214-->
+<script>
+  var _trace_page_logid = 3560760352;
+</script>

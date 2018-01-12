@@ -1,24 +1,38 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from os import path
 from urllib.parse import urlparse, unquote, parse_qs
-import json
+from os import path
+import subprocess
 
 curdir = path.dirname(path.realpath(__file__))
 
 
 # HTTPRequestHandler class
-class HTTPServer_RequestHandler(BaseHTTPRequestHandler):
+class myHandler(BaseHTTPRequestHandler):
     # GET
     def do_GET(self):
         self.handle_http_request()
 
     def do_POST(self):
         datas = parse_qs(unquote(str(self.rfile.readline(int(self.headers['content-length'])),'UTF-8')))#先解码
+        answer = int(datas["result"][0])
+        no = datas["question[questionId]"][0]
+        self.tap_android(answer)
         self.log_message("params: %s", datas)
+        self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, answer)
         self.send_response(200)
         self.send_header('Content-type', 'json')
         self.end_headers()
         self.wfile.write(b"ok")
+
+    def tap_android(self, answer):
+        start_left = 540
+        start_top = 535
+        gap = 155
+        target_left = start_left
+        target_top = start_top + gap * (answer + 1)
+        subprocess.Popen(
+            "adb shell input tap " + str(target_left) + " " + str(target_top),
+            shell=True, stdout=subprocess.PIPE)
 
     def handle_http_request(self):
         send_reply = False
@@ -48,7 +62,7 @@ class HTTPServer_RequestHandler(BaseHTTPRequestHandler):
         if filepath.endswith(".woff"):
             mimetype = 'application/x-font-woff'
             send_reply = True
-        if send_reply == True:
+        if send_reply is True:
             # Open the static file requested and send it
             try:
                 with open(path.realpath(curdir + '/' + filepath), 'rb') as f:
@@ -67,7 +81,7 @@ def run():
 
     # Server settings
     server_address = ('', port)
-    httpd = HTTPServer(server_address, HTTPServer_RequestHandler)
+    httpd = HTTPServer(server_address, myHandler)
     print('running server...')
     httpd.serve_forever()
 
