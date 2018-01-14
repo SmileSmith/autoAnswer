@@ -14,13 +14,21 @@ class myHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         datas = parse_qs(unquote(str(self.rfile.readline(int(self.headers['content-length'])),'UTF-8')))#先解码
-        answer = int(datas["result"][0])
-        no = datas["question[questionId]"][0]
-        self.tap_android(answer)
-        self.log_message("params: %s", datas)
-        self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, answer)
+        querypath = urlparse(self.path)
+        apipath = querypath.path
+        if apipath.endswith('reply-answer-baidu'):
+            answer = int(datas["result"][0])
+            no = datas["question[questionId]"][0]
+            self.tap_android(answer)
+            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, answer)
+        if apipath.endswith('reply-answer-sogou'):
+            answer = int(datas["result"][0])
+            no = datas["question[questionId]"][0]
+            self.tap_android(answer)
+            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, answer)
         self.send_response(200)
         self.send_header('Content-type', 'json')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(b"ok")
 

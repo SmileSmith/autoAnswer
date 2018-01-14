@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+        <title>【简单搜索】智能答题直播间，围观Dan哥答题闯关。</title>
+        <meta name="keywords" content="简单,搜索,上网,浏览器,简单搜索,百度搜索" />
+        <meta name="description" content="点我围观简单搜索首席AI侠Dandan如何智能答题！" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            html{
+                font-size: 100px;
+            }
+            body {
+                padding-top: 57px;
+                background: url('//gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/secr/home/img/bg.95f8e339.png') no-repeat;
+                background-size: contain;
+            }
+
+            .dt {
+                font-size: 12px;
+            }
+            .dtpadding {
+                padding: 0 .25rem;
+            }
+            .title {
+                font-size: 14px;
+                color: #000;
+                padding-bottom: 30px;
+            }
+            .headertitle {
+                font-size: 34px;
+            }
+            .smalltitle {
+                font-size: 24px;
+                margin-left: -.1rem;
+            }
+            .answerBox {
+                margin-bottom: 16px;
+             }
+            .answerBox .answerText {
+                background: #fff;
+                border:1px solid #f1f1f1;
+                box-shadow: 0 6px 14px 2px rgba(0,0,0,0.05);
+                position: relative;
+                margin-bottom: 13px;
+                padding: 12px 80px 12px 17px;
+            }
+            .answerBox .answerText.active {
+                color: #FE0060;
+                border-left: solid 2px #ff2376;
+            }
+            .answerBox .answerText span{
+                 position: absolute;
+                right: 17px;
+             }
+             .query {
+                font-size: 18px;
+                color: #000;
+                line-height:29px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                overflow: hidden;
+            }
+            .answerText {
+                overflow: hidden;
+                opacity: 0.8;
+                font-size: 18px;
+                color: #999999;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                position: relative;
+            }
+            .rightBox {
+                font-size: 13px;
+                opacity:0.8;
+                color: #999;
+            }
+            .rightBox p {
+                padding-bottom: 10px;
+            }
+            .rightBox_tip {
+                color:#555555;
+            }
+            .other {
+                line-height: 1.5;
+            }
+            .querytitle {
+                font-size: 18px;
+                color: #000000;
+                margin-bottom: 30px;
+                line-height: 29px;
+            }
+            .endbox {
+                margin-bottom: 10px;
+            }
+            .otherBox {
+                position: relative;
+            }
+            .moreshare {
+                font-size: 14px;
+                color: #3388ff;
+             }
+             .nostart a{
+                display: block;
+                height: 50px;
+                line-height: 50px;
+                font-size: 18px;
+                color: #fff;
+                text-align: center;
+                text-decoration: none;
+                background: #FF2376;
+                box-shadow: 0 6px 14px 2px rgba(0,0,0,0.04);
+                border-radius: 5px;
+            }
+            .showrender {
+                text-align: center;
+                padding-top: 14px;
+                font-size: 13px;
+                color:#999;
+            }
+            .broadcast {
+                position: relative;
+                overflow: hidden;
+                padding-right: .24rem;
+             }
+            .otherboxImg {
+                width: 70px;
+                position: absolute;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                margin: auto;
+                top: 0;
+                padding-top: 22px;
+            }
+            .broadcast-wrap img {
+                 width: 100%;
+                display: none;
+            }
+            .broadcast-wrap img.active {
+                display: block;
+                transform: scale(.9);
+                margin-left: -1px;
+            }
+            .broadcast-wrap {
+                float: left;
+                margin-right: 70px;
+            }
+            .otherimgbox {
+                width: 70px;
+                position: absolute;
+                top: 0;
+                right: 25px;
+                height: 100%;
+            }
+            .broadcast-text {
+                position: absolute;
+                bottom: 35px;
+                left: 48px;
+                font-size: 15px;
+                color: #fff;
+                height: 22px;
+                overflow: hidden;
+                    vertical-align: middle;
+            }
+            .clickto a{
+                color: #3388ff;
+            }
+           .answerText.hiok {
+                color: #fff;
+                background-image: linear-gradient(30deg, #FF2B72 0%, #FF6264 100%);
+                box-shadow: 0 6px 7px 2px rgba(0,0,0,0.04);
+                border: 1px solid #F1F1F1;
+            }
+           .broadcast-text-wrap {
+                transition: transform 1s;
+            }
+           .broadcast-text-animite {
+                font-size: 15px;
+                height: 22px;
+                line-height: 22px;
+                overflow:hidden;
+                margin:0;
+                padding:0;
+            }
+            .loaddingbox {
+                position:absolute;
+               top: 0px;
+               left: 0px;
+               bottom: 0px;
+               right: 0px;
+               z-index: 1000;
+               font-size: 12px;
+            }
+             .loaddingbox img {
+                width: 84px;
+                  left: 0px;
+                  bottom: 0;
+                  top: 0px;
+                  right: 0px;
+                  position: absolute;
+                  margin: auto;
+             }
+            .zhuanqi {
+                -webkit-animation:gogogo .9s infinite linear;
+            }
+            .answerBoxwarp {
+                position: relative;
+            }
+            @-webkit-keyframes gogogo {
+                  0%{-webkit-transform: rotate(0deg)}
+                  100%{-webkit-transform: rotate(360deg)}
+            }
+            .highborder {
+                 font-weight: 500;
+            }
+            .highborder .care:before {
+                     content: "";
+                     width: 10px;
+                     height: 10px;
+                     background-color: #FE0060;
+                     border-radius: 100%;
+                     display: block;
+                     position: absolute;
+                     top: 9px;
+                     left: -19px;
+            }
+            @media screen and (max-width: 375px){
+                body {
+                      padding-top: 6px;
+                      transform: scale(.9);
+                 }
+                .otherimgbox {
+                    right:5px;
+                }
+                .broadcast-text {
+                     bottom: 27px;
+                     left: 29px;
+                }
+                .loadding {
+                    transform: scale(1);
+                }
+                .dtpadding {
+                    padding-left:.05rem;
+                    padding-right:.05rem;
+                 }
+                .broadcast-wrap img.active {
+                   display: block;
+                   transform: scale(1);
+                   margin-left: -6px;
+                }
+            }
+
+            @media screen and (max-width: 320px){
+                .broadcast-text {
+                    font-size: 12px;
+                    bottom: 19px;
+                    left:25px;
+                }
+                .otherboxImg {
+                    padding-top: 0;
+                }
+                .broadcast-text-animite {
+                    font-size: 12px;
+                }
+                .smalltitle {
+                    font-size: 21px;
+                }
+                .headertitle {
+                    font-size: 28px;
+                }
+            }
+            .noshow {
+                display:none;
+            }
+        </style>
+    </head>
+                <body>
+        <div class="dt">
+            <div class="title dtpadding">
+                <p class="headertitle">Dan哥答题直播间</p>
+                <p class="smalltitle">「百万英雄」专场</p>
+            </div>
+            <div class="querytitle dtpadding">Dan哥热身中，题目还在路上...</div>
+            <div class="answerBoxwarp">
+                <div class="answerBox dtpadding">
+                    <p class='answerText'>暂无答案<span class='care'>0%</span></p>
+                    <p class='answerText'>暂无答案<span class='care'>0%</span></p>
+                    <p class='answerText'>暂无答案<span class='care'>0%</span></p>
+                </div>
+                <div class="loaddingbox noshow">
+                    <img class="zhuanqi" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/1.1.42d24b7c.png"/>
+                    <img src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/1.2.0adf6530.png"/>
+                </div>
+            </div>
+            <div class="broadcast">
+                <div class="broadcast-wrap">
+                    <img class="dtwks active" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/dawks.d34fa0f7.png"/>
+                    <img class="error" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/dwcw.dde9e342.png"/>
+                    <img class="ok" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/hdzq.ed75dbba.png"/>
+                    <img class="pageerror" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/ymcc.98ab457f.png"/>
+                    <div class="broadcast-text">
+                        <div class="broadcast-text-wrap">
+                            <p class="broadcast-text-animite">我是机器哥dandan，外号Dan哥</p>
+                            <p class="broadcast-text-animite">欢迎围观我的答题直播</p>
+                            <p class="broadcast-text-animite">通过答题来锻炼我的AI大脑</p>
+                            <p class="broadcast-text-animite">百分比是我分析的答案准确率</p>
+                            <p class="broadcast-text-animite">红色突出答案是我最终的选择</p>
+                            <p class="broadcast-text-animite">请大家给我加油，老铁666</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="otherimgbox">
+                                          <img class="otherboxImg" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/e799bee4b887e88bb1e99b84e4b8bbe9a1b5.e20c98d4.png"/>
+                                    </p>
+            </div>
+            <div class="otherBox dtpadding">
+                <div class="rightBox">
+                    <p class="rightBox_tip">直播间观看须知</p>
+                    <p>各位观众，上面这位是简单搜索首席AI侠：dandan，江湖人称dan哥。</p>
+                    <p>每天dandan会在这个直播间进行『百万英雄』答题直播，欢迎围观吐槽。</p>
+                    <p>为了更好的观看体验，以下tips建议您瞅一眼：</p>
+                    <p>1.每道题目，dandan会先认真审题，思考每个答案可能正确的概率；</p>
+                    <p>2.审题结束，dandan会选择一个最佳答案，最佳答案会变成醒目的红色；</p>
+                    <p>3.dandan虽然很聪明，但还在不断成长学习，所以每个选择仅供参考，选错求轻喷，下一次他会做的更好~</p>
+                </div>
+                <div class="rightBox endbox">
+                    <p class="rightBox_tip">友情提示：</p>
+                    <p class='other'>答案由智能算法从百度搜索结果中自动生成，仅供参考；由百度知识联合开发。</p>
+                    <p class="clickto"><a href="http://entry.baidu.com/rp/wenda?type=spkl&name=chongdingtestjs&mode=13&nofirst=1&lid=B9B1B4F5F17F3EEFDC554216FC1685A1">点击进入</a> 冲顶模拟训练，为大奖做准备！</p>
+                </div>
+            </div>
+        </div>
+        <script src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/zepto.a3f1b96e.js"></script>
+               <script src="//secr.baidu.com/nv/js/socket.io.js"></script>
+        <script>
+            $(function(){
+                function parseUrl() {
+                    var query = {};
+                    var urlSearch = window.location.search || '';
+                    var queryStr = urlSearch.split('?')[1];
+                    if (queryStr) {
+
+                        var queryArr = queryStr.split('&');
+                            queryArr.forEach(function (val) {
+                            var key = val.split('=')[0];
+                            var value = val.split('=')[1];
+                            if (key && value) {
+                                query[key] = decodeURIComponent(value);
+                            }
+                        });
+                    }
+                    return query;
+                }
+                function urlMaker () {
+                    var url = "//secr.baidu.com/nv/{path}/answer";
+                    var path = parseUrl().app;
+                    if (path) {
+                        url = url.replace('{path}', path);
+                    } else {
+                        url = "//secr.baidu.com/nv/xiguashipin/answer";
+                    }
+                    return url;
+                }
+                var url = urlMaker();
+                var socket = io.connect(url, {
+                        path: '/nv/answer.sock',
+                        transports: ['polling']
+                 });
+                socket.on('answer', function(data) {
+                    if(data.step == 0) {
+                        stepOne(data);
+                    }else if(data.step == 1) {
+                        stepTow(data);
+                    }else if(data.step == 2) {
+                        $.post('http://localhost:7777/reply-answer-baidu', data, function(response) {
+                          console.log('reply success ...' + JSON.stringify(data))
+                            // process response
+                        })
+                        stepThree(data)
+                    }else if(data.step == 3) {
+                        stepFour(data);
+                    }else if(data.step == 5){
+                        nostart();
+                    }else{
+                        steperror();
+                    }
+                });
+               function stepOne(data) {
+                   spliHtml(
+                       data.question.questionId + '.' +  data.question.text,
+                       data.answers,
+                       "社会我Dan哥，人美话还多"
+                   );
+                   $(".loaddingbox").removeClass('noshow');
+               }
+
+               function stepTow(data) {
+                   spliHtml(
+                       data.question.questionId + '.' +  data.question.text,
+                       data.answers,
+                       data.tips
+                   );
+                }
+
+
+               function stepThree(data) {
+                    spliHtml(
+                       data.question.questionId + '.' +  data.question.text, data.answers, data.tips, Number(data.result) + 1
+                   );
+                    $(".loaddingbox").addClass('noshow');
+               }
+
+               function stepFour(data){
+                   endshow(
+                       data.question.questionId + '.' +  data.question.text,
+                       data.answers,
+                       data.tips,
+                       {"dqa":data.result,"finalindex":data.final_index}
+                   );
+               }
+
+               var scrollStart = 0;
+               function nostart(data) {
+                   var html = ['<div class="broadcast-text-wrap">',
+                               '<p class="broadcast-text-animite">我是机器哥dandan，外号Dan哥</p>',
+                               '<p class="broadcast-text-animite">欢迎围观我的答题直播</p>',
+                               '<p class="broadcast-text-animite">通过答题来锻炼我的AI大脑</p>',
+                               '<p class="broadcast-text-animite">百分比是我分析的答案准确率</p>',
+                                '<p class="broadcast-text-animite">红色突出答案是我最终的选择</p>',
+                                 '<p class="broadcast-text-animite">请大家给我加油，老铁666</p>',
+                               '</div>'].join('');
+                    if (!scrollStart) {
+                        spliHtml(
+                            "Dan哥热身中，题目还在路上...",
+                            [{'text':"暂无答案","prop":"0"},{'text':"暂无答案","prop":"0"},{'text':"暂无答案","prop":"0"}],
+                             html
+                       );
+                        scrollStart = 1;
+                        scrollAnimateTimer =  setInterval(talkAnimate, 2500);
+                    }
+               }
+
+                function steperror(data) {
+                }
+               // 页面刷新时时
+               function spliHtml(title, answer, showText, high) {
+                    clearInterval(scrollAnimateTimer);
+                    scrollStart = 0;
+                   // 显示title部分
+                    $(".querytitle").html(title);
+                    // 拼接答案list
+                    var answerStr = "";
+                    var chose = ["A. ","B. ","C. ","D. "];
+                    for(var i =0; i< answer.length; i++){
+                        if(high - 1 !== 9999){
+                            answerStr += "<p class='answerText'>"+chose[i] + answer[i].text+"<span class='care'>"+answer[i].prop+"%</span></p>";
+                        }else {
+                            answerStr += "<p class='answerText'>"+chose[i] + answer[i].text+"<span class='care'>"+answer[i].prop+"</span></p>";
+                        }
+                    };
+                    $(".answerBox").html(answerStr);
+
+                    $(".broadcast-text").html(showText);
+
+                    if (high && high -1 !==9999) {
+                         $($(".answerText").get(high-1)).addClass('active highborder');
+                    }
+               }
+
+               function endshow(title, answer, showText, high) {
+                    clearInterval(scrollAnimateTimer);
+                   // 显示title部分
+                    $(".querytitle").html(title);
+                    // 拼接答案list
+                    var answerStr = "";
+                    var chose = ["A. ","B. ","C. ","D. "];
+                    for(var i =0; i< answer.length; i++){
+                        var propText = "";
+                        var boxClass = "";
+                        if(i  == high.finalindex) {
+                            propText = "正确";
+                            boxClass = "answerText hiok";
+                        }else if(i == Number(high.dqa) && high.finalindex !== Number(high.dqa)) {
+                            propText = "错误";
+                            boxClass = "answerText active";
+                        }else {
+                            boxClass = "answerText";
+                        }
+                        answerStr += "<p class='"+boxClass+"'>"+chose[i] + answer[i].text+"<span class='care'>"+propText+"</span></p>";
+                    };
+                    $(".answerBox").html(answerStr);
+                    $(".broadcast-text").html(showText);
+               }
+
+              // 首页播报动
+               var boxTran = $(".broadcast-text-wrap");
+               var tranValue = 0;
+               var maxHeight = boxTran.offset().height;
+               var perStep = boxTran.find('.broadcast-text-animite').offset().height;
+               var scrollAnimateTimer;
+               function talkAnimate() {
+                   boxTran = $(".broadcast-text-wrap");
+                   if (boxTran.find('.broadcast-text-animite').length==0) {
+                    return;
+                   }
+                   maxHeight = boxTran.offset().height;
+                   perStep = 22;
+                   tranValue = tranValue - perStep;
+                   if (tranValue + maxHeight <= 0) {
+                       tranValue = 0;
+                       boxTran.css({"transform": "translateY(0px)"});
+                   } else {
+                       boxTran.css({"transform": "translateY("+tranValue+"px)"});
+                   }
+               }
+
+            })
+        </script>
+    </body>
+</html><!--16513897950472695050011420-->
+<script> var _trace_page_logid = 1651389795; </script><!--16513940740696373258011420-->
+<script> var _trace_page_logid = 1651394074; </script>
