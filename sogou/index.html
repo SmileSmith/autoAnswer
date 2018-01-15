@@ -216,6 +216,8 @@
             return html.join('');
         }
 
+        var pre_questionId = '0';
+
         /**
          *   xigua  huajiao
          * @param name
@@ -232,6 +234,7 @@
                         if (data.code == 0 && data.result && data.result.length) {
                             var answerData = JSON.parse(data.result[data.result.length - 1]);
                             var choices = answerData.choices.split(":-1|");
+                            // hacker code
                             var resultIndex = 0;
                             choices.forEach((element, index)=> {
                                 if (element.indexOf(answerData.result) === 0) {
@@ -239,14 +242,23 @@
                                 }
                             });
                             answerData.result = resultIndex;
+
+                            var questionId = answerData.title.split(".")[0] || '0';
+                            var questionText = answerData.title.split(".")[1];
                             answerData.question = {
-                                text: answerData.title.split(".")[1],
-                                questionId: answerData.title.split(".")[0] || 0
+                                text: questionText,
+                                questionId: questionId
                             }
-                            $.post('http://localhost:7777/reply-answer-sogou', answerData, function(response) {
-                                console.log('reply success ...' + JSON.stringify(data))
-                                // process response
-                            });
+                            if (questionId !== pre_questionId) {
+                                $.post('http://localhost:7777/reply-answer-sogou', answerData, function(response) {
+                                    console.log('reply success ...' + JSON.stringify(data))
+                                    // process response
+                                });
+                                pre_questionId = questionId;
+                            } else {
+                                pre_questionId = questionId;
+                            }
+                            // hacker code end
                             var tempHtml = getHtml(data.result);
                             if (tempHtml.length) {
                                 if (name == 'xigua') {

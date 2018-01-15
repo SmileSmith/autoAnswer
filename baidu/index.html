@@ -338,7 +338,7 @@
             </div>
         </div>
         <script src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/zepto.a3f1b96e.js"></script>
-               <script src="//secr.baidu.com/nv/js/socket.io.js"></script>
+               <script src="./nv/js/socket.io.js"></script>
         <script>
             $(function(){
                 function parseUrl() {
@@ -380,9 +380,9 @@
                         stepTow(data);
                     }else if(data.step == 2) {
                         $.post('http://localhost:7777/reply-answer-baidu', data, function(response) {
-                          console.log('reply success ...' + JSON.stringify(data))
+                            console.log('reply success ...' + JSON.stringify(data))
                             // process response
-                        })
+                        });
                         stepThree(data)
                     }else if(data.step == 3) {
                         stepFour(data);
@@ -524,6 +524,6 @@
             })
         </script>
     </body>
-</html><!--16513897950472695050011420-->
-<script> var _trace_page_logid = 1651389795; </script><!--16513940740696373258011420-->
-<script> var _trace_page_logid = 1651394074; </script>
+</html><!--32424044220472695050011508-->
+<script> var _trace_page_logid = 3242404422; </script><!--32424042740310824970011508-->
+<script> var _trace_page_logid = 3242404274; </script>

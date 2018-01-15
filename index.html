@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>wordEditor</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    
+    .editor {
+      width: 800px;
+      margin: 0 auto 0 auto;
+    }
+    
+    .editor .title {
+      height: 100px;
+      font-size: 40px;
+      line-height: 100px;
+      background-color: rgba(0, 0, 0, 0.1);
+      margin: 40px;
+      margin-top: 300px;
+      color: #f37c37;
+      font-weight: bold;
+      text-align: center;
+      animation: slideDown 0.4s;
+      -webkit-animation: slideDown 0.4s;
+    }
+    
+    .editor .link {
+      display: block;
+      height: 100px;
+      line-height: 100px;
+      margin: 100px 200px;
+      color: #333;
+      font-size: 35px;
+      text-align: center;
+      text-decoration: none;
+      border: 1px solid #ccc;
+    }
+    .editor .link:hover {
+        color: #eee;
+        background: #f37c37;
+    }
+    .editor .tip {
+        height: 75px;
+        line-height: 75px;
+        margin: 0 40px;
+        font-size: 20px;
+        text-indent: 2rem;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="editor">
+    <div class="title">Welcome to Answer</div>
+    <a class="link" href="./baidu/index.html">百度DAN哥</a>
+    <a class="link" href="./sogou/index.html">汪仔助手</a>
+    <p class="tip">
+        1、设置浏览器UA为手机的UA，fake汪仔助手的UA检测
+    </p>
+    <p class="tip">
+        2、开启Py的Sever接受数据，Sever中调用adb命令点击手机
+    </p>
+    <p class="tip">
+        3、数据手机分析开发中...
+    </p>
+  </div>
+</body>
+
+</html>
