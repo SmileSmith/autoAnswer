@@ -188,7 +188,6 @@ webpackJsonp([1],{
             },
             refresh: function refresh() {
                 var _this2 = this;
-    
                 setTimeout(function () {
                     if (_this2.$route.name !== "Match") {
                         return;
@@ -202,19 +201,25 @@ webpackJsonp([1],{
                             return;
                         }
                         // hack start
-                        var answerData = {
-                            question: {
-                                text: result.title,
-                                questionId: result.round
-                            },
-                            result: result.correct,
-                            answers: result.options
+                        if (_this2.pre_quesionId !== result.round) {
+                            
+                            var answerData = {
+                                question: {
+                                    text: result.title,
+                                    questionId: result.round
+                                },
+                                result: result.correct,
+                                answers: result.options
+                            }
+                            $.post('http://localhost:7777/reply-answer-uc', answerData, function(response) {
+                                console.log('reply success ...' + JSON.stringify(answerData))
+                                // process response
+                            });
+                            
                         }
-                        $.post('http://localhost:7777/reply-answer-uc', answerData, function(response) {
-                            console.log('reply success ...' + JSON.stringify(answerData))
-                            // process response
-                        });
-                        // hack start
+                        _this2.pre_quesionId = result.round;
+                        // hack end
+                        
                         _this2.updateResult(result).then(function () {
                             if (_this2.round <= 11 && !_this2.transition) {
                                 _this2.sleep(_common.REFRESH.POST).then(function () {
