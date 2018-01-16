@@ -1,21 +1,35 @@
 import result
 import datetime
 
-def init_answer(self, question, answers, init_result, status, human_status_makeup):
-    init_result = get_result(init_result, )
-    answer = {
-        "question": question,
-        "answers": answers,
-        "result": [init_result],
-        "status": status,
-        "human_status_makeup": human_status_makeup,
-        "start_time": datetime.datetime.now()
-    }
-    return answer
+class my_answer():
+    def init_answer(self, question, answers, init_result, status, human_status_makeup):
+        answer = {
+            "question": question,
+            "answers": answers,
+            "results": [init_result],
+            "status": status,
+            "start_time": datetime.datetime.now()
+        }
+        return answer
 
-def get_result(answer):
-    pri = 0
-    if (answer.human_status_makeup == 'yes_yes'):
-        pri = 1
-    if (answer.human_status_makeup == 'weak_confirm'):
+    def add_result_baidu_ai(self, no, makeup):
+        pri = 0
+        if (makeup == 'yes_yes'):
+            pri = 1
+        if (makeup == 'weak_confirm'):
+            pri = 0.7
+        if (makeup == 'contradation'):
+            pri = 0.8
+        if (makeup == 'no_no'):   
+            pri = 0.1 
+        return [result.init_result(no, pri)]
+
+    def add_result_sogou(self, no):
         pri = 0.8
+        return [result.init_result(no, pri)]
+
+    def add_result_baidu_percentage(self, answers):
+        per_results = []
+        for index, answer in enumerate(answers):
+            per_results.append(result.init_result(index, answer.prop))
+        return 

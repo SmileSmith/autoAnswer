@@ -1,6 +1,6 @@
-====================================================
+ï»¿====================================================
 @echo off
-rem µ±Ç°batµÄ×÷ÓÃ
+rem å½“å‰batçš„ä½œç”¨
 
 echo ==================begin========================
 
@@ -8,28 +8,28 @@ cls
 SET NGINX_PATH=D:
 SET NGINX_DIR=D:\WorkSet\nginx-1.13.2\
 color 0a 
-TITLE Nginx ¹ÜÀí³ÌĞò¿ØÖÆÃæ°å
+TITLE Nginx ç®¡ç†ç¨‹åºæ§åˆ¶é¢æ¿
 
 CLS 
 
 ECHO. 
-ECHO. * Nginx ¹ÜÀí³ÌĞò * 
-ECHO. * ´´½¨2013-10-15 * 
+ECHO. * Nginx ç®¡ç†ç¨‹åº * 
+ECHO. * åˆ›å»º2013-10-15 * 
 ECHO. 
 
 :MENU 
 
-ECHO. * nginx ½ø³Ìlist * 
+ECHO. * nginx è¿›ç¨‹list * 
 tasklist|findstr /i "nginx.exe"
 
 ECHO. 
-ECHO. [1] Æô¶¯Nginx 
-ECHO. [2] ¹Ø±ÕNginx 
-ECHO. [3] ÖØÆôNginx 
-ECHO. [4] ÍË ³ö 
+ECHO. [1] å¯åŠ¨Nginx 
+ECHO. [2] å…³é—­Nginx 
+ECHO. [3] é‡å¯Nginx 
+ECHO. [4] é€€ å‡º 
 ECHO. 
 
-ECHO.ÇëÊäÈëÑ¡ÔñÏîÄ¿µÄĞòºÅ:
+ECHO.è¯·è¾“å…¥é€‰æ‹©é¡¹ç›®çš„åºå·:
 set /p ID=
 IF "%id%"=="1" GOTO start 
 IF "%id%"=="2" GOTO stop 
@@ -52,14 +52,14 @@ GOTO MENU
 
 :shutdownNginx
 ECHO. 
-ECHO.¹Ø±ÕNginx...... 
+ECHO.å…³é—­Nginx...... 
 taskkill /F /IM nginx.exe > nul
-ECHO.OK,¹Ø±ÕËùÓĞnginx ½ø³Ì
+ECHO.OK,å…³é—­æ‰€æœ‰nginx è¿›ç¨‹
 goto :eof
 
 :startNginx
 ECHO. 
-ECHO.Æô¶¯Nginx...... 
+ECHO.å¯åŠ¨Nginx...... 
 
 IF EXIST "./nginx.exe" (
 echo "start '' nginx.exe"
