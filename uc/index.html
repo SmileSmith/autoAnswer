@@ -12,49 +12,28 @@
   <meta name="keywords" content="答题助手,UC答题助手,百万英雄,百万现金" />
   <meta name="description" content="直播过程中UC答题助手将基于人工智能实时计算答案，助你顺利通关。" />
   <title> UC答题助手 助你赢百万现金 </title>
+  <script type="text/javascript" src="./static/js/zepto.min.js"></script>
   <script type="text/javascript">
     window.sm = window.sm || {};
-    sm.COMMON_PARAMS = {
-      API: {
-        current: 'http://answer.sm.cn/answer/curr?format=json&activity=million',
-        review: 'http://answer.sm.cn/answer/detail?format=json'
-      },
-      startTime: '1516078800',
-      title: '百万英雄',
-      banner: '//sm01.alicdn.com/L1/272/6837/static/wap/img/dream/banner.png',
-      bgColor: '#321579',
-      currentReward: '50万',
-      currentOrder: '13:00场',
-      currentDate: '1月16日',
-      activityName: 'million',
-      currentCC: {
-        "title": "\u767e\u4e07\u82f1\u96c4 13:00\u573a",
-        "type": "million",
-        "starttime": 1516078800,
-        "round": "1",
-        "status": "0",
-        "reward": "50\u4e07",
-        "hide": "0",
-        "dateline": 1516026645,
-        "userid": "348",
-        "id": 140,
-        "order": "13:00\u573a",
-        "cnname": "\u767e\u4e07\u82f1\u96c4",
-        "date": "1\u670816\u65e5"
-      },
-      reviewCC: [{
-        "sid": "139",
-        "cnname": "\u767e\u4e07\u82f1\u96c4",
-        "order": "11:00\u573a",
-        "reward": "50\u4e07"
-      }],
-      nextCC: [],
-      activities: [],
-      uctrack: {
-        "url": "http:\/\/down2.uc.cn\/ucbrowser\/v2\/down.php?id=145&pub=tangzhihan@datizhushouanzhuo&keyword=&cid=",
-        "ch": "tangzhihan@datizhushouanzhuo"
-      }
-    };
+    $.ajax({
+        type: 'get',
+        async: false,
+        url:'./answer/index?activity=million#/index',
+        success: (data)=> {
+            // insert sm.COMMON_PARAMS
+            var params_code = data.match(/(sm\.COMMON_PARAMS[\s\S]*?)<\/script>/)[1];
+            try {
+                eval(params_code);
+                // change api to nginx proxy_pass
+                sm.COMMON_PARAMS.API =  {
+                    current: './answer/curr?format=json&activity=million',
+                    review: './answer/detail?format=json'
+                };
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    });
   </script>
 </head>
 
@@ -65,9 +44,9 @@
   <div id="app"></div>
   <link rel="stylesheet" href="//g.alicdn.com/shenma-frontend/dream/prod/dream/static/css/dream.36.css">
   <script type="text/javascript" src="//g.alicdn.com/shenma-frontend/dream/prod/dream/static/adtrack-jssdk-1.0.5.js"></script>
-  <script type="text/javascript" src="//g.alicdn.com/shenma-frontend/dream/prod/dream/static/js/manifest.36.js"></script>
-  <script type="text/javascript" src="//g.alicdn.com/shenma-frontend/dream/prod/dream/static/js/vendor.36.js"></script>
-  <script type="text/javascript" src="//g.alicdn.com/shenma-frontend/dream/prod/dream/static/js/dream.36.js"></script>
+  <script type="text/javascript" src="./static/js/manifest.36.js"></script>
+  <script type="text/javascript" src="./static/js/vendor.36.js"></script>
+  <script type="text/javascript" src="./static/js/dream.36.js"></script>
   <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
   <script type="text/javascript">
     wx.config({
@@ -77,47 +56,6 @@
       nonceStr: '7R65M3WKRIO2COPQ',
       signature: 'd5dc5e27147e44d8e878bfbfdd1e93aeae39b6a7',
       jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
-    });
-    wx.ready(function() {
-      wx.onMenuShareTimeline({
-        title: 'UC答题助手，助你赢百万现金',
-        link: 'http://answer.sm.cn/answer/index?activity=million',
-        imgUrl: 'http://sm01.alicdn.com/L1/272/6837/static/wap/img/sc/activity/answer/hp.png',
-        success: function() {},
-        cancel: function() {}
-      });
-      wx.onMenuShareAppMessage({
-        title: 'UC答题助手，助你赢百万现金',
-        desc: '直播过程中UC答题助手将基于人工智能实时计算答案，助你顺利通关。',
-        link: 'http://answer.sm.cn/answer/index?activity=million',
-        imgUrl: 'http://sm01.alicdn.com/L1/272/6837/static/wap/img/sc/activity/answer/hp.png',
-        success: function() {},
-        cancel: function() {}
-      });
-      wx.onMenuShareQQ({
-        title: 'UC答题助手，助你赢百万现金',
-        desc: '直播过程中UC答题助手将基于人工智能实时计算答案，助你顺利通关。',
-        link: 'http://answer.sm.cn/answer/index?activity=million',
-        imgUrl: 'http://sm01.alicdn.com/L1/272/6837/static/wap/img/sc/activity/answer/hp.png',
-        success: function() {},
-        cancel: function() {}
-      });
-      wx.onMenuShareWeibo({
-        title: 'UC答题助手，助你赢百万现金',
-        desc: '直播过程中UC答题助手将基于人工智能实时计算答案，助你顺利通关。',
-        link: 'http://answer.sm.cn/answer/index?activity=million',
-        imgUrl: 'http://sm01.alicdn.com/L1/272/6837/static/wap/img/sc/activity/answer/hp.png',
-        success: function() {},
-        cancel: function() {}
-      });
-      wx.onMenuShareQZone({
-        title: 'UC答题助手，助你赢百万现金',
-        desc: '直播过程中UC答题助手将基于人工智能实时计算答案，助你顺利通关。',
-        link: 'http://answer.sm.cn/answer/index?activity=million',
-        imgUrl: 'http://sm01.alicdn.com/L1/272/6837/static/wap/img/sc/activity/answer/hp.png',
-        success: function() {},
-        cancel: function() {}
-      });
     });
   </script>
 </body>
