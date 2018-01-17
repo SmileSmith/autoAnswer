@@ -13,13 +13,14 @@ device_id_list = []
 for line in out.decode("utf-8").splitlines()[1:-1]:
     device_id_list.append(line.split("\t")[0])
 
+
+
 # HTTPRequestHandler class
 
 
 class myHandler(BaseHTTPRequestHandler):
 
-    device_id_list: device_id_list
-    # GET
+    auto_ai = False
 
     def do_GET(self):
         self.handle_http_request()
@@ -29,22 +30,22 @@ class myHandler(BaseHTTPRequestHandler):
             int(self.headers['content-length'])), 'UTF-8')))  # 先解码
         querypath = urlparse(self.path)
         apipath = querypath.path
-        if apipath.endswith('reply-answer-baidu'):
+        if self.auto_ai and apipath.endswith('reply-answer-baidu'):
             result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
-            # self.tap_android(result)
+            self.tap_android(result)
             self.log_message(
                 "\nNo.%s Answer is : %s \n----------", no, result)
-        if apipath.endswith('reply-answer-sogou'):
+        if self.auto_ai and apipath.endswith('reply-answer-sogou'):
             result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
-            # self.tap_android(result)
+            self.tap_android(result)
             self.log_message(
                 "\nNo.%s Answer is : %s \n----------", no, result)
-        if apipath.endswith('reply-answer-uc'):
+        if self.auto_ai and apipath.endswith('reply-answer-uc'):
             result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
-            # self.tap_android(result)
+            self.tap_android(result)
             self.log_message(
                 "\nNo.%s Answer is : %s \n----------", no, result)
         if apipath.endswith('reply-answer'):
@@ -53,6 +54,15 @@ class myHandler(BaseHTTPRequestHandler):
             self.tap_android(result)
             self.log_message(
                 "\nNo.%s Answer is : %s \n----------", no, result)
+        if apipath.endswith('toggle-ai'):
+            switch = str(datas["switch"][0])
+            true = "true"
+            if (switch == true):
+                self.auto_ai = True
+            else:
+                self.auto_ai = False
+            self.log_message(
+                "\nToggle AI Auto to %s", str(self.auto_ai))
         self.send_response(200)
         self.send_header('Content-type', 'json')
         self.send_header('Access-Control-Allow-Origin', '*')

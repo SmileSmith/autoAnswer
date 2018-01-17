@@ -72,6 +72,19 @@
       background: #FF015C;
       cursor: pointer;
     }
+    .ai-toggle-button {
+      padding: 20px;
+      font-size: 25px;
+      margin-right: 50px;
+    }
+    .ai-toggle-button:hover {
+      color: #FF015C;
+      background: #ccc;
+      cursor: pointer;
+    }
+    .ai-toggle-button.on {
+      color: #f80029;
+    }
   </style>
 </head>
 
@@ -122,6 +135,7 @@
     <div class="uc-body"><div id="app"></div></div>
   </setion>
   <section class="my-result">
+    <div class="ai-toggle-button" id="ai-result-toggle">AI自动答题: <span>OFF</span></div>
     <div class="my-result-title">自己答题: </div>
     <ul class="my-result-bar">
       <li id="result-zero" value="0" class="my-result-button"> A </li>

@@ -104,8 +104,8 @@ $(function() {
             if (tempHtml.length) {
               if (name == "xigua") {
                 $("#startTextXiGua").remove();
-                if ($('.box-answer').length >= 4) {
-                  $('.box-answer').children.first().remove();
+                if ($('.box-answer').length >= 3) {
+                  $('#listAnswerXiGua').children().first().remove();
                 }
                 $("#listAnswerXiGua").append(tempHtml);
               } 

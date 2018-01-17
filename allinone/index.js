@@ -25,3 +25,24 @@ function replyResult(event) {
 $("#result-zero").click(replyResult);
 $("#result-one").click(replyResult);
 $("#result-two").click(replyResult);
+
+
+function toggleAI() {
+  const $span = $(this).find("span");
+  const switcherOn = $span.text() === "OFF";
+  let switcherText = switcherOn ? "ON" : "OFF";
+  $.post(
+    "http://localhost:7777/toggle-ai",
+    { switch: switcherOn },
+    (response) => {
+      $span.text(switcherText);
+      if (switcherOn) {
+        $(this).addClass("on");
+      } else {
+        $(this).removeClass("on");
+      }
+    }
+  );
+}
+
+$("#ai-result-toggle").click(toggleAI);
