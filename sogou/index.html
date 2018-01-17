@@ -2,20 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Apply 360 with Chrome-WebKit-Core -->
-    <meta name="renderer" content="webkit">
+    <meta http-equiv="Content-Security-Policy"
+          content="script-src 'self' 'unsafe-inline' 'unsafe-eval' *.sogo.com *.sogou.com *.qq.com *.soso.com *.sohu.com *.sogoucdn.com 140.143.49.31">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <!-- Disable Baidu-Transcoding -->
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="Sgsfe,TeaEra">
-    <!-- Referrer Policy -->
-    <meta name="referrer" content="no-referrer"/>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
     <style>
         @media screen and (min-width: 740px) {
             .te-body {
@@ -24,13 +19,16 @@
                 margin-right: auto;
             }
         }
+        div.box-rule {
+            padding: 0 10px;
+        }
     </style>
     <title>搜狗答题助手，全网奖金帮你拿到手</title>
     <link href="http://cache.soso.com/daemon/css/felab-websocket-bwyx-01131226.css" rel="stylesheet">
 </head>
 <body class="te-body">
 <div class="box-banner">
-    <img id="img-banner" src="http://cache.soso.com/daemon/images/assistant_banner.png">
+        <img id="img-banner" src="http://cache.soso.com/daemon/images/assistant_banner.png">
 </div>
 <!-- -->
 <div id="section-share" style="display:none">
@@ -112,18 +110,18 @@
 
 </div>
 <script src="http://cache.soso.com/wenwen/js/zepto/1.2.0/1/zepto.min.js"></script>
-<script src="http://cache.soso.com/daemon/js/felab-websocket-bwyx-01131238.js"></script>
 <script>
     $(function () {
         var interval = 500;
         var flagJson = {
             xigua: true,
             huajiao: false,
-            cddh:false,
-            zscr:false
+            cddh: false,
+            zscr: false
         };
 
         $('#bwyx').on('click', function () {
+            $('#platform').text('西瓜视频/今日头条/抖音');
             $(this).siblings('li').removeClass('active');
             $(this).addClass('active');
             $('.ready-new').hide();
@@ -138,6 +136,7 @@
             window.scrollTo(0, 100000);
         });
         $('#hj').on('click', function () {
+            $('#platform').text('花椒/快视频');
             $(this).siblings('li').removeClass('active');
             $(this).addClass('active');
             $('.ready-new').hide();
@@ -152,6 +151,7 @@
             window.scrollTo(0, 100000);
         });
         $('#cddh').on('click', function () {
+            $('#platform').text('冲顶大会');
             $(this).siblings('li').removeClass('active');
             $(this).addClass('active');
             $('.ready-new').hide();
@@ -168,6 +168,7 @@
         });
 
         $('#zscr').on('click', function () {
+            $('#platform').text('芝士超人/映客直播');
             $(this).siblings('li').removeClass('active');
             $(this).addClass('active');
             $('.ready-new').hide();
@@ -199,6 +200,7 @@
                 if (!tempItem.title) {
                     continue;
                 }
+
                 if (!$('#' + tempItem.cd_id).length) {
                     html.push('<div class="box-answer" id="' + tempItem.cd_id + '">');
                     html.push('<h4>' + tempItem.title + '</h4>');
@@ -215,9 +217,7 @@
             }
             return html.join('');
         }
-
         var pre_questionId = '0';
-
         /**
          *   xigua  huajiao
          * @param name
@@ -225,14 +225,15 @@
         function getAnswers(name) {
             $.ajax({
                 url: 'api/ans?key=' + name,
-                dataType: 'json',
+                dataType: 'jsonp',
+                jsonp: 'wdcallback',
                 type: 'get',
-                cache: false,
                 timeout: 1000,
-                success: function (data) {
-                    try {
-                        if (data.code == 0 && data.result && data.result.length) {
-                            var answerData = JSON.parse(data.result[data.result.length - 1]);
+                cache: false
+            }).done(function (data) {
+                try {
+                    if (data.code == 0 && data.result && data.result.length) {
+                        var answerData = JSON.parse(data.result[data.result.length - 1]);
                             var choices = answerData.choices.split(":-1|");
                             // hacker code
                             var resultIndex = 0;
@@ -258,43 +259,39 @@
                             } else {
                                 pre_questionId = questionId;
                             }
-                            // hacker code end
-                            var tempHtml = getHtml(data.result);
-                            if (tempHtml.length) {
-                                if (name == 'xigua') {
-                                    $('#startTextXiGua').remove();
-                                    $('#listAnswerXiGua').append(tempHtml);
-                                } else if (name == 'huajiao') {
-                                    $('#startTextHuaJiao').remove();
-                                    $('#listAnswerHuaJiao').append(tempHtml);
-                                }else if(name == 'cddh'){
-                                    $('#startTextCD').remove();
-                                    $('#listAnswerCD').append(tempHtml);
-                                }else if(name == 'zscr'){
-                                    $('#startTextZscr').remove();
-                                    $('#listAnswerZscr').append(tempHtml);
-                                }
-
-                                window.scrollTo(0, 100000);
+                            // hacker code end  
+                        var tempHtml = getHtml(data.result);
+                        if (tempHtml.length) {
+                            if (name == 'xigua') {
+                                $('#startTextXiGua').remove();
+                                $('#listAnswerXiGua').append(tempHtml);
+                            } else if (name == 'huajiao') {
+                                $('#startTextHuaJiao').remove();
+                                $('#listAnswerHuaJiao').append(tempHtml);
+                            } else if (name == 'cddh') {
+                                $('#startTextCD').remove();
+                                $('#listAnswerCD').append(tempHtml);
+                            } else if (name == 'zscr') {
+                                $('#startTextZscr').remove();
+                                $('#listAnswerZscr').append(tempHtml);
                             }
-
+                            window.scrollTo(0, 100000);
                         }
-                    } catch (e) {
 
                     }
-                    if (flagJson[name]) {
-                        setTimeout(function () {
-                            getAnswers(name);
-                        }, interval);
-                    }
+                } catch (e) {
 
-                },
-                error: function () {
-                    if (flagJson[name]) {
-                        setTimeout(function () {
-                            getAnswers(name);
-                        }, interval);
-                    }
+                }
+                if (flagJson[name]) {
+                    setTimeout(function () {
+                        getAnswers(name);
+                    }, interval);
+                }
+            }).fail(function () {
+                if (flagJson[name]) {
+                    setTimeout(function () {
+                        getAnswers(name);
+                    }, interval);
                 }
             });
         }
@@ -302,8 +299,6 @@
         //默认初始化轮询西瓜答题
         getAnswers('xigua');
     });
-
 </script>
-<script crossorigin="anonymous" src="http://cache.soso.com/deploy/js/lib/dt/main.js"></script>
 </body>
 </html>

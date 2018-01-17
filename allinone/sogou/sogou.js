@@ -53,7 +53,6 @@ $(function() {
   }
 
   var pre_questionId = "0";
-
   /**
    *   xigua  huajiao
    * @param name
@@ -61,11 +60,13 @@ $(function() {
   function getAnswers(name) {
     $.ajax({
       url: "sogou/api/ans?key=" + name,
-      dataType: "json",
+      dataType: "jsonp",
+      jsonp: "wdcallback",
       type: "get",
-      cache: false,
       timeout: 1000,
-      success: function(data) {
+      cache: false
+    })
+      .done(function(data) {
         try {
           if (data.code == 0 && data.result && data.result.length) {
             var answerData = JSON.parse(data.result[data.result.length - 1]);
@@ -107,7 +108,7 @@ $(function() {
                   $('.box-answer').children.first().remove();
                 }
                 $("#listAnswerXiGua").append(tempHtml);
-              }
+              } 
               window.scrollTo(0, 100000);
             }
           }
@@ -117,15 +118,14 @@ $(function() {
             getAnswers(name);
           }, interval);
         }
-      },
-      error: function() {
+      })
+      .fail(function() {
         if (flagJson[name]) {
           setTimeout(function() {
             getAnswers(name);
           }, interval);
         }
-      }
-    });
+      });
   }
 
   //默认初始化轮询西瓜答题

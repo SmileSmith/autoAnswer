@@ -6,36 +6,53 @@ import subprocess
 curdir = path.dirname(path.realpath(__file__))
 
 
+device_infos = subprocess.Popen(
+    'adb devices', shell=True, stdout=subprocess.PIPE)
+out, err = device_infos.communicate()
+device_id_list = []
+for line in out.decode("utf-8").splitlines()[1:-1]:
+    device_id_list.append(line.split("\t")[0])
+
 # HTTPRequestHandler class
+
+
 class myHandler(BaseHTTPRequestHandler):
+
+    device_id_list: device_id_list
     # GET
+
     def do_GET(self):
         self.handle_http_request()
 
     def do_POST(self):
-        datas = parse_qs(unquote(str(self.rfile.readline(int(self.headers['content-length'])),'UTF-8')))#先解码
+        datas = parse_qs(unquote(str(self.rfile.readline(
+            int(self.headers['content-length'])), 'UTF-8')))  # 先解码
         querypath = urlparse(self.path)
         apipath = querypath.path
         if apipath.endswith('reply-answer-baidu'):
             result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
-            #self.tap_android(result)
-            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, result)
+            # self.tap_android(result)
+            self.log_message(
+                "\nNo.%s Answer is : %s \n----------", no, result)
         if apipath.endswith('reply-answer-sogou'):
             result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
-            #self.tap_android(result)
-            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, result)
+            # self.tap_android(result)
+            self.log_message(
+                "\nNo.%s Answer is : %s \n----------", no, result)
         if apipath.endswith('reply-answer-uc'):
             result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
-            #self.tap_android(result)
-            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, result)
+            # self.tap_android(result)
+            self.log_message(
+                "\nNo.%s Answer is : %s \n----------", no, result)
         if apipath.endswith('reply-answer'):
             result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
             self.tap_android(result)
-            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, result)
+            self.log_message(
+                "\nNo.%s Answer is : %s \n----------", no, result)
         self.send_response(200)
         self.send_header('Content-type', 'json')
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -48,15 +65,17 @@ class myHandler(BaseHTTPRequestHandler):
         gap = 155
         target_left = start_left
         target_top = start_top + gap * (result + 1)
-        subprocess.Popen(
-            "adb shell input tap " + str(target_left) + " " + str(target_top),
-            shell=True, stdout=subprocess.PIPE)
+        for device_id in device_id_list:
+            command = "adb -s " + device_id + " shell input tap " + \
+                str(target_left) + " " + str(target_top)
+            print(command)
+            subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
 
     def handle_http_request(self):
         send_reply = False
         querypath = urlparse(self.path)
         filepath, query = querypath.path, querypath.query
-        
+
         if filepath.endswith('/'):
             filepath += 'index.html'
         if filepath.endswith(".html"):
@@ -102,5 +121,6 @@ def run():
     httpd = HTTPServer(server_address, myHandler)
     print('running server...')
     httpd.serve_forever()
+
 
 run()
