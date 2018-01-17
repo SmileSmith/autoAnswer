@@ -1,0 +1,115 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+article,
+aside,
+blockquote,
+body,
+button,
+dd,
+details,
+div,
+dl,
+dt,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+hr,
+input,
+legend,
+li,
+menu,
+nav,
+ol,
+p,
+section,
+td,
+textarea,
+th,
+ul {
+  margin: 0;
+  padding: 0;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+ol,
+ul {
+  list-style: none;
+}
+input::-ms-clear,
+input::-ms-reveal {
+  display: none;
+}
+body,
+html {
+  margin: 0;
+  position: relative;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+[v-cloak] {
+  display: none;
+  opacity: 0;
+}
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  opacity: 1;
+  transition: opacity 0.1s;
+  width: 100%;
+  margin: 0 auto;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+.progress[data-v-c318817c] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  width: 0;
+  transition: width 0.2s, opacity 0.4s;
+  -webkit-transition: width 0.2s, opacity 0.4s;
+  opacity: 1;
+  background-color: #efc14e;
+  z-index: 999999;
+}
+/*# sourceMappingURL=dream.36.css.map*/

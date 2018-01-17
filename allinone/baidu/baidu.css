@@ -1,0 +1,201 @@
+
+.dt {
+    font-size: 12px;
+    text-align: left;
+    background: url('//gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/secr/home/img/bg.95f8e339.png') no-repeat;
+    background-size: contain;
+}
+.dtpadding {
+    padding: 0 20px;
+}
+.title {
+    font-size: 14px;
+    padding-bottom: 30px;
+}
+.smalltitle {
+    height: 47px;
+    line-height: 47px;
+    color: #333;
+    font-size: 25px;
+    text-align: center;
+    margin-left: -.1rem;
+}
+.answerBox {
+    margin-bottom: 16px;
+ }
+.answerBox .answerText {
+    background: #fff;
+    border:1px solid #f1f1f1;
+    box-shadow: 0 6px 14px 2px rgba(0,0,0,0.05);
+    position: relative;
+    margin-bottom: 13px;
+    padding: 12px 80px 12px 17px;
+}
+.answerBox .answerText.active {
+    color: #FE0060;
+    border-left: solid 2px #ff2376;
+}
+.answerBox .answerText span{
+     position: absolute;
+    right: 17px;
+ }
+ .query {
+    font-size: 18px;
+    color: #000;
+    line-height:29px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+.answerText {
+    overflow: hidden;
+    opacity: 0.8;
+    font-size: 18px;
+    color: #999999;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    position: relative;
+}
+.rightBox {
+    font-size: 13px;
+    opacity:0.8;
+    color: #999;
+}
+.rightBox p {
+    padding-bottom: 10px;
+}
+.rightBox_tip {
+    color:#555555;
+}
+.other {
+    line-height: 1.5;
+}
+.querytitle {
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 30px;
+    line-height: 29px;
+}
+.endbox {
+    margin-bottom: 10px;
+}
+.otherBox {
+    position: relative;
+}
+.moreshare {
+    font-size: 14px;
+    color: #3388ff;
+ }
+ .nostart a{
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background: #FF2376;
+    box-shadow: 0 6px 14px 2px rgba(0,0,0,0.04);
+    border-radius: 5px;
+}
+.showrender {
+    text-align: center;
+    padding-top: 14px;
+    font-size: 13px;
+    color:#999;
+}
+.broadcast {
+    position: relative;
+    overflow: hidden;
+    padding-right: .24rem;
+ }
+.otherboxImg {
+    width: 70px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    top: 0;
+    padding-top: 22px;
+}
+.broadcast-wrap img {
+     width: 100%;
+    display: none;
+}
+.broadcast-wrap img.active {
+    display: block;
+    transform: scale(.9);
+    margin-left: -1px;
+}
+.broadcast-wrap {
+    float: left;
+    margin-right: 70px;
+}
+.otherimgbox {
+    width: 70px;
+    position: absolute;
+    top: 0;
+    right: 25px;
+    height: 100%;
+}
+.broadcast-text {
+    position: absolute;
+    bottom: 35px;
+    left: 48px;
+    font-size: 15px;
+    color: #fff;
+    height: 22px;
+    overflow: hidden;
+        vertical-align: middle;
+}
+.clickto a{
+    color: #3388ff;
+}
+.answerText.hiok {
+    color: #fff;
+    background-image: linear-gradient(30deg, #FF2B72 0%, #FF6264 100%);
+    box-shadow: 0 6px 7px 2px rgba(0,0,0,0.04);
+    border: 1px solid #F1F1F1;
+}
+.broadcast-text-wrap {
+    transition: transform 1s;
+}
+.broadcast-text-animite {
+    font-size: 15px;
+    height: 22px;
+    line-height: 22px;
+    overflow:hidden;
+    margin:0;
+    padding:0;
+}
+.loaddingbox {
+    position:absolute;
+   top: 0px;
+   left: 0px;
+   bottom: 0px;
+   right: 0px;
+   z-index: 1000;
+   font-size: 12px;
+}
+ .loaddingbox img {
+    width: 84px;
+      left: 0px;
+      bottom: 0;
+      top: 0px;
+      right: 0px;
+      position: absolute;
+      margin: auto;
+ }
+.zhuanqi {
+    -webkit-animation:gogogo .9s infinite linear;
+}
+.answerBoxwarp {
+    position: relative;
+}
+
+.noshow {
+    display:none;
+}

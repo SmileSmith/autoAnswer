@@ -17,27 +17,37 @@ class myHandler(BaseHTTPRequestHandler):
         querypath = urlparse(self.path)
         apipath = querypath.path
         if apipath.endswith('reply-answer-baidu'):
-            answer = int(datas["result"][0])
+            result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
-            self.tap_android(answer)
-            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, answer)
+            #self.tap_android(result)
+            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, result)
         if apipath.endswith('reply-answer-sogou'):
-            answer = int(datas["result"][0])
+            result = int(datas["result"][0])
             no = datas["question[questionId]"][0]
-            self.tap_android(answer)
-            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, answer)
+            #self.tap_android(result)
+            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, result)
+        if apipath.endswith('reply-answer-uc'):
+            result = int(datas["result"][0])
+            no = datas["question[questionId]"][0]
+            #self.tap_android(result)
+            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, result)
+        if apipath.endswith('reply-answer'):
+            result = int(datas["result"][0])
+            no = datas["question[questionId]"][0]
+            self.tap_android(result)
+            self.log_message("\n----------\nNo.%s Answer is : %s \n----------", no, result)
         self.send_response(200)
         self.send_header('Content-type', 'json')
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(b"ok")
 
-    def tap_android(self, answer):
+    def tap_android(self, result):
         start_left = 540
         start_top = 535
         gap = 155
         target_left = start_left
-        target_top = start_top + gap * (answer + 1)
+        target_top = start_top + gap * (result + 1)
         subprocess.Popen(
             "adb shell input tap " + str(target_left) + " " + str(target_top),
             shell=True, stdout=subprocess.PIPE)

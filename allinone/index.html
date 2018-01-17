@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Apply 360 with Chrome-WebKit-Core -->
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- Disable Baidu-Transcoding -->
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="Sgsfe,TeaEra">
+  <!-- Referrer Policy -->
+  <meta name="referrer" content="no-referrer" />
+  <title>答题助手大家庭</title>
+  <link href="http://cache.soso.com/daemon/css/felab-websocket-bwyx-01131226.css" rel="stylesheet">
+  <link href="./baidu/baidu.css" rel="stylesheet">
+  <style>
+    .answer-body {
+      display: flex;
+      min-width: 1188px;
+    }
+    .sogou-body {
+      max-width: 400px;
+      min-width: 400px;
+      border: 1px dotted #999;
+    }
+    .baidu-body {
+      max-width: 400px;
+      min-width: 400px;
+      border: 1px dotted #999;
+    }
+    .uc-body {
+      max-width: 400px;
+      min-width: 400px;
+      border: 1px dotted #999;
+    }
+    .my-result {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 1200px;
+      padding: 20px;
+      border: 1px dotted #999;
+    }
+    .my-result-title {
+      padding: 20px;
+      font-size: 25px;
+      margin-right: 50px;
+    }
+    .my-result-bar {
+      display: flex;
+      justify-content: space-around;
+      width: 600px;
+      height: 150px;
+    }
+    .my-result-button {
+      width: 150px;
+      line-height: 150px;
+      font-size: 50px;
+      border-radius: 125px;
+    }
+    .my-result-button:hover {
+      color: #eee;
+      background: #FF015C;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <setion class="answer-body">
+    <div class="sogou-body">
+      <div class="assistant-tab">
+        <ul>
+          <li id="bwyx" class="active">汪仔助手</li>
+        </ul>
+      </div>
+      <div class="ready-new" id="startTextXiGua">西瓜视频答题即将开始</div>
+      <div class="list-answer" id="listAnswerXiGua"></div>
+      <div class="list-answer" id="listAnswerHuaJiao" style="display: none"></div>
+      <div class="list-answer" id="listAnswerCD" style="display: none"></div>
+      <div class="list-answer" id="listAnswerZscr" style="display: none"></div>
+    </div>
+    <div class="baidu-body dt">
+      <div class="title dtpadding">
+        <p class="smalltitle">百度Dan哥直播</p>
+      </div>
+      <div class="querytitle dtpadding">Dan哥热身中，题目还在路上...</div>
+      <div class="answerBoxwarp">
+        <div class="answerBox dtpadding">
+          <p class="answerText">暂无答案<span class="care">0%</span></p>
+          <p class="answerText">暂无答案<span class="care">0%</span></p>
+          <p class="answerText">暂无答案<span class="care">0%</span></p>
+        </div>
+        <div class="loaddingbox noshow">
+          <img class="zhuanqi" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/1.1.42d24b7c.png" />
+          <img src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/1.2.0adf6530.png" />
+        </div>
+      </div>
+      <div class="broadcast">
+        <div class="broadcast-wrap">
+          <img class="dtwks active" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/dawks.d34fa0f7.png" />
+          <img class="error" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/dwcw.dde9e342.png" />
+          <img class="ok" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/hdzq.ed75dbba.png" />
+          <img class="pageerror" src="https://gss0.baidu.com/9rkZbzqaKgQUohGko9WTAnF6hhy/mms-res/voice/soundmuseum/ymcc.98ab457f.png" />
+          <div class="broadcast-text">
+            <div class="broadcast-text-wrap">
+              <p class="broadcast-text-animite">我是机器哥dandan，外号Dan哥</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="uc-body"><div id="app"></div></div>
+  </setion>
+  <section class="my-result">
+    <div class="my-result-title">自己答题: </div>
+    <ul class="my-result-bar">
+      <li id="result-zero" value="0" class="my-result-button"> A </li>
+      <li id="result-one" value="1" class="my-result-button"> B </li>
+      <li id="result-two" value="2" class="my-result-button"> C </li>
+    </ul>
+  </section>
+  <script src="./uc/static/js/zepto.min.js"></script>
+  <script src="./../baidu/nv/js/socket.io.js"></script>
+  <script src="./sogou/sogou.js"></script>
+  <script src="./baidu/baidu.js"></script>
+  <script src="./uc/uc.js"></script>
+  <link rel="stylesheet" href="./uc/uc.css">
+  <script type="text/javascript" src="./uc/static/js/manifest.36.js"></script>
+  <script type="text/javascript" src="./uc/static/js/vendor.36.js"></script>
+  <script type="text/javascript" src="./uc/static/js/dream.36.js"></script>
+
+  <script type="text/javascript" src="./index.js"></script>
+
+</body>
+
+</html>
