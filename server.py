@@ -70,8 +70,9 @@ class myHandler(BaseHTTPRequestHandler):
 
     def tap_android(self, result):
         start_left = 540
-        start_top = 535
-        gap = 155
+        # 三星S8 NOTE8
+        start_top = 575
+        gap = 200
         target_left = start_left
         target_top = start_top + gap * (result + 1)
         for device_id in device_id_list:
