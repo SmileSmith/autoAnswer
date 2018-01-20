@@ -3,14 +3,22 @@
 """程序主进程"""
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, unquote, parse_qs
+from urllib.request import Request, urlopen
 from os import path
 import subprocess
 import sys
 
+ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.1.1; Google Pixel - \
+7.1.0 - API 25 - 1080x1920 Build/NMF26Q; wv) AppleWebKit/537.36 (KHTML, like Gecko) \
+Version/4.0 Chrome/52.0.2743.100 Mobile Safari/537.36 SogouSearch Android1.0 version3.0 AppVersion/5802"
+
 CURRENT_DIR = path.dirname(path.realpath(__file__))
 
+AUTO_AI = False
 
 DEVICE_LISTS = []
+
+PORT = 8080
 
 
 def get_device_infos():
@@ -37,8 +45,6 @@ def tap_android(index):
         subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
 
 
-AUTO_AI = False
-
 def toggle_ai(switcher):
     """切换自动AI答题"""
     global AUTO_AI
@@ -52,8 +58,17 @@ class MyHandler(BaseHTTPRequestHandler):
     """处理各类请求的控制器"""
 
     def do_GET(self):
-        """处理静态文件请求"""
-        self.handle_static()
+        """处理GET请求"""
+        querypath = urlparse(self.path)
+        apipath = querypath.path
+        if apipath.startswith("/allinone/sogou/api/ans") or apipath.startswith("/sogou/api/ans"):
+            self.proxy_pass("/allinone/sogou/api/ans", "http://140.143.49.31/api/ans2",
+                            Referer="http://wd.sa.sogou.com/")
+        elif apipath.startswith("/allinone/uc/answer") or apipath.startswith("/uc/answer"):
+            self.proxy_pass("/allinone/uc/answer", "http://answer.sm.cn/answer",
+                            Referer="http://answer.sm.cn/")
+        else:
+            self.handle_static()
 
     def do_POST(self):
         """处理POST请求"""
@@ -73,6 +88,22 @@ class MyHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b"ok")
 
+    def proxy_pass(self, orgin_path, target_host_path, **my_headers):
+        """反向代理"""
+        headers = self.headers
+        for key in my_headers:
+            if headers.get(key):
+                headers.replace_header(key, my_headers[key])
+            else:
+                headers.add_header(key, my_headers[key])
+        headers.replace_header("User-Agent", ANDROID_USER_AGENT)
+        req = Request(self.path.replace(
+            orgin_path, target_host_path), headers=headers)
+        data = urlopen(req).readlines()
+        self.send_response_only(200)
+        self.end_headers()
+        self.wfile.writelines(data)
+
     def handle_static(self):
         """处理静态文件请求"""
         send_reply = False
@@ -90,6 +121,9 @@ class MyHandler(BaseHTTPRequestHandler):
         if filepath.endswith(".gif"):
             mimetype = 'image/gif'
             send_reply = True
+        if filepath.endswith(".ico"):
+            mimetype = 'image/ico'
+            send_reply = True
         if filepath.endswith(".js"):
             mimetype = 'application/javascript'
             send_reply = True
@@ -98,9 +132,6 @@ class MyHandler(BaseHTTPRequestHandler):
             send_reply = True
         if filepath.endswith(".json"):
             mimetype = 'application/json'
-            send_reply = True
-        if filepath.endswith(".woff"):
-            mimetype = 'application/x-font-woff'
             send_reply = True
         if send_reply is True:
             # Open the static file requested and send it
@@ -128,9 +159,6 @@ class MyHandler(BaseHTTPRequestHandler):
         """自定义日志"""
         sys.stderr.write("[%s] %s\n" %
                          (self.log_date_time_string(), format % args))
-
-
-PORT = 7777
 
 
 def run_server():
