@@ -12,7 +12,7 @@ $(function() {
     };
     this.textContent = '...'
     $.post(
-      "http://localhost:7777/reply-answer-human",
+      "http://localhost:8080/reply-answer-human",
       answerData,
       (response) => {
         console.log("reply success ...");
@@ -30,7 +30,7 @@ $(function() {
   
   function postAISwitcher(switcher, callback) {
     $.post(
-      "http://localhost:7777/toggle-ai",
+      "http://localhost:8080/toggle-ai",
       { switch: switcher },
       callback || (() => {})
     );

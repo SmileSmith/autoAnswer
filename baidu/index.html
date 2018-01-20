@@ -379,7 +379,7 @@
                     }else if(data.step == 1) {
                         stepTow(data);
                     }else if(data.step == 2) {
-                        $.post('http://localhost:7777/reply-answer-baidu', data, function(response) {
+                        $.post('http://localhost:8080/reply-answer-baidu', data, function(response) {
                             console.log('reply success ...' + JSON.stringify(data))
                             // process response
                         });

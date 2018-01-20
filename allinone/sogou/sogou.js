@@ -88,7 +88,7 @@ $(function() {
             };
             if (questionId !== pre_questionId) {
               $.post(
-                "http://localhost:7777/reply-answer-sogou",
+                "http://localhost:8080/reply-answer-sogou",
                 answerData,
                 function(response) {
                   console.log("reply success ..." + JSON.stringify(data));

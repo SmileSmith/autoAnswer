@@ -211,7 +211,7 @@ webpackJsonp([1],{
                                 result: result.correct,
                                 answers: result.options
                             }
-                            $.post('http://localhost:7777/reply-answer-uc', answerData, function(response) {
+                            $.post('http://localhost:8080/reply-answer-uc', answerData, function(response) {
                                 console.log('reply success ...' + JSON.stringify(answerData))
                                 // process response
                             });
