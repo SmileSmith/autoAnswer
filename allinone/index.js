@@ -1,48 +1,57 @@
-function replyResult(event) {
-  console.log(new Date().getTime());
-  const result = this.value * 1;
-  const buttonLabels = [' A ', ' B ', ' C '];
-  const answerData = {
-    question: {
-      text: '自己答题，来不及敲题目...',
-      questionId: 0
-    },
-    result: result
-  };
-  this.textContent = '...'
-  $.post(
-    "http://localhost:7777/reply-answer",
-    answerData,
-    (response) => {
-      console.log("reply success ...");
-    }
-  );
-  setTimeout(() => {
-    this.textContent = buttonLabels[result];
-  }, 500);
-}
-
-$("#result-zero").click(replyResult);
-$("#result-one").click(replyResult);
-$("#result-two").click(replyResult);
-
-
-function toggleAI() {
-  const $span = $(this).find("span");
-  const switcherOn = $span.text() === "OFF";
-  let switcherText = switcherOn ? "ON" : "OFF";
-  $.post(
-    "http://localhost:7777/toggle-ai",
-    { switch: switcherOn },
-    (response) => {
-      $span.text(switcherText);
-      if (switcherOn) {
+$(function() {
+  function replyResult(event) {
+    console.log(new Date().getTime());
+    const result = this.value * 1;
+    const buttonLabels = [' A ', ' B ', ' C '];
+    const answerData = {
+      question: {
+        text: '自己答题，来不及敲题目...',
+        questionId: 0
+      },
+      result: result
+    };
+    this.textContent = '...'
+    $.post(
+      "http://localhost:7777/reply-answer-human",
+      answerData,
+      (response) => {
+        console.log("reply success ...");
+      }
+    );
+    setTimeout(() => {
+      this.textContent = buttonLabels[result];
+    }, 500);
+  }
+  
+  $("#result-zero").click(replyResult);
+  $("#result-one").click(replyResult);
+  $("#result-two").click(replyResult);
+  
+  
+  function postAISwitcher(switcher, callback) {
+    $.post(
+      "http://localhost:7777/toggle-ai",
+      { switch: switcher },
+      callback || (() => {})
+    );
+  }
+  
+  function toggleAI(event) {
+    const $span = $(this).find("span");
+    let switcherText = $span.text() === "OFF" ? "ON" : "OFF";
+    const callback = function() {
+      if (switcherText === "ON") {
         $(this).addClass("on");
       } else {
         $(this).removeClass("on");
       }
-    }
-  );
-}
+      $span.text(switcherText);
+    };
+    postAISwitcher(switcherText, callback);
+  }
+  
+  $("#ai-result-toggle").click(toggleAI);
+  
+  postAISwitcher("OFF")
 
-$("#ai-result-toggle").click(toggleAI);
+});
