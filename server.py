@@ -61,11 +61,17 @@ class MyHandler(BaseHTTPRequestHandler):
         """处理GET请求"""
         querypath = urlparse(self.path)
         apipath = querypath.path
-        if apipath.startswith("/allinone/sogou/api/ans") or apipath.startswith("/sogou/api/ans"):
+        if apipath.startswith("/allinone/sogou/api/ans"):
             self.proxy_pass("/allinone/sogou/api/ans", "http://140.143.49.31/api/ans2",
                             Referer="http://wd.sa.sogou.com/")
-        elif apipath.startswith("/allinone/uc/answer") or apipath.startswith("/uc/answer"):
+        elif apipath.startswith("/sogou/api/ans"):
+            self.proxy_pass("/sogou/api/ans", "http://140.143.49.31/api/ans2",
+                            Referer="http://wd.sa.sogou.com/")
+        elif apipath.startswith("/allinone/uc/answer"):
             self.proxy_pass("/allinone/uc/answer", "http://answer.sm.cn/answer",
+                            Referer="http://answer.sm.cn/")
+        elif apipath.startswith("/uc/answer"):
+            self.proxy_pass("/uc/answer", "http://answer.sm.cn/answer",
                             Referer="http://answer.sm.cn/")
         else:
             self.handle_static()
