@@ -133,10 +133,10 @@ webpackJsonp([1],{
                 return this.activityTitle + this.currentOrder;
             },
             correct: function correct() {
-                if (this.result.correct != '') {
-                    return Number(this.result.correct) + 1;
+                if (this.result.options[this.result.correct]) {
+                    return this.result.options[this.result.correct].title
                 }
-                return this.result.correct;
+                return this.result.correct || '';
             },
             round: function round() {
                 if (this.result.round && Number(this.result.round) > Number(this.currentRound)) {
