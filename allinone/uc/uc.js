@@ -9,9 +9,10 @@ $.ajax({
         try {
             eval(params_code);
             // change api to nginx proxy_pass
-            sm.COMMON_PARAMS.API =  {
-                current: './uc/answer/curr?format=json&activity=million',
-                review: './uc/answer/detail?format=json'
+            sm.COMMON_PARAMS.API =  { 
+                current: './uc/answer/curr?format=json&activity=million', 
+                review: './uc/answer/detail?format=json', 
+                index: './uc/answer/index?activity=million&format=json' 
             };
         } catch(e) {
             console.log(e);
