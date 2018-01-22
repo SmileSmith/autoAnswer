@@ -261,7 +261,6 @@ webpackJsonp([2],{
                     } else if (diff >= 3 * _common.REFRESH.MINUTE) {
                         timeout = _common.REFRESH.MINUTE;
                     }
-                    console.log('xxx' + timeout);
     
                     if (timeout) {
                         setTimeout(function () {
@@ -498,9 +497,8 @@ webpackJsonp([2],{
         }
       }), _vm._v(" "), _c('div', {
         staticClass: "rule"
-      }, [_c('p', [_vm._v("答题助手使用方法")]), _vm._v(" "), _c('ul', [_c('li', [_vm._v("\n\n                答题助手将在" + _vm._s(_vm.activityTitle || '答题') + "直播过程中，基于搜索大数据实时计算答案\n            ")]), _vm._v(" "), _c('li', [_vm._v("\n                提前使用手机或电脑进入本页面，直播开始时点击按钮看答案，保持屏幕常亮页面将实时展示答案，注意不要错过答题时间哟~\n            ")])])]), _vm._v(" "), _c('div', {
-        staticClass: "split"
-      }), _vm._v(" "), _c('div', {
+      }, [_c('p', [_vm._v("答题助手使用方法")]), _vm._v(" "), _c('ul', [_c('li', [_vm._v("\n\n                答题助手将在" + _vm._s(_vm.activityTitle || '答题') + "直播过程中，基于搜索大数据实时计算答案\n            ")]), _vm._v(" "), _c('li', [_vm._v("\n                提前使用手机或电脑进入本页面，直播开始时点击按钮看答案，保持屏幕常亮页面将实时展示答案，注意不要错过答题时间哟~\n            ")])])]), _vm._v(" ")
+      , _vm._v(" "), _c('div', {
         staticClass: "list"
       }, [(_vm.title) ? _c('d-title', {
         attrs: {
@@ -548,11 +546,7 @@ webpackJsonp([2],{
             }
           }
         })], 1)])])])
-      })) : _vm._e()], 1)], 1), _vm._v(" "), (_vm.uctrack) ? _c('d-uc', {
-        attrs: {
-          "track": _vm.uctrack
-        }
-      }) : _vm._e(), _vm._v(" "), (_vm.hasOtherAc) ? _c('div', {
+      })) : _vm._e()], 1)], 1), _vm._v(" "), _vm._e(), _vm._v(" "), (_vm.hasOtherAc) ? _c('div', {
         staticClass: "split"
       }) : _vm._e(), _vm._v(" "), (_vm.hasOtherAc) ? _c('div', {
         staticClass: "list dream-list"

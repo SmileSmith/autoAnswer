@@ -36,6 +36,9 @@ def tap_android(index):
     # 三星S8 NOTE8
     start_top = 575
     gap = 200
+    # 普通 1080P手机
+    # start_top = 535
+    # gap = 155
     target_left = start_left
     target_top = start_top + gap * (index + 1)
     for device_id in DEVICE_LISTS:

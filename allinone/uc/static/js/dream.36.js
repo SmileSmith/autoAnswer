@@ -641,13 +641,17 @@ webpackJsonp([6],{
     exports.default = {
         name: 'app',
         computed: {
-            bg: function bg() {
+            bgColor: function bgColor() {
                 return _util2.default.getCommonParamByKey("bgColor");
+            },
+            bg: function bg() {
+                return '//sm01.alicdn.com/L1/272/6837/static/wap/img/dream/bg.png';
             },
             appCSS: function appCSS() {
                 var css = this.$store.state.AppCSS || {};
     
-                css.background = this.bg;
+                css.background = this.bgColor + ' url(\'' + this.bg + '\') no-repeat right top';
+                css.backgroundSize = 'contain';
     
                 return css;
             }
