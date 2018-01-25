@@ -40,6 +40,8 @@ PS：注意根据需要，修改server,py中的分辨率，默认三星Note8的2
 
 # update log
 
+20180125: 重构Python代码，为后续功能挖坑（预留能力）
+
 20180122: sogou的api更新，样式更新
 
 20180120: python服务器支持反向代理，去除nginx
