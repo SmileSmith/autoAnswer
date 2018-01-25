@@ -5,8 +5,9 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, unquote, parse_qs
 from urllib.request import Request, urlopen
 from os import path
-import subprocess
 import sys
+from src.units.adb import get_device_infos, tap_android
+
 
 ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.1.1; Google Pixel - \
 7.1.0 - API 25 - 1080x1920 Build/NMF26Q; wv) AppleWebKit/537.36 (KHTML, like Gecko) \
@@ -16,37 +17,9 @@ CURRENT_DIR = path.dirname(path.realpath(__file__))
 
 AUTO_AI = False
 
-DEVICE_LISTS = []
-
 PORT = 8080
 
-
-def get_device_infos():
-    """获取设备信息"""
-    device_infos = subprocess.Popen(
-        'adb devices', shell=True, stdout=subprocess.PIPE)
-    out, err = device_infos.communicate()
-    for line in out.decode("utf-8").splitlines()[1:-1]:
-        DEVICE_LISTS.append(line.split("\t")[0])
-
-
-def tap_android(index):
-    """根据答案点击安卓设备"""
-    start_left = 540
-    # 三星S8 NOTE8
-    start_top = 575
-    gap = 200
-    # 普通 1080P手机
-    # start_top = 535
-    # gap = 155
-    target_left = start_left
-    target_top = start_top + gap * (index + 1)
-    for device_id in DEVICE_LISTS:
-        command = "adb -s " + device_id + " shell input tap " + \
-            str(target_left) + " " + str(target_top)
-        print(command)
-        subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-
+DEVICE_LISTS = get_device_infos()
 
 def toggle_ai(switcher):
     """切换自动AI答题"""
@@ -160,7 +133,7 @@ class MyHandler(BaseHTTPRequestHandler):
         if (answer_type == "human" or AUTO_AI):
             result = int(datas["result"][0])
             question_id = datas["question[questionId]"][0]
-            tap_android(result)
+            tap_android(result, DEVICE_LISTS)
             self.simple_log(">>> No.%s %s Answer is : %s",
                             question_id, answer_type, result)
 
