@@ -1,4 +1,5 @@
 # autoAnswer
+
 autoAnswer
 
 和简单搜索、汪仔助手、UC答题助手一起答题。截图和OCR代码参考[https://github.com/Skyexu/TopSup](https://github.com/Skyexu/TopSup)。
@@ -16,11 +17,29 @@ autoAnswer
 这个纯粹是因为想练习python。
 
 
-# process
+## before start
+
+1. 确保正常的python3环境
+
+如果只是查看答题，不用AI自动答题，仅Python3即可，所有命令行报错可忽略
+
+2. 安装 ADB，确保执行adb device能出现您的设备
+
+下载地址：https://adb.clockworkmod.com/ ，并配置环境变量
+
+3. 安装 谷歌 Tesseract
+
+Windows下链接： 推荐使用安装版，在安装时选择增加中文简体语言包
+
+安装版： https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-setup-3.05.01.exe
+免安装版： https://github.com/parrot-office/tesseract/releases/download/3.5.1/tesseract-Win64.zip 免安装版需要下载中文语言包，放置到Tesseract的tessdata目录下
+其他系统： https://github.com/tesseract-ocr/tesseract/wiki
+
+## start
 
 目前确保有正常的Py3环境，直接开启py的本地服务器即可。
 
-PS：注意根据需要，修改server,py中的分辨率，默认三星Note8的2K。
+PS：注意根据需要，修改screen.conf中的分辨率，默认三星Note8的2K。
 
 + ~~1、(已不需要，pytho中反向代理设置头即可) 设置浏览器UA为手机的UA，搜索User Agent Switcher，可用的user-agent-string如：~~
   
@@ -38,7 +57,7 @@ PS：注意根据需要，修改server,py中的分辨率，默认三星Note8的2
 
 + 5、数据分析开发中...
 
-# update log
+## update log
 
 20180126: 增加控制器层，抽离逻辑代码。添加adb未连接的提示，添加截图分析选项的功能
 
