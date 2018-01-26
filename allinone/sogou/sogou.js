@@ -86,6 +86,7 @@ $(function() {
               text: questionText,
               questionId: questionId
             };
+            answerData.options = answerData.answers
             if (questionId !== pre_questionId) {
               $.post(
                 "http://localhost:8080/reply-answer-sogou",

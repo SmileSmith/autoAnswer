@@ -106,7 +106,7 @@ def ocr_img(image):
     return question, choices
 
 
-def ocr_img_tess(image, config):
+def ocr_img_tess(image):
     """只运行一次 Tesseract"""
 
     combine_region =  config.COMBINE_REGION
@@ -137,12 +137,17 @@ def ocr_img_tess(image, config):
     region_text = region_text.replace("_", "一").split("\n")
     texts = [x for x in region_text if x != '']
     # print(texts)
+    question = ""
+    choices = []
+
     if len(texts) > 2:
         question = texts[0]
         choices = texts[1:]
     else:
         print(Fore.RED + '截图区域设置错误，请重新设置' + Fore.RESET)
-        exit(0)
+
+    if len(choices) == 0:
+        return "", []
 
     # 意外出现问题为两行或三行
     if choices[0].endswith('?'):

@@ -1,2 +1,10 @@
+# Python #
 *.bak
 *.pyc
+
+
+# IDE #
+.vscode
+
+# Screenshot #
+screenshot*.png

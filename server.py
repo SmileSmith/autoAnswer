@@ -6,8 +6,8 @@ from urllib.parse import urlparse, unquote, parse_qs
 from urllib.request import Request, urlopen
 from os import path
 import sys
-from src.units.adb import get_device_infos, tap_android
-
+from src.units import adb
+from src.controllers import controller
 
 ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.1.1; Google Pixel - \
 7.1.0 - API 25 - 1080x1920 Build/NMF26Q; wv) AppleWebKit/537.36 (KHTML, like Gecko) \
@@ -15,19 +15,7 @@ Version/4.0 Chrome/52.0.2743.100 Mobile Safari/537.36 SogouSearch Android1.0 ver
 
 CURRENT_DIR = path.dirname(path.realpath(__file__))
 
-AUTO_AI = False
-
 PORT = 8080
-
-DEVICE_LISTS = get_device_infos()
-
-def toggle_ai(switcher):
-    """切换自动AI答题"""
-    global AUTO_AI
-    if switcher == "ON":
-        AUTO_AI = True
-    else:
-        AUTO_AI = False
 
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -59,11 +47,10 @@ class MyHandler(BaseHTTPRequestHandler):
         querypath = urlparse(self.path)
         apipath = querypath.path
         if apipath.startswith("/reply-answer"):
-            self.handle_answer(apipath, datas)
+            controller.handle_answer(self, apipath, datas)
         elif apipath.startswith('/toggle-ai'):
             switch = str(datas["switch"][0])
-            toggle_ai(switch)
-            self.simple_log("Toggle AI Auto to %s", str(AUTO_AI))
+            controller.toggle_ai(self, switch)
         self.send_response_only(200)
         self.send_header('Content-type', 'json')
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -82,6 +69,7 @@ class MyHandler(BaseHTTPRequestHandler):
         req = Request(self.path.replace(
             orgin_path, target_host_path), headers=headers)
         data = urlopen(req).readlines()
+        # TODO:当是AI自动代替的模式时，直接解析结果调用相关控制器逻辑
         self.send_response_only(200)
         self.end_headers()
         self.wfile.writelines(data)
@@ -127,16 +115,6 @@ class MyHandler(BaseHTTPRequestHandler):
             except IOError:
                 self.send_error(404, 'File Not Found: %s' % self.path)
 
-    def handle_answer(self, apipath, datas):
-        """处理答题请求"""
-        answer_type = apipath.split("-").pop()
-        if (answer_type == "human" or AUTO_AI):
-            result = int(datas["result"][0])
-            question_id = datas["question[questionId]"][0]
-            tap_android(result, DEVICE_LISTS)
-            self.simple_log(">>> No.%s %s Answer is : %s",
-                            question_id, answer_type, result)
-
     def simple_log(self, format, *args):
         """自定义日志"""
         sys.stderr.write("[%s] %s\n" %
@@ -154,7 +132,7 @@ def run_server():
 
 def main():
     """主函数"""
-    get_device_infos()
+    adb.init()
     run_server()
 
 # start main at last ##########################################################
