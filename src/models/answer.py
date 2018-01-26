@@ -50,18 +50,18 @@ class MyAnswer(object):
     def add_result_uc(self, index):
         """添加UC-AI答案"""
         pri = 0.8
-        text = self.options['sogou'][index]
+        text = self.options['uc'][index]
         self.results.append(Result(index, text, pri))
 
     def add_result_baidu_percentage(self, answers):
         """添加百度百分比答案"""
         for index, answer in enumerate(answers):
-            self.results.append(Result(index, answers.text, answer.prop))
+            self.results.append(Result(index, answer['text'], answer['prop']))
 
     def add_result_uc_percentage(self, answers):
         """添加UC百分比答案"""
         for index, answer in enumerate(answers):
-            self.results.append(Result(index, answers.text, answer.prop))
+            self.results.append(Result(index, answer['text'], answer['prop']))
 
     def answer_single(self):
         """非个性题，选取最佳答案"""
