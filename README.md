@@ -1,7 +1,7 @@
 # autoAnswer
 autoAnswer
 
-和简单搜索、汪仔助手、UC答题助手一起答题。
+和简单搜索、汪仔助手、UC答题助手一起答题。截图和OCR代码参考[https://github.com/Skyexu/TopSup](https://github.com/Skyexu/TopSup)。
 
 - 为什么要做这个？
 
@@ -39,6 +39,8 @@ PS：注意根据需要，修改server,py中的分辨率，默认三星Note8的2
 + 5、数据分析开发中...
 
 # update log
+
+20180126: 增加控制器层，抽离逻辑代码。添加adb未连接的提示，添加截图分析选项的功能
 
 20180125: 重构Python代码，为后续功能挖坑（预留能力）
 
