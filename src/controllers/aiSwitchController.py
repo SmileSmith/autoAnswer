@@ -8,7 +8,8 @@
 
 AUTO_AI = False
 
-def toggle_ai(handler, switcher):
+def toggle_ai(handler, datas):
+    switcher = str(datas["switch"])
     """切换自动AI答题"""
     global AUTO_AI
     result = False

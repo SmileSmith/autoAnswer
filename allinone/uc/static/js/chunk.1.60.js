@@ -178,7 +178,7 @@ webpackJsonp([1], {
               "Match" === t.$route.name &&
                 (0, b.getCurAnswer)(t.activity)
                   .then(function(i) {
-                    if (t.pre_quesionId !== i.round) {
+                    if (t.pre_quesionId !== i.round && i.round) {
                       let options = [];
                       let answers = [];
                       let totalConfidence = 0;
@@ -202,9 +202,17 @@ webpackJsonp([1], {
                         answers,
                       };
                       console.log(data)
-                      $.post("http://localhost:8080/reply-answer-uc", data, function(response) {
-                        console.log("reply success ..." + JSON.stringify(data));
-                        // process response
+                      $.ajax({
+                        type:'POST',
+                        url:'http://localhost:8080/reply-answer-uc',
+                        headers: {
+                          "Content-Type": "application/json;charset=utf-8",
+                          "dataType": "json"
+                        },
+                        data: JSON.stringify(data),
+                        success:function(response,status,xhr){
+                          console.log("reply success ..." + JSON.stringify(data));
+                        }
                       });
                     }
                     t.pre_quesionId = i.round;

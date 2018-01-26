@@ -81,21 +81,25 @@ $(function() {
             answerData.result = resultIndex;
 
             var questionId = answerData.title.split(".")[0] || "0";
-            var questionText = answerData.title.split(".")[1] || "";
+            var questionText = answerData.title.split(".")[1] || "no";
             answerData.question = {
               text: questionText,
               questionId: questionId
             };
             answerData.options = answerData.answers
             if (questionId !== pre_questionId && questionId != "0") {
-              $.post(
-                "http://localhost:8080/reply-answer-sogou",
-                answerData,
-                function(response) {
-                  console.log("reply success ..." + JSON.stringify(data));
-                  // process response
+              $.ajax({
+                type:'POST',
+                url:'http://localhost:8080/reply-answer-sogou',
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                  "dataType": "json"
+                },
+                data: JSON.stringify(answerData),
+                success:function(response,status,xhr){
+                  console.log("reply success ..." + JSON.stringify(answerData));
                 }
-              );
+              });
               pre_questionId = questionId;
             } else {
               pre_questionId = questionId;

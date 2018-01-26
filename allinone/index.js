@@ -29,11 +29,18 @@ $(function() {
   
   
   function postAISwitcher(switcher, callback) {
-    $.post(
-      "http://localhost:8080/toggle-ai",
-      { switch: switcher },
-      callback || (() => {})
-    );
+    $.ajax({
+      type:'POST',
+      url:"http://localhost:8080/toggle-ai",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "dataType": "json"
+      },
+      data: JSON.stringify({ switch: switcher }),
+      success:function(response,status,xhr){
+        // console.log("toggle success ..." );
+      }
+    });
   }
   
   function toggleAI(event) {
@@ -52,6 +59,6 @@ $(function() {
   
   $("#ai-result-toggle").click(toggleAI);
   
-  postAISwitcher("OFF")
+  postAISwitcher("ON")
 
 });

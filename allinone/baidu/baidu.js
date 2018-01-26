@@ -44,11 +44,17 @@ $(function() {
       data.answers.forEach((answer) => {
         answer.prop = parseFloat((answer.prop / totalProp).toFixed(2))
       });
-      $.post("http://localhost:8080/reply-answer-baidu", data, function(
-        response
-      ) {
-        console.log("reply success ..." + JSON.stringify(data));
-        // process response
+      $.ajax({
+        type:'POST',
+        url:'http://localhost:8080/reply-answer-baidu',
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "dataType": "json"
+        },
+        data: JSON.stringify(data),
+        success:function(response,status,xhr){
+          console.log("reply success ..." + JSON.stringify(data));
+        }
       });
       stepThree(data);
     } else if (data.step == 3) {

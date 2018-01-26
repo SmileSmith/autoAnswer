@@ -18,9 +18,9 @@ def handle_answer(handler, apipath, datas):
     answer_type = apipath.split("-").pop()
 
     # 解析数据
-    result = int(datas["result"][0])
-    question_id = datas["question[questionId]"][0]
-    question_text = datas["question[text]"][0]
+    result = int(datas["result"])
+    question_id = datas["question"]["questionId"]
+    question_text = datas["question"]["text"]
     question = Question(question_text, question_id)
     if answer_type == "human":
         adb.tap_android_all(result)
@@ -29,11 +29,10 @@ def handle_answer(handler, apipath, datas):
     elif is_auto():
         global CUR_ANSWER
         if "human_markup" in datas:
-            human_markup = datas["human_markup"][0]
+            human_markup = datas["human_markup"]
         else:
             human_markup = ""
-        options = datas["options[]"][0]
-        answers = datas["answers[]"][0]
+        options = datas["options"]
         if (not isinstance(CUR_ANSWER, MyAnswer)) or CUR_ANSWER.question.question_id != question_id:
             print("> step 1: start answer...")
             CUR_ANSWER = MyAnswer(question)
@@ -42,11 +41,13 @@ def handle_answer(handler, apipath, datas):
         CUR_ANSWER.set_option(options, answer_type)
         # 填充答案
         if answer_type == "baidu":
+            answers = datas["answers"]
             CUR_ANSWER.add_result_baidu(result, human_markup)
             CUR_ANSWER.add_result_baidu_percentage(answers)
         elif answer_type == "sogou":
             CUR_ANSWER.add_result_sogou(result)
         elif answer_type == "uc":
+            answers = datas["answers"]
             CUR_ANSWER.add_result_uc(result)
             CUR_ANSWER.add_result_uc_percentage(answers)
         adb.tap_android_all(result)

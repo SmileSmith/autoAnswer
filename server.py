@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 """程序主进程"""
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from urllib.parse import urlparse, unquote, parse_qs
+from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 from os import path
 import sys
+import json
 from src.units import adb
 from src.controllers import controller
 
@@ -42,15 +43,14 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         """处理POST请求"""
-        datas = parse_qs(unquote(str(self.rfile.readline(
-            int(self.headers['content-length'])), 'UTF-8')))
+        body = self.rfile.readline(int(self.headers['content-length']))
+        datas = json.loads(str(body, 'UTF-8'))
         querypath = urlparse(self.path)
         apipath = querypath.path
         if apipath.startswith("/reply-answer"):
             controller.handle_answer(self, apipath, datas)
         elif apipath.startswith('/toggle-ai'):
-            switch = str(datas["switch"][0])
-            controller.toggle_ai(self, switch)
+            controller.toggle_ai(self, datas)
         self.send_response_only(200)
         self.send_header('Content-type', 'json')
         self.send_header('Access-Control-Allow-Origin', '*')
