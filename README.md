@@ -19,7 +19,9 @@ autoAnswer
 
 ## before start
 
-1. 确保正常的python3环境
+1. 确保正常的python3环境，并安装pytesseract
+
+`pip install pytesseract`
 
 如果只是查看答题，不用AI自动答题，仅Python3即可，所有命令行报错可忽略
 
@@ -58,6 +60,8 @@ PS：注意根据需要，修改screen.conf中的分辨率，默认三星Note8�
 + 5、数据分析开发中...
 
 ## update log
+
+20180127: http接口改为标准JSON-String通讯。删除基本上没用的单独AI助手
 
 20180126: 增加控制器层，抽离逻辑代码。添加adb未连接的提示，添加截图分析选项的功能
 
