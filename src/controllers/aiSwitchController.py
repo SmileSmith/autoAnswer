@@ -6,7 +6,7 @@
     #Desc: AI控制器
 """
 
-AUTO_AI = True
+AUTO_AI = False
 
 def toggle_ai(handler, switcher):
     """切换自动AI答题"""

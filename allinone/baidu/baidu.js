@@ -36,6 +36,14 @@ $(function() {
     } else if (data.step == 1) {
       stepTow(data);
     } else if (data.step == 2) {
+      var totalProp = 0
+      data.options = data.answers.map((answer, index) => {
+        totalProp += answer.prop;
+        return answer.text;
+      });
+      data.answers.forEach((answer) => {
+        answer.prop = parseFloat((answer.prop / totalProp).toFixed(2))
+      });
       $.post("http://localhost:8080/reply-answer-baidu", data, function(
         response
       ) {

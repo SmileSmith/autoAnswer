@@ -52,6 +52,6 @@ $(function() {
   
   $("#ai-result-toggle").click(toggleAI);
   
-  postAISwitcher("ON")
+  postAISwitcher("OFF")
 
 });

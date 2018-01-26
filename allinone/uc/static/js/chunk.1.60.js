@@ -178,6 +178,36 @@ webpackJsonp([1], {
               "Match" === t.$route.name &&
                 (0, b.getCurAnswer)(t.activity)
                   .then(function(i) {
+                    if (t.pre_quesionId !== i.round) {
+                      let options = [];
+                      let answers = [];
+                      let totalConfidence = 0;
+                      i.options.forEach((answer) => {
+                        options.push(answer.title);
+                        totalConfidence += answer.confidence;
+                      });
+                      answers = i.options.map((answer) => {
+                        return {
+                          text: answer.title,
+                          prop: parseFloat((answer.confidence / totalConfidence).toFixed(2))
+                        }
+                      });
+                      const data = {
+                        question: {
+                          questionId: i.round,
+                          text: i.title,
+                        },
+                        result: i.correct,
+                        options,
+                        answers,
+                      };
+                      console.log(data)
+                      $.post("http://localhost:8080/reply-answer-uc", data, function(response) {
+                        console.log("reply success ..." + JSON.stringify(data));
+                        // process response
+                      });
+                    }
+                    t.pre_quesionId = i.round;
                     t.result.official;
                     (i = (0, e.default)(i, { mstatus: t.result.mstatus })),
                       t.updateResult(i).then(function() {

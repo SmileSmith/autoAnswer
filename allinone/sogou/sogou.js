@@ -81,13 +81,13 @@ $(function() {
             answerData.result = resultIndex;
 
             var questionId = answerData.title.split(".")[0] || "0";
-            var questionText = answerData.title.split(".")[1];
+            var questionText = answerData.title.split(".")[1] || "";
             answerData.question = {
               text: questionText,
               questionId: questionId
             };
             answerData.options = answerData.answers
-            if (questionId !== pre_questionId) {
+            if (questionId !== pre_questionId && questionId != "0") {
               $.post(
                 "http://localhost:8080/reply-answer-sogou",
                 answerData,
