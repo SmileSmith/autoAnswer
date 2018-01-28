@@ -19,7 +19,7 @@ def handle_answer(handler, apipath, datas):
 
     # 解析数据
     result = int(datas["result"])
-    question_id = datas["question"]["questionId"]
+    question_id = str(datas["question"]["questionId"])
     question_text = datas["question"]["text"]
     question = Question(question_text, question_id)
     if answer_type == "human":
@@ -33,6 +33,8 @@ def handle_answer(handler, apipath, datas):
         else:
             human_markup = ""
         options = datas["options"]
+        if len(options) == 0:
+            return
         if (not isinstance(CUR_ANSWER, MyAnswer)) or CUR_ANSWER.question.question_id != question_id:
             print("> step 1: start answer...")
             CUR_ANSWER = MyAnswer(question)

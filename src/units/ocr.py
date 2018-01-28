@@ -4,8 +4,8 @@
 # @Time    : 2018/1/9 19:34
 # @desc    :
 
+import time
 import pytesseract
-from PIL import ImageFilter
 from colorama import Fore
 from src.configs import config
 
@@ -41,73 +41,9 @@ def depoint(img):  # input: gray image
                 pixdata[x, y] = 255
     return img
 
-
-def ocr_img(image):
-
-    question_region = config.QUESTION_REGION
-    choices_region =  config.CHOICES_REGION
-
-    question_im = image.crop(
-        (question_region[0], question_region[1], question_region[2], question_region[3]))  # 坚果 pro1
-    choices_im = image.crop(
-        (choices_region[0], choices_region[1], choices_region[2], choices_region[3]))
-
-    # 边缘增强滤波,不一定适用
-    #question_im = question_im.filter(ImageFilter.EDGE_ENHANCE)
-    #choices_im = choices_im.filter(ImageFilter.EDGE_ENHANCE)
-
-    # 转化为灰度图
-    question_im = question_im.convert('L')
-    choices_im = choices_im.convert('L')
-
-    # 把图片变成二值图像
-    question_im = binarizing(question_im, 190)
-    choices_im = binarizing(choices_im, 190)
-
-    #question_im = question_im.convert('1')
-    #choices_im = choices_im.convert('1')
-    # question_im.show()
-    # choices_im.show()
-    # img=depoint(choices_im)
-    # img.show()
-
-    # win环境
-    # tesseract 路径
-
-    pytesseract.pytesseract.tesseract_cmd = config.get(
-        "tesseract", "tesseract_cmd")
-
-    # 语言包目录和参数
-    tessdata_dir_config = config.get("tesseract", "tessdata_dir_config")
-
-    # lang 指定中文简体
-    question = pytesseract.image_to_string(
-        question_im, lang='chi_sim', config=tessdata_dir_config)
-    question = question.replace("\n", "")[2:]
-    # 处理将"一"识别为"_"的问题
-    question = question.replace("_", "一")
-
-    choice = pytesseract.image_to_string(
-        choices_im, lang='chi_sim', config=tessdata_dir_config)
-    # 处理将"一"识别为"_"的问题
-    choices = choice.strip().replace("_", "一").split("\n")
-    choices = [x for x in choices if x != '']
-
-    # 兼容截图设置不对，意外出现问题为两行或三行
-    # if (choices[0].endswith('?')):
-    #     question += choices[0]
-    #     choices.pop(0)
-    # if (choices[1].endswith('?')):
-    #     question += choices[0]
-    #     question += choices[1]
-    #     choices.pop(0)
-    #     choices.pop(0)
-
-    return question, choices
-
-
 def ocr_img_tess(image):
     """只运行一次 Tesseract"""
+    start = time.time()
 
     combine_region =  config.COMBINE_REGION
 
@@ -131,9 +67,16 @@ def ocr_img_tess(image):
     # 语言包目录和参数
     tessdata_dir_config =  config.TESSDATA_DIR
 
+    ocr_start = time.time()
+    print("> step 3: 切图的时间为：" + str(ocr_start-start) + "秒")
+
     # lang 指定中文简体
     region_text = pytesseract.image_to_string(
         region_im, lang='chi_sim', config=tessdata_dir_config)
+
+    split_start = time.time()
+    print("> step 3: OCR的时间为：" + str(split_start-ocr_start) + "秒")
+    
     region_text = region_text.replace("_", "一").split("\n")
     texts = [x for x in region_text if x != '']
     # print(texts)
@@ -159,4 +102,5 @@ def ocr_img_tess(image):
         choices.pop(0)
         choices.pop(0)
 
+    print("> step 3: 文字拼接的时间为：" + str(time.time()-split_start) + "秒")
     return question, choices

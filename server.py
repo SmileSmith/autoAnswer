@@ -29,15 +29,9 @@ class MyHandler(BaseHTTPRequestHandler):
         if apipath.startswith("/allinone/sogou/api/ans"):
             self.proxy_pass("/allinone/sogou/api/ans", "http://140.143.49.31/api/ans2",
                             Referer="http://wd.sa.sogou.com/")
-        elif apipath.startswith("/sogou/api/ans"):
-            self.proxy_pass("/sogou/api/ans", "http://140.143.49.31/api/ans2",
-                            Referer="http://wd.sa.sogou.com/")
         elif apipath.startswith("/allinone/uc/answer"):
             self.proxy_pass("/allinone/uc/answer", "http://answer.sm.cn/answer",
-                            Referer="http://answer.sm.cn/")
-        elif apipath.startswith("/uc/answer"):
-            self.proxy_pass("/uc/answer", "http://answer.sm.cn/answer",
-                            Referer="http://answer.sm.cn/")
+                            Referer="http://answer.sm.cn/answer/index?activity=million", Host="answer.sm.cn")
         else:
             self.handle_static()
 
@@ -68,11 +62,12 @@ class MyHandler(BaseHTTPRequestHandler):
         headers.replace_header("User-Agent", ANDROID_USER_AGENT)
         req = Request(self.path.replace(
             orgin_path, target_host_path), headers=headers)
-        data = urlopen(req).readlines()
+        res = urlopen(req)
+        data = res.read()
         # TODO:当是AI自动代替的模式时，直接解析结果调用相关控制器逻辑
         self.send_response_only(200)
         self.end_headers()
-        self.wfile.writelines(data)
+        self.wfile.write(data)
 
     def handle_static(self):
         """处理静态文件请求"""

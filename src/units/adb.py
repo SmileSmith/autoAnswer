@@ -9,8 +9,8 @@ import subprocess
 import time
 import os
 import sys
+from multiprocessing import Process
 from PIL import Image
-from threading import Thread
 from src.configs import config
 from .ocr import ocr_img_tess
 
@@ -36,16 +36,20 @@ def get_device_infos():
 
 def get_options(device_id, index):
     """获取选项"""
+    start = time.time()
     check_screenshot(device_id, index)
+    open_start = time.time()
+    print("> step 3: 截图的时间为： " + str(open_start-start) + "秒")
     img = Image.open("./screenshot" + index + ".png")
+    print("> step 3: 读图的时间为： " + str(time.time()-open_start) + "秒")
     question, options = ocr_img_tess(img)
     OPTIONS_LIST.append({'options': options, 'device_id': device_id})
 
 def get_options_all():
     """获取所有选项"""
     for index, device_id in enumerate(DEVICES_LIST):
-        task = Thread(get_options(device_id, str(index)))
-        task.start()
+        sub_process = Process(target=get_options, args=(device_id, str(index)))
+        sub_process.start()
 
 def tap_android_individual(results):
     """根据不同的安卓设备点击"""
@@ -126,7 +130,7 @@ def check_screenshot(device_id, index):
     pull_screenshot(device_id, index)
     try:
         Image.open("./screenshot" + index + ".png").load()
-        print('> step 2: get photo by type {} '.format(SCREENSHOT_WAY))
+        print('> step 3: get photo by type {} '.format(SCREENSHOT_WAY))
     except Exception:
         SCREENSHOT_WAY -= 1
         check_screenshot(device_id, index)
