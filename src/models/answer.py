@@ -57,9 +57,14 @@ class MyAnswer(object):
 
     def add_result_uc(self, index):
         """添加UC-AI答案"""
-        pri = 0.8
-        text = self.options['uc'][index]
-        self.add_result(Result(index, text, pri))
+        if '、' in self.options['uc'][0]:
+            new_answers = self.options['uc'][0].split("、")
+            for index, answer_text in enumerate(new_answers):
+                self.add_result(Result(index, answer_text, 1))
+        else:
+            pri = 0.8
+            text = self.options['uc'][index]
+            self.add_result(Result(index, text, pri))
 
     def add_result_baidu_percentage(self, answers):
         """添加百度百分比答案"""
@@ -68,8 +73,11 @@ class MyAnswer(object):
 
     def add_result_uc_percentage(self, answers):
         """添加UC百分比答案"""
-        for index, answer in enumerate(answers):
-            self.add_result(Result(index, answer['text'], answer['prop']))
+        if '、' in self.options['uc'][0] and answers[0]['prop'] is None:
+            # 说明是个性题
+            new_answers = answers['uc'][0].split("、")
+            for index, answer_text in enumerate(new_answers):
+                self.add_result(Result(index, answer_text, 1))
 
     def answer_single(self):
         """非个性题，选取最佳答案"""
