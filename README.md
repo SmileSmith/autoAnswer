@@ -1,8 +1,8 @@
 # autoAnswer
 
-autoAnswer
-
 和简单搜索、汪仔助手、UC答题助手一起答题。
+
+![](images/answer_view.png)
 
 - 为什么要做这个？
 
@@ -14,22 +14,21 @@ autoAnswer
 
 后续会采用Scrapy爬虫，直接抓即结果。
 
-- 为什么sever用python编写？
+- AI如何自动化处理西瓜视频的个性化题？
 
-纯粹是因为想练习python。
-
+目前的做法是收到答案后，子进程并行截图OCR识别答案，同时主进程不断接收答案。在OCR完成后，计算出优选答案，点击不同的设备。
 
 ## before start
 
-### 1. 确保正常的python3环境，并安装pytesseract
+#### 1. 确保正常的python3环境，并安装pytesseract
 
 `pip install pytesseract`
 
-### 2. 安装 ADB，确保执行adb device能出现您的设备
+#### 2. 安装 ADB，确保执行adb device能出现您的设备
 
 下载地址：https://adb.clockworkmod.com/ ，并配置环境变量
 
-### 3. 安装 谷歌 Tesseract
+#### 3. 安装 谷歌 Tesseract
 
 Windows下链接： 推荐使用安装版，在安装时选择增加中文简体语言包
 
@@ -67,7 +66,7 @@ PS：注意根据需要，修改screen.conf中的分辨率，默认三星Note8�
 
 ## roadmap
 
-+ 1、完成AI自动答题的逻辑，将缓存的答案用mapReduce的形式转为最佳答案。
++ ~~1、完成AI自动答题的逻辑，将缓存的答案用mapReduce的形式转为最佳答案。~~ 20180129 完成 √
 
 + 2、用mongodb存储结果，用图表展示各个AI助手的表现
 
@@ -77,4 +76,5 @@ PS：注意根据需要，修改screen.conf中的分辨率，默认三星Note8�
 
 ## thanks
 
-截图和OCR代码参考[https://github.com/Skyexu/TopSup](https://github.com/Skyexu/TopSup)。
+截图和OCR代码参考[https://github.com/Skyexu/TopSup](https://github.com/Skyexu/TopSup)
+
