@@ -21,19 +21,19 @@ def __log_date_time_string():
     return s
 
 
-def log_info(format, *args):
+def log_info(log_format, *args):
     """自定义日志"""
     print("[%s] %s" %
-          (__log_date_time_string(), format % args))
+          (__log_date_time_string(), log_format % args))
 
 
-def log_error(format, *args):
+def log_error(log_format, *args):
     """错误日志"""
     print(Fore.LIGHTRED_EX + ("[%s] %s" %
-                              (__log_date_time_string(), format % args)) + Fore.RESET)
+                              (__log_date_time_string(), log_format % args)) + Fore.RESET)
 
 
-def log_warn(format, *args):
+def log_warn(log_format, *args):
     """警告日志"""
     print(Fore.YELLOW + ("[%s] %s" %
-                         (__log_date_time_string(), format % args)) + Fore.RESET)
+                         (__log_date_time_string(), log_format % args)) + Fore.RESET)

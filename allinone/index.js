@@ -37,16 +37,14 @@ $(function() {
         "dataType": "json"
       },
       data: JSON.stringify({ switch: switcher }),
-      success:function(response,status,xhr){
-        // console.log("toggle success ..." );
-      }
+      success: callback
     });
   }
   
   function toggleAI(event) {
     const $span = $(this).find("span");
     let switcherText = $span.text() === "OFF" ? "ON" : "OFF";
-    const callback = function() {
+    const callback = function(response,status,xhr) {
       if (switcherText === "ON") {
         $(this).addClass("on");
       } else {
@@ -54,11 +52,11 @@ $(function() {
       }
       $span.text(switcherText);
     };
-    postAISwitcher(switcherText, callback);
+    postAISwitcher(switcherText, callback.bind(this));
   }
   
   $("#ai-result-toggle").click(toggleAI);
   
-  postAISwitcher("ON")
+  postAISwitcher("OFF")
 
 });
