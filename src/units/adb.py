@@ -12,7 +12,8 @@ import sys
 from multiprocessing import Process
 from PIL import Image
 from src.configs import config
-from .ocr import ocr_img_tess
+from .method import log_info, log_warn
+from .ocr import ocr_img_tess, ocr_img_tess_choices
 
 DEVICES_LIST = []
 
@@ -38,11 +39,12 @@ def get_options(device_id, index):
     """获取选项"""
     start = time.time()
     check_screenshot(device_id, index)
-    open_start = time.time()
-    print("> step 3: 截图的时间为： " + str(open_start-start) + "秒")
+    log_warn("screenShot time： %ss", str(time.time()-start)[:4])
     img = Image.open("./screenshot" + index + ".png")
-    print("> step 3: 读图的时间为： " + str(time.time()-open_start) + "秒")
-    question, options = ocr_img_tess(img)
+    # question, options = ocr_img_tess(img)
+    options = ocr_img_tess_choices(img)
+    log_info("> step 4: get options")
+    print(str(options))
     OPTIONS_LIST.append({'options': options, 'device_id': device_id})
 
 def get_options_all():
@@ -57,9 +59,8 @@ def tap_android_individual(results):
 
 def tap_android_all(result_index):
     """根据答案点击安卓设备"""
-    if len(DEVICES_LIST) == 0:
-        print("[%s] !!! No device found, Please check your adb" %
-              log_date_time_string())
+    if not DEVICES_LIST:
+        log_warn("No device found, Please check your adb")
         return
     left_start, top_start = config.TAP_START.replace(" ", "").split(",")
     target_left = int(left_start)
@@ -71,18 +72,6 @@ def tap_android_all(result_index):
         command = "adb -s " + device_id + " shell input tap " + \
             str(target_left) + " " + str(target_top)
         subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-
-
-def log_date_time_string():
-    """Return the current time formatted for logging."""
-    monthname = [None,
-                 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    now = time.time()
-    year, month, day, hh, mm, ss, x, y, z = time.localtime(now)
-    s = "%02d/%3s/%04d %02d:%02d:%02d" % (
-        day, monthname[month], year, hh, mm, ss)
-    return s
 
 
 # SCREENSHOT_WAY 是截图方法，经过 check_screenshot 后，会自动递减，不需手动修改
@@ -130,7 +119,6 @@ def check_screenshot(device_id, index):
     pull_screenshot(device_id, index)
     try:
         Image.open("./screenshot" + index + ".png").load()
-        print('> step 3: get photo by type {} '.format(SCREENSHOT_WAY))
     except Exception:
         SCREENSHOT_WAY -= 1
         check_screenshot(device_id, index)

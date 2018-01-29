@@ -42,9 +42,9 @@ class MyHandler(BaseHTTPRequestHandler):
         querypath = urlparse(self.path)
         apipath = querypath.path
         if apipath.startswith("/reply-answer"):
-            controller.handle_answer(self, apipath, datas)
+            controller.handle_answer(apipath, datas)
         elif apipath.startswith('/toggle-ai'):
-            controller.toggle_ai(self, datas)
+            controller.toggle_ai(datas)
         self.send_response_only(200)
         self.send_header('Content-type', 'json')
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -121,7 +121,7 @@ def run_server():
     server_address = ('', PORT)
     httpd = HTTPServer(server_address, MyHandler)
     print('> Running Server On Port: ', PORT)
-    print('> Press Ctrl + C to exit...')
+    print('> Press Ctrl + C to exit...\n')
     httpd.serve_forever()
 
 

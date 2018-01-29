@@ -5,10 +5,12 @@
     #Date: 2018-01-26
     #Desc: AI控制器
 """
+from src.units.method import log_warn
 
 AUTO_AI = False
 
-def toggle_ai(handler, datas):
+
+def toggle_ai(datas):
     switcher = str(datas["switch"])
     """切换自动AI答题"""
     global AUTO_AI
@@ -17,7 +19,8 @@ def toggle_ai(handler, datas):
         result = True
     if result != AUTO_AI:
         AUTO_AI = result
-        handler.simple_log(">>> AI Auto : %s", str(AUTO_AI))
+        log_warn("> AI Auto: %s", switcher)
+
 
 def is_auto():
     """返回是否自动AI答题"""

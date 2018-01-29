@@ -8,8 +8,11 @@ import time
 import pytesseract
 from colorama import Fore
 from src.configs import config
+from .method import log_info, log_warn
 
 # 二值化算法
+
+
 def binarizing(img, threshold):
     pixdata = img.load()
     w, h = img.size
@@ -41,11 +44,60 @@ def depoint(img):  # input: gray image
                 pixdata[x, y] = 255
     return img
 
+
+def ocr_img_tess_choices(image):
+    """只运行一次 Tesseract"""
+    start = time.time()
+
+    choices_region = config.CHOICES_REGION
+
+    # 切割选项区域，左上角坐标和右下角坐标,自行测试分辨率
+    region_im = image.crop(
+        (choices_region[0], choices_region[1], choices_region[2], choices_region[3]))
+
+    # 转化为灰度图
+    region_im = region_im.convert('L')
+
+    # 把图片变成二值图像
+    region_im = binarizing(region_im, 190)
+
+    ocr_start = time.time()
+    log_warn("splitImg time: %ss", str(ocr_start - start)[:4])
+    
+    # region_im.show()
+
+    # win环境
+    # tesseract 路径
+
+    pytesseract.pytesseract.tesseract_cmd = config.TESSERACT_CMD
+
+    # 语言包目录和参数
+    tessdata_dir_config = config.TESSDATA_DIR
+
+    # lang 指定中文简体
+    region_text = pytesseract.image_to_string(
+        region_im, lang='chi_sim', config=tessdata_dir_config)
+
+    log_warn("OCR time: %ss", str(time.time() - ocr_start)[:4])
+
+    region_text = region_text.replace("_", "一").split("\n")
+    texts = [x for x in region_text if x != '']
+
+    choices = []
+
+    if len(texts) > 2:
+        choices = texts
+    else:
+        print(Fore.RED + '截图区域设置错误，请重新设置' + Fore.RESET)
+
+    return choices
+
+
 def ocr_img_tess(image):
     """只运行一次 Tesseract"""
     start = time.time()
 
-    combine_region =  config.COMBINE_REGION
+    combine_region = config.COMBINE_REGION
 
     # 切割题目+选项区域，左上角坐标和右下角坐标,自行测试分辨率
     region_im = image.crop(
@@ -57,26 +109,25 @@ def ocr_img_tess(image):
     # 把图片变成二值图像
     region_im = binarizing(region_im, 190)
 
+    ocr_start = time.time()
+    log_warn("splitImg time: %ss", str(ocr_start - start)[:4])
+
     # region_im.show()
 
     # win环境
     # tesseract 路径
 
-    pytesseract.pytesseract.tesseract_cmd =  config.TESSERACT_CMD
+    pytesseract.pytesseract.tesseract_cmd = config.TESSERACT_CMD
 
     # 语言包目录和参数
-    tessdata_dir_config =  config.TESSDATA_DIR
-
-    ocr_start = time.time()
-    print("> step 3: 切图的时间为：" + str(ocr_start-start) + "秒")
+    tessdata_dir_config = config.TESSDATA_DIR
 
     # lang 指定中文简体
     region_text = pytesseract.image_to_string(
         region_im, lang='chi_sim', config=tessdata_dir_config)
 
-    split_start = time.time()
-    print("> step 3: OCR的时间为：" + str(split_start-ocr_start) + "秒")
-    
+    log_warn("OCR time: %ss", str(time.time() - ocr_start)[:4])
+
     region_text = region_text.replace("_", "一").split("\n")
     texts = [x for x in region_text if x != '']
     # print(texts)
@@ -89,7 +140,7 @@ def ocr_img_tess(image):
     else:
         print(Fore.RED + '截图区域设置错误，请重新设置' + Fore.RESET)
 
-    if len(choices) == 0:
+    if not choices:
         return "", []
 
     # 意外出现问题为两行或三行
@@ -102,5 +153,4 @@ def ocr_img_tess(image):
         choices.pop(0)
         choices.pop(0)
 
-    print("> step 3: 文字拼接的时间为：" + str(time.time()-split_start) + "秒")
     return question, choices

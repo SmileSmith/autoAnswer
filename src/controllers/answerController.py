@@ -6,14 +6,15 @@
     #Desc: 回答控制器
 """
 from src.units import adb
+from src.units.method import log_info
 from src.models.question import Question
 from src.models.answer import MyAnswer
 from .aiSwitchController import is_auto
 
-CUR_ANSWER = MyAnswer(Question('greet', '0'))
+CUR_ANSWER = MyAnswer(Question('start', '0'))
 
 
-def handle_answer(handler, apipath, datas):
+def handle_answer(apipath, datas):
     """处理答题请求"""
     answer_type = apipath.split("-").pop()
 
@@ -24,8 +25,8 @@ def handle_answer(handler, apipath, datas):
     question = Question(question_text, question_id)
     if answer_type == "human":
         adb.tap_android_all(result)
-        handler.simple_log(">>> No.%s %s Answer is : %s",
-                           question_id, answer_type, result)
+        log_info(">>> No.%s %s Answer : %s",
+                 question_id, answer_type, result)
     elif is_auto():
         global CUR_ANSWER
         if "human_markup" in datas:
@@ -36,9 +37,9 @@ def handle_answer(handler, apipath, datas):
         if len(options) == 0:
             return
         if (not isinstance(CUR_ANSWER, MyAnswer)) or CUR_ANSWER.question.question_id != question_id:
-            print("> step 1: start answer...")
+            log_info("> step 1: start [No.%s] ...", question_id)
             CUR_ANSWER = MyAnswer(question)
-            print("> step 2: has inited")
+            log_info("> step 2: get question ")
         # 设置选项
         CUR_ANSWER.set_option(options, answer_type)
         # 填充答案
@@ -53,5 +54,5 @@ def handle_answer(handler, apipath, datas):
             CUR_ANSWER.add_result_uc(result)
             CUR_ANSWER.add_result_uc_percentage(answers)
         adb.tap_android_all(result)
-        handler.simple_log(">>> No.%s %s Answer is : %s",
-                           question_id, answer_type, result)
+        log_info("> step 3: add results: %s by %s",
+                result, answer_type)
