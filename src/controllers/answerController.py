@@ -34,7 +34,7 @@ def handle_answer(apipath, datas):
         else:
             human_markup = ""
         options = datas["options"]
-        if len(options) == 0:
+        if not options:
             return
         if (not isinstance(CUR_ANSWER, MyAnswer)) or CUR_ANSWER.question.question_id != question_id:
             log_info("> step 1: start [No.%s] ...", question_id)
@@ -53,6 +53,6 @@ def handle_answer(apipath, datas):
             answers = datas["answers"]
             CUR_ANSWER.add_result_uc(result)
             CUR_ANSWER.add_result_uc_percentage(answers)
-        adb.tap_android_all(result)
+        # adb.tap_android_all(result)
         log_info("> step 3: add results: %s by %s",
-                result, answer_type)
+                 result, answer_type)

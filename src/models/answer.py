@@ -16,7 +16,8 @@ class MyAnswer(object):
         self.options = {'baidu': [], 'sogou': [], 'uc': [],}
         self.results = []
         self.corrects = []
-        get_options_all()
+        # 目前这个函数的功能是开始答个性题，后续考虑重构
+        self.shared_results = get_options_all()
         # TODO: 延迟时间后自动答题
         # self.timer = Timer(5000)
         # self.timer.run_timeout(self.try_answer_by_ai)
@@ -24,6 +25,13 @@ class MyAnswer(object):
     def set_option(self, option, option_type):
         """设置选项"""
         self.options[option_type] = option
+
+    def add_result(self, result):
+        """添加答案"""
+        if self.results:
+            self.shared_results.get()
+        self.results.append(result)
+        self.shared_results.put(self.results)
 
     def add_result_baidu(self, index, makeup):
         """添加百度AI答案"""
@@ -39,29 +47,29 @@ class MyAnswer(object):
         else:
             pri = 0.6
         text = self.options['baidu'][index]
-        self.results.append(Result(index, text, pri))
+        self.add_result(Result(index, text, pri))
 
     def add_result_sogou(self, index):
         """添加搜狗AI答案"""
         pri = 0.8
         text = self.options['sogou'][index]
-        self.results.append(Result(index, text, pri))
+        self.add_result(Result(index, text, pri))
 
     def add_result_uc(self, index):
         """添加UC-AI答案"""
         pri = 0.8
         text = self.options['uc'][index]
-        self.results.append(Result(index, text, pri))
+        self.add_result(Result(index, text, pri))
 
     def add_result_baidu_percentage(self, answers):
         """添加百度百分比答案"""
         for index, answer in enumerate(answers):
-            self.results.append(Result(index, answer['text'], answer['prop']))
+            self.add_result(Result(index, answer['text'], answer['prop']))
 
     def add_result_uc_percentage(self, answers):
         """添加UC百分比答案"""
         for index, answer in enumerate(answers):
-            self.results.append(Result(index, answer['text'], answer['prop']))
+            self.add_result(Result(index, answer['text'], answer['prop']))
 
     def answer_single(self):
         """非个性题，选取最佳答案"""

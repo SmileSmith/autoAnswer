@@ -37,3 +37,28 @@ def log_warn(log_format, *args):
     """警告日志"""
     print(Fore.YELLOW + ("[%s] %s" %
                          (__log_date_time_string(), log_format % args)) + Fore.RESET)
+
+
+def get_prefer_result(results, options):
+    """返回优选答案"""
+    pri_obj = {}
+    for result in results:
+        if result.text not in pri_obj:
+            pri_obj[result.text] = result.pri
+        else:
+            pri_obj[result.text] += result.pri
+
+    prefer_option = ''
+
+    prefer_pri = 0
+
+    for option, pri in pri_obj.items():
+        if prefer_pri < pri:
+            prefer_option = option
+            prefer_pri = pri
+
+    for option in options:
+        if prefer_option == option:
+            return prefer_option
+
+    return None

@@ -9,10 +9,10 @@ import subprocess
 import time
 import os
 import sys
-from multiprocessing import Process
+from multiprocessing import Process, Queue
 from PIL import Image
 from src.configs import config
-from .method import log_info, log_warn
+from .method import log_info, log_warn, get_prefer_result
 from .ocr import ocr_img_tess, ocr_img_tess_choices
 
 DEVICES_LIST = []
@@ -35,7 +35,7 @@ def get_device_infos():
         devices_list.append(line.split("\t")[0])
     return devices_list
 
-def get_options(device_id, index):
+def get_options(device_id, index, shared_results):
     """获取选项"""
     start = time.time()
     check_screenshot(device_id, index)
@@ -45,17 +45,35 @@ def get_options(device_id, index):
     options = ocr_img_tess_choices(img)
     log_info("> step 4: get options")
     print(str(options))
-    OPTIONS_LIST.append({'options': options, 'device_id': device_id})
+    results = shared_results.get()
+    tap_android_individual(device_id, options, results)
+    OPTIONS_LIST.append(options)
 
 def get_options_all():
     """获取所有选项"""
+    shared_results = Queue(1)
     for index, device_id in enumerate(DEVICES_LIST):
-        sub_process = Process(target=get_options, args=(device_id, str(index)))
+        sub_process = Process(target=get_options, args=(device_id, str(index), shared_results))
         sub_process.start()
+    return shared_results
 
-def tap_android_individual(results):
+def tap_android_individual(device_id, options, results):
     """根据不同的安卓设备点击"""
-    pass
+    log_info("> step 5: get prefer option")
+    result_index = get_prefer_result(results, options)
+    if result_index is None:
+        return
+    left_start, top_start = config.TAP_START.replace(" ", "").split(",")
+    target_left = int(left_start)
+    top_start = int(top_start)
+    top_gap = int(config.TAP_GAP)
+    target_top = top_start + top_gap * (result_index + 1)
+
+    log_info("> step 6: tap result: %s", result_index)
+
+    command = "adb -s " + device_id + " shell input tap " + \
+        str(target_left) + " " + str(target_top)
+    subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
 
 def tap_android_all(result_index):
     """根据答案点击安卓设备"""
