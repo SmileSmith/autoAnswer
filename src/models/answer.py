@@ -33,19 +33,9 @@ class MyAnswer(object):
         self.results.append(result)
         self.shared_results.put(self.results)
 
-    def add_result_baidu(self, index, makeup):
+    def add_result_baidu(self, index):
         """添加百度AI答案"""
-        pri = 0
-        if makeup == 'yes_yes':
-            pri = 1
-        elif makeup == 'weak_confirm':
-            pri = 0.7
-        elif makeup == 'contradation':
-            pri = 0.8
-        elif makeup == 'no_no':
-            pri = 0.1
-        else:
-            pri = 0.6
+        pri = 0.6
         text = self.options['baidu'][index]
         self.add_result(Result(index, text, pri))
 
@@ -75,7 +65,7 @@ class MyAnswer(object):
         """添加UC百分比答案"""
         if '、' in self.options['uc'][0] and answers[0]['prop'] is None:
             # 说明是个性题
-            new_answers = answers['uc'][0].split("、")
+            new_answers = self.options['uc'][0].split("、")
             for index, answer_text in enumerate(new_answers):
                 self.add_result(Result(index, answer_text, 1))
 
