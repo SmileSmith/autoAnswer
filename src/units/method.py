@@ -57,8 +57,8 @@ def get_prefer_result(results, options):
             prefer_option = option
             prefer_pri = pri
 
-    for option in options:
+    for index, option in enumerate(options):
         if prefer_option == option:
-            return prefer_option
+            return index
 
     return None
