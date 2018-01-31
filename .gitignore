@@ -8,3 +8,6 @@
 
 # Screenshot #
 screenshot*.png
+
+# DB #
+*.db

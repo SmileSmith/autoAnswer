@@ -8,6 +8,12 @@
 import time
 from colorama import Fore
 
+def date_time_string():
+    """Return the current time formatted """
+    now = time.time()
+    year, month, day, hh, mm, ss, x, y, z = time.localtime(now)
+    s = "%04d%02d%02d" % (year, month, day)
+    return s
 
 def __log_date_time_string():
     """Return the current time formatted for logging."""
@@ -44,18 +50,18 @@ def get_prefer_result(results, options):
     pri_obj = {}
     for result in results:
         if result.text not in pri_obj:
-            pri_obj[result.text] = result.pri
+            pri_obj[result.text] = result.prop
         else:
-            pri_obj[result.text] += result.pri
+            pri_obj[result.text] += result.prop
 
     prefer_option = ''
 
     prefer_pri = 0
 
-    for option, pri in pri_obj.items():
-        if prefer_pri < pri:
+    for option, prop in pri_obj.items():
+        if prefer_pri < prop:
             prefer_option = option
-            prefer_pri = pri
+            prefer_pri = prop
 
     for index, option in enumerate(options):
         if prefer_option == option:

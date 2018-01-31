@@ -7,7 +7,7 @@ from urllib.request import Request, urlopen
 from os import path
 import sys
 import json
-from src.units import adb
+from src.units import adb, sqlite
 from src.controllers import controller
 
 ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.1.1; Google Pixel - \
@@ -128,6 +128,7 @@ def run_server():
 def main():
     """主函数"""
     adb.init()
+    sqlite.init_table()
     run_server()
 
 # start main at last ##########################################################

@@ -7,7 +7,15 @@
 """
 class Result(object):
     """AI结果"""
-    def __init__(self, index, text, pri):
+    def __init__(self, index, text, prop, question_id):
         self.index = index
         self.text = text
-        self.pri = pri
+        self.prop = prop
+        self.question_id = question_id
+        self.ai_type = ""
+        self.type = "single"
+
+    def set_type(self, ai_type, result_type="single"):
+        """设置类型"""
+        self.ai_type = ai_type
+        self.type = result_type

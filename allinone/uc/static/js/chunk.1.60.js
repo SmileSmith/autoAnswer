@@ -180,13 +180,13 @@ webpackJsonp([1], {
                   .then(function(i) {
                     if (t.pre_quesionId !== i.round && i.round) {
                       let options = [];
-                      let answers = [];
+                      let results = [];
                       let totalConfidence = 0;
                       i.options.forEach((answer) => {
                         options.push(answer.title);
                         totalConfidence += answer.confidence;
                       });
-                      answers = i.options.map((answer) => {
+                      results = i.options.map((answer) => {
                         return {
                           text: answer.title,
                           prop: parseFloat((answer.confidence / totalConfidence).toFixed(2))
@@ -199,7 +199,7 @@ webpackJsonp([1], {
                         },
                         result: i.correct,
                         options,
-                        answers,
+                        results,
                       };
                       console.log(data)
                       $.ajax({

@@ -41,8 +41,9 @@ $(function() {
         totalProp += answer.prop;
         return answer.text;
       });
-      data.answers.forEach((answer) => {
+      data.results = data.answers.map((answer) => {
         answer.prop = parseFloat((answer.prop / totalProp).toFixed(2))
+        return answer
       });
       $.ajax({
         type:'POST',
