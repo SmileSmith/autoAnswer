@@ -194,7 +194,7 @@ webpackJsonp([1], {
                       });
                       const data = {
                         question: {
-                          questionId: i.round,
+                          round: i.round,
                           text: i.title,
                         },
                         result: i.correct,

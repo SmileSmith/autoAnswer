@@ -6,7 +6,7 @@ $(function() {
     const answerData = {
       question: {
         text: '自己答题，来不及敲题目...',
-        questionId: 0
+        round: 0
       },
       result: result
     };
@@ -57,6 +57,6 @@ $(function() {
   
   $("#ai-result-toggle").click(toggleAI);
   
-  postAISwitcher("ON")
+  postAISwitcher("OFF")
 
 });

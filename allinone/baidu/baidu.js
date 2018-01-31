@@ -45,6 +45,7 @@ $(function() {
         answer.prop = parseFloat((answer.prop / totalProp).toFixed(2))
         return answer
       });
+      data.question.round = data.question.questionId
       $.ajax({
         type:'POST',
         url:'http://localhost:8080/reply-answer-baidu',

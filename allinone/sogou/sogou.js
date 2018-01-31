@@ -52,7 +52,7 @@ $(function() {
     return html.join("");
   }
 
-  var pre_questionId = "0";
+  var pre_round = "0";
   /**
    *   xigua  huajiao
    * @param name
@@ -80,14 +80,14 @@ $(function() {
             });
             answerData.result = resultIndex;
 
-            var questionId = answerData.title.split(".")[0] || "0";
+            var round = answerData.title.split(".")[0] || "0";
             var questionText = answerData.title.split(".")[1] || "no";
             answerData.question = {
               text: questionText,
-              questionId: questionId
+              round: round
             };
             answerData.options = answerData.answers
-            if (questionId !== pre_questionId && questionId != "0") {
+            if (round !== pre_round && round != "0") {
               $.ajax({
                 type:'POST',
                 url:'http://localhost:8080/reply-answer-sogou',
@@ -100,9 +100,9 @@ $(function() {
                   console.log("reply success ..." + JSON.stringify(answerData));
                 }
               });
-              pre_questionId = questionId;
+              pre_round = round;
             } else {
-              pre_questionId = questionId;
+              pre_round = round;
             }
             // hacker code end
             var tempHtml = getHtml(data.result);

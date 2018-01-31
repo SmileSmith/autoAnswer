@@ -23,7 +23,7 @@ def answer_by_ai(datas, ai_type):
     """处理AI答题"""
     # 解析数据
     result = int(datas["result"])
-    question_round = str(datas["question"]["questionId"])
+    question_round = str(datas["question"]["round"])
     question_text = datas["question"]["text"]
     options = datas["options"]
     phase = date_time_string()
@@ -65,7 +65,7 @@ def refresh_answer(question):
     global CUR_ANSWER
     CUR_ANSWER = MyAnswer(question)
     question_id = questionDao.get_question_id(question.round, question.phase)
-    print(question_id)
+
     if not question_id:
         question_id = questionDao.save_question(question)
     return question_id
@@ -121,7 +121,7 @@ def add_result_uc(index, options, question):
 def answer_by_human(datas, answer_type):
     """处理人工答题"""
     result = int(datas["result"])
-    question_round = str(datas["question"]["questionId"])
+    question_round = str(datas["question"]["round"])
     adb.tap_android_all(result)
     log_info(">>> No.%s %s Answer : %s",
              question_round, answer_type, result)
