@@ -46,6 +46,9 @@ def answer_by_ai(datas, ai_type):
 
     # 填充答案
     if ai_type == "baidu":
+        # 百度Step-0 只有题目
+        if 'results' not in datas:
+            return
         results = datas["results"]
         add_result_baidu(result, options, question)
         add_result_baidu_percentage(results, question)

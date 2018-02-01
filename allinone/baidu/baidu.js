@@ -32,6 +32,22 @@ $(function() {
   });
   socket.on("answer", function(data) {
     if (data.step == 0) {
+      data.options = data.answers.map((answer) => {
+        return answer.text;
+      });
+      data.question.round = data.question.questionId
+      $.ajax({
+        type:'POST',
+        url:'http://localhost:8080/reply-answer-baidu',
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "dataType": "json"
+        },
+        data: JSON.stringify(data),
+        success:function(response,status,xhr){
+          // console.log("reply success ..." + JSON.stringify(data));
+        }
+      });
       stepOne(data);
     } else if (data.step == 1) {
       stepTow(data);
@@ -55,7 +71,7 @@ $(function() {
         },
         data: JSON.stringify(data),
         success:function(response,status,xhr){
-          console.log("reply success ..." + JSON.stringify(data));
+          // console.log("reply success ..." + JSON.stringify(data));
         }
       });
       stepThree(data);
