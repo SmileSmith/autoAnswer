@@ -17,12 +17,12 @@ from .ocr import ocr_img_tess, ocr_img_tess_choices
 
 DEVICES_LIST = []
 
-OPTIONS_LIST = []
 
 def init():
     """初始化adb"""
     global DEVICES_LIST
     DEVICES_LIST = get_device_infos()
+
 
 def get_device_infos():
     """获取设备信息"""
@@ -35,20 +35,23 @@ def get_device_infos():
         devices_list.append(line.split("\t")[0])
     return devices_list
 
+
 def get_options(device_id, index, shared_queue):
     """获取选项"""
     start = time.time()
     check_screenshot(device_id, index)
-    log_warn("screenShot time： %ss", str(time.time()-start)[:4])
+    log_warn("screenShot time： %ss", str(time.time() - start)[:4])
     img = Image.open("./screenshot" + index + ".png")
     # question, options = ocr_img_tess(img)
     options = ocr_img_tess_choices(img)
     log_info("> step 4: get options")
     print(str(options))
+    while time.time() - start < 6:
+        time.sleep(0.2)
     results = shared_queue.get(False)
-    print(str(len(results)))
+    shared_queue.put(results, False)
     tap_android_individual(device_id, options, results)
-    OPTIONS_LIST.append(options)
+
 
 def get_options_all():
     """获取所有选项"""
@@ -58,10 +61,11 @@ def get_options_all():
         sub_process.start()
     return shared_queue
 
+
 def tap_android_individual(device_id, options, results):
     """根据不同的安卓设备点击"""
-    log_info("> step 5: get prefer option")
     result_index = get_prefer_result(results, options)
+    log_info("> step 5: get prefer option is %s", result_index)
     if result_index is None:
         return
     left_start, top_start = config.TAP_START.replace(" ", "").split(",")
@@ -75,6 +79,7 @@ def tap_android_individual(device_id, options, results):
     command = "adb -s " + device_id + " shell input tap " + \
         str(target_left) + " " + str(target_top)
     subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+
 
 def tap_android_all(result_index):
     """根据答案点击安卓设备"""
@@ -96,6 +101,7 @@ def tap_android_all(result_index):
 # SCREENSHOT_WAY 是截图方法，经过 check_screenshot 后，会自动递减，不需手动修改
 SCREENSHOT_WAY = 3
 
+
 def pull_screenshot(device_id, index):
     """
     获取屏幕截图，目前有 0 1 2 3 四种方法，未来添加新的平台监测方法时，
@@ -111,15 +117,17 @@ def pull_screenshot(device_id, index):
             binary_screenshot = binary_screenshot.replace(b'\r\n', b'\n')
             # binary_screenshot = binary_screenshot.split(b' ')
             # binary_screenshot = binary_screenshot[len(binary_screenshot) - 1]
-            #print(binary_screenshot)
+            # print(binary_screenshot)
         elif SCREENSHOT_WAY == 1:
             binary_screenshot = binary_screenshot.replace(b'\r\r\n', b'\n')
         f = open("screenshot" + index + ".png", 'wb')
         f.write(binary_screenshot)
         f.close()
     elif SCREENSHOT_WAY == 0:
-        os.system("adb -s " + device_id + " shell screencap -p /sdcard/screenshot" + index + ".png")
-        os.system("adb -s " + device_id + " pull /sdcard/screenshot" + index + ".png .")
+        os.system("adb -s " + device_id +
+                  " shell screencap -p /sdcard/screenshot" + index + ".png")
+        os.system("adb -s " + device_id +
+                  " pull /sdcard/screenshot" + index + ".png .")
 
 
 def check_screenshot(device_id, index):

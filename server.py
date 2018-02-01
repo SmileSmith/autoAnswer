@@ -4,6 +4,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
 from os import path
 import sys
 import json
@@ -62,12 +63,24 @@ class MyHandler(BaseHTTPRequestHandler):
         headers.replace_header("User-Agent", ANDROID_USER_AGENT)
         req = Request(self.path.replace(
             orgin_path, target_host_path), headers=headers)
-        res = urlopen(req)
-        data = res.read()
-        # TODO:当是AI自动代替的模式时，直接解析结果调用相关控制器逻辑
-        self.send_response_only(200)
-        self.end_headers()
-        self.wfile.write(data)
+        data = None
+        try:
+            res = urlopen(req)
+        except HTTPError as http_error:
+            print("%s - %s" % (http_error, target_host_path))
+        except URLError as url_error:
+            print("%s - %s" % (url_error, target_host_path))
+        else:
+            data = res.read()
+            # TODO:当是AI自动代替的模式时，直接解析结果调用相关控制器逻辑
+        finally:
+            self.send_response_only(200)
+            self.end_headers()
+            if not data:
+                self.wfile.write(b"ok")
+            else:
+                self.wfile.write(data)
+
 
     def handle_static(self):
         """处理静态文件请求"""

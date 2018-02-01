@@ -22,7 +22,6 @@ CUR_ANSWER = MyAnswer(Question('start', '0', '19700101'))
 def answer_by_ai(datas, ai_type):
     """处理AI答题"""
     # 解析数据
-    result = int(datas["result"])
     question_round = str(datas["question"]["round"])
     question_text = datas["question"]["text"]
     options = datas["options"]
@@ -50,13 +49,16 @@ def answer_by_ai(datas, ai_type):
         if 'results' not in datas:
             return
         results = datas["results"]
+        result = int(datas["result"])
         add_result_baidu(result, options, question)
         add_result_baidu_percentage(results, question)
 
     elif ai_type == "sogou":
+        result = int(datas["result"])
         add_result_sogou(result, options, question)
 
     elif ai_type == "uc":
+        result = int(datas["result"])
         add_result_uc(result, options, question)
 
     # adb.tap_android_all(result)
@@ -105,8 +107,9 @@ def add_result_sogou(index, options, question):
 
 def add_result_uc(index, options, question):
     """添加UC-AI答案"""
-    if '、' in options[0]:
-        new_results = options[0].split("、")
+    if '|-|' in options[0]:
+        new_results = options[0].split("|-|")
+        log_info("> step 3: add results individual")
         for index, result_text in enumerate(new_results):
             result = Result(index, result_text, 1, question.id)
             result.set_type("uc", "single")
