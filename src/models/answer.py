@@ -17,7 +17,7 @@ class MyAnswer(object):
         self.results = []
         self.corrects = []
         # 目前这个函数的功能是开始答个性题，后续考虑重构
-        self.shared_results = get_options_all()
+        self.results_queue = get_options_all()
         # TODO: 延迟时间后自动答题
         # self.timer = Timer(5000)
         # self.timer.run_timeout(self.try_answer_by_ai)
@@ -28,10 +28,11 @@ class MyAnswer(object):
 
     def add_result(self, result):
         """添加答案"""
-        if self.results:
-            self.shared_results.get()
+        if self.results_queue.full():
+            self.results_queue.get(False)
         self.results.append(result)
-        self.shared_results.put(self.results)
+        if self.results_queue.empty():
+            self.results_queue.put(self.results)
 
     def answer_single(self):
         """非个性题，选取最佳答案"""

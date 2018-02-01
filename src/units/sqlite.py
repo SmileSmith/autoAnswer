@@ -36,7 +36,7 @@ def init_table():
         question_text varchar(400), \
         individual int(1),\
         round int(2), \
-        phase varchar(8))')
+        phase varchar(20))')
 
     # 答题结果表
     execute_sql('create table if not exists ai_result (\

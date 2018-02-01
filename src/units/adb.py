@@ -35,7 +35,7 @@ def get_device_infos():
         devices_list.append(line.split("\t")[0])
     return devices_list
 
-def get_options(device_id, index, shared_results):
+def get_options(device_id, index, shared_queue):
     """获取选项"""
     start = time.time()
     check_screenshot(device_id, index)
@@ -45,17 +45,18 @@ def get_options(device_id, index, shared_results):
     options = ocr_img_tess_choices(img)
     log_info("> step 4: get options")
     print(str(options))
-    results = shared_results.get()
+    results = shared_queue.get(False)
+    print(str(len(results)))
     tap_android_individual(device_id, options, results)
     OPTIONS_LIST.append(options)
 
 def get_options_all():
     """获取所有选项"""
-    shared_results = Queue(1)
+    shared_queue = Queue(1)
     for index, device_id in enumerate(DEVICES_LIST):
-        sub_process = Process(target=get_options, args=(device_id, str(index), shared_results))
+        sub_process = Process(target=get_options, args=(device_id, str(index), shared_queue))
         sub_process.start()
-    return shared_results
+    return shared_queue
 
 def tap_android_individual(device_id, options, results):
     """根据不同的安卓设备点击"""
