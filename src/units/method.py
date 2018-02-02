@@ -57,18 +57,40 @@ def get_prefer_result(results, options):
         else:
             pri_obj[result.text] += result.prop
 
-    prefer_option = ''
+    prefer_results = sorted(pri_obj.items(), key=lambda item: -item[1])
 
-    prefer_pri = 0
+    prefer_prop = 0
 
-    for option, prop in pri_obj.items():
-        if prefer_pri < prop:
-            prefer_option = option
-            prefer_pri = prop
+    # 1、信任度prop从大到小依次寻找匹配
+    for option, prop in prefer_results:
+        if option in options:
+            return options.index(option)
 
-    for index, option in enumerate(options):
-        if prefer_option == option:
-            return index
+    # 2、OCR识别错误，导致AI答案，没有匹配答题手机中的选项
+    # 尝试 信任度prop最大的两个选项
+    for try_num in range(1):
+        # 匹配的字符数，初始化为0
+        match_counts = [0, 0, 0]
+        prefer_result = prefer_results[try_num]
+        for char in prefer_result:
+            for index, option in enumerate(options):
+                if str(char) in option:
+                    # 如果字符存在于手机的选项中，计数+1
+                    match_counts[index] += 1
+
+        # 寻找匹配字符数量最大的选项
+        max_count = 0
+        for count in match_counts:
+            if count > max_count:
+                max_count = count
+
+        # 匹配字符比例超过0.66则认为是可信任的选项
+        if max_count / len(prefer_result) >= 0.66:
+            return match_counts.index(max_count)
+
+    # 3、某些个性题，AI返回的答案不全，没有包含答题手机中的选项
+    # 我也很绝望啊~~ 
+    # 是不是要来个随机数？？
 
     return None
 

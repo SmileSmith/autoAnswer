@@ -69,6 +69,8 @@ def answer_by_ai(datas, ai_type):
 def refresh_answer(question):
     global CUR_ANSWER
     CUR_ANSWER = MyAnswer(question)
+    CUR_ANSWER.start_answer_all()
+    
     question_id = questionDao.get_question_id(question.round, question.phase)
 
     if not question_id:
