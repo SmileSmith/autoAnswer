@@ -9,6 +9,7 @@
 # 突然发现有些逻辑放model和controller都会有较大的耦合，着手抽离：）
 # model里放更纯粹的数据操作
 # controller放更纯粹的区分操作（AI还是Human）
+from src.configs import config
 from src.models.question import Question
 from src.models.answer import MyAnswer
 from src.models.result import Result
@@ -80,7 +81,7 @@ def refresh_answer(question):
 
 def add_result_baidu(index, options, question):
     """添加百度AI答案"""
-    prop = 0.6
+    prop = config.BAIDU_WEIGHT
     text = options[index]
     result = Result(index, text, prop, question.id)
     result.set_type("baidu")
@@ -91,7 +92,7 @@ def add_result_baidu(index, options, question):
 def add_result_baidu_percentage(results, question):
     """添加百度百分比答案"""
     for index, result in enumerate(results):
-        result = Result(index, result['text'], result['prop'], question.id)
+        result = Result(index, result['text'], result['prop'] * config.BAIDU_P_WEIGHT, question.id)
         result.set_type("baidu", "percentage")
         answerDao.save_result(result)
         CUR_ANSWER.add_result(result)
@@ -99,7 +100,7 @@ def add_result_baidu_percentage(results, question):
 
 def add_result_sogou(index, options, question):
     """添加搜狗AI答案"""
-    prop = 0.8
+    prop = config.SOGOU_WEIGHT
     text = options[index]
     result = Result(index, text, prop, question.id)
     result.set_type("sogou")
@@ -113,12 +114,12 @@ def add_result_uc(index, options, question):
         new_results = options[0].split("|-|")
         log_info("> step 3: add results individual")
         for index, result_text in enumerate(new_results):
-            result = Result(index, result_text, 1, question.id)
+            result = Result(index, result_text, config.UC_WEIGHT, question.id)
             result.set_type("uc", "single")
             answerDao.save_result(result)
             CUR_ANSWER.add_result(result)
     else:
-        prop = 0.8
+        prop = config.UC_WEIGHT
         text = options[index]
         result = Result(index, text, prop, question.id)
         result.set_type("uc")

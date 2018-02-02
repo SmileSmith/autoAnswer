@@ -28,3 +28,11 @@ OCR_CONFIG.read('./src/configs/ocr.conf', encoding='utf-8')
 
 TESSERACT_CMD = OCR_CONFIG.get("tesseract", "tesseract_cmd")
 TESSDATA_DIR = OCR_CONFIG.get("tesseract", "tessdata_dir")
+
+WEIGHT_CONFIG = configparser.ConfigParser()
+WEIGHT_CONFIG.read('./src/configs/weight.conf', encoding='utf-8')
+
+BAIDU_WEIGHT = WEIGHT_CONFIG.getfloat("weight", "baidu")
+BAIDU_P_WEIGHT = WEIGHT_CONFIG.getfloat("weight", "baidu_percentage")
+SOGOU_WEIGHT = WEIGHT_CONFIG.getfloat("weight", "sogou")
+UC_WEIGHT = WEIGHT_CONFIG.getfloat("weight", "uc")
