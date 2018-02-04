@@ -16,3 +16,9 @@ def save_result(result):
         values (null, ?, ?, ?, ?, ?, ?)',
                        (result.ai_type, result.index, result.text, result.type, result.prop, result.question_id))
 
+def save_correct_result(result):
+    """保存正确的答案"""
+    sqlite.execute_sql('insert into correct_result (\
+        id, correct_index, correct_text, question_id) \
+        values (null, ?, ?, ?)',
+                       (result.index, result.text, result.question_id))
