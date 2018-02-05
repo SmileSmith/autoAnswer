@@ -77,7 +77,7 @@ class MyHandler(BaseHTTPRequestHandler):
             self.send_response_only(200)
             self.end_headers()
             if not data:
-                self.wfile.write(b"ok")
+                self.wfile.write(b"console.log('404 Not Found')")
             else:
                 self.wfile.write(data)
 

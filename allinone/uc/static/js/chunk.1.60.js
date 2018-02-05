@@ -201,7 +201,6 @@ webpackJsonp([1], {
                         options,
                         results,
                       };
-                      console.log(data)
                       $.ajax({
                         type:'POST',
                         url:'http://localhost:8080/reply-answer-uc',
@@ -225,6 +224,18 @@ webpackJsonp([1], {
                                 .then(function(i) {
                                   if (0 == i.question.length)
                                     return void t.backHome();
+                                  $.ajax({
+                                    type:'POST',
+                                    url:'http://localhost:8080/reply-correct-uc',
+                                    headers: {
+                                      "Content-Type": "application/json;charset=utf-8",
+                                      "dataType": "json"
+                                    },
+                                    data: JSON.stringify(i),
+                                    success:function(response,status,xhr){
+                                      console.log("reply correct ..." + JSON.stringify(data));
+                                    }
+                                  });
                                   (t.question = t.question.concat(i.question)),
                                     t.$store.dispatch("updateAppCSS", {
                                       "min-height": "100%",
