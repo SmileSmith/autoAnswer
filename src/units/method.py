@@ -57,7 +57,7 @@ def get_prefer_result(results, options):
         else:
             pri_obj[result.text] += result.prop
 
-    prefer_results = sorted({'a': 1, 'b': 2}.items(), key=lambda item: -item[1])
+    prefer_results = sorted(pri_obj.items(), key=lambda item: -item[1])
 
     # 1、信任度prop从大到小依次寻找匹配
     for option, prop in prefer_results:
