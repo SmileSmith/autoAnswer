@@ -48,6 +48,13 @@ def init_table():
         result_prop decimal(3,2), \
         question_id int(8))')
 
+    # 正确结果表
+    execute_sql('create table if not exists correct_result (\
+        id INTEGER PRIMARY KEY AUTOINCREMENT, \
+        correct_index int(1), \
+        correct_text varchar(20), \
+        question_id int(8))')
+
 
 if __name__ == '__main__':
     # 新建表
