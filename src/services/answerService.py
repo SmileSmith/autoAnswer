@@ -134,3 +134,18 @@ def answer_by_human(datas, answer_type):
     adb.tap_android_all(result)
     log_info(">>> No.%s %s Answer : %s",
              question_round, answer_type, result)
+
+
+def save_correct_result(datas):
+    """保存正确结果"""
+    questions = datas['question']
+    question_phase = date_time_string()
+    for question in questions:
+        question_id = questionDao.get_question_id(str(question['id']), question_phase)
+        if isinstance(question['answer'], list):
+            for answer in question['answer']:
+                result = Result(0, answer, 1, question_id)
+                answerDao.save_correct_result(result)
+        else:
+            result = Result(0, question['answer'], 1, question_id)
+            answerDao.save_correct_result(result)

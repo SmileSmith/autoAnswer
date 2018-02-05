@@ -16,3 +16,11 @@ def handle_answer(apipath, datas):
         answerService.answer_by_human(datas, answer_type)
     elif is_auto():
         answerService.answer_by_ai(datas, answer_type)
+
+
+def save_correct_result(apipath, datas):
+    """保存正确结果"""
+    answer_type = apipath.split("-").pop()
+
+    if answer_type == "uc":
+        answerService.save_correct_result(datas)

@@ -44,6 +44,8 @@ class MyHandler(BaseHTTPRequestHandler):
         apipath = querypath.path
         if apipath.startswith("/reply-answer"):
             controller.handle_answer(apipath, datas)
+        elif apipath.startswith('/reply-correct'):
+            controller.save_correct_result(apipath, datas)
         elif apipath.startswith('/toggle-ai'):
             controller.toggle_ai(datas)
         self.send_response_only(200)
