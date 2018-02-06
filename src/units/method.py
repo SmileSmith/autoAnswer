@@ -8,6 +8,7 @@
 import time
 from urllib.request import Request, urlopen
 from colorama import Fore
+from src.configs import config
 
 
 def date_time_string():
@@ -59,19 +60,22 @@ def get_prefer_result(results, options):
 
     prefer_results = sorted(pri_obj.items(), key=lambda item: -item[1])
 
-    # 1、信任度prop从大到小依次寻找匹配
-    for option, prop in prefer_results:
-        if option in options:
-            print("[%s] PROP [%s] Exactly..." % (option, prop))
-            return options.index(option)
+    # 尝试 信任度prop最大的三个选项
+    for try_num in range(config.TRY_TIMES):
 
-    # 2、OCR识别错误，导致AI答案，没有匹配答题手机中的选项
-    # 尝试 信任度prop最大的一个选项
-    for try_num in range(1):
         # 匹配的字符数，初始化为0
         match_counts = [0, 0, 0]
         prefer_option = prefer_results[try_num][0]
         prefer_prop = prefer_results[try_num][1]
+
+
+        # 1、信任度prop从大到小依次寻找匹配
+        if prefer_option in options:
+            print("[%s] PROP [%s] Exactly..." % (prefer_option, prefer_prop))
+            return options.index(prefer_option)
+
+
+        # 2、OCR识别错误，导致AI答案，没有匹配答题手机中的选项
         for char in prefer_option:
             for index, option in enumerate(options):
                 if str(char) in option:
@@ -86,8 +90,8 @@ def get_prefer_result(results, options):
                 max_count = count
                 max_count_index = index
 
-        # 匹配字符比例超过0.5则认为是可信任的选项
-        if max_count / len(prefer_option) >= 0.5:
+        # 匹配字符比例超过阈值则认为是可信任的选项
+        if max_count / len(prefer_option) >= config.OCR_THRESHOLD:
             print("[%s] PROP [%s] Likely..." % (prefer_option, prefer_prop))
             return max_count_index
 

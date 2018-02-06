@@ -48,7 +48,7 @@ def start_answer_individual(device_id, index, shared_queue):
     print(str(options))
 
     # 等待接收各个AI的答案
-    while time.time() - start < 6.6:
+    while time.time() - start < config.WAIT_TIME:
         time.sleep(0.2)
     results = shared_queue.get(False)
     shared_queue.put(results, False)
