@@ -89,6 +89,11 @@ $(function() {
         }
       });
 
+      // 过滤无效结果
+      ai_results = ai_results.filter((item) => {
+        return correct_obj[item[6]];
+      });
+
       ai_results = ai_results.map((item) => {
         ai_type = item[1]
         result_text = item[3];
