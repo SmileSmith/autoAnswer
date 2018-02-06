@@ -233,7 +233,7 @@ webpackJsonp([1], {
                                     },
                                     data: JSON.stringify(i),
                                     success:function(response,status,xhr){
-                                      console.log("reply correct ..." + JSON.stringify(data));
+                                      console.log("reply correct ..." + JSON.stringify(i));
                                     }
                                   });
                                   (t.question = t.question.concat(i.question)),

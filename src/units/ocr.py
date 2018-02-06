@@ -47,7 +47,6 @@ def depoint(img):  # input: gray image
 
 def ocr_img_tess_choices(image):
     """只运行一次 Tesseract"""
-    start = time.time()
 
     choices_region = config.CHOICES_REGION
 
@@ -61,9 +60,6 @@ def ocr_img_tess_choices(image):
     # 把图片变成二值图像
     region_im = binarizing(region_im, 190)
 
-    ocr_start = time.time()
-    log_warn("splitImg time: %ss", str(ocr_start - start)[:4])
-    
     # region_im.show()
 
     # win环境
@@ -77,8 +73,6 @@ def ocr_img_tess_choices(image):
     # lang 指定中文简体
     region_text = pytesseract.image_to_string(
         region_im, lang='chi_sim', config=tessdata_dir_config)
-
-    log_warn("OCR time: %ss", str(time.time() - ocr_start)[:4])
 
     region_text = region_text.replace("_", "一").split("\n")
     texts = [x for x in region_text if x != '']
@@ -95,7 +89,6 @@ def ocr_img_tess_choices(image):
 
 def ocr_img_tess(image):
     """只运行一次 Tesseract"""
-    start = time.time()
 
     combine_region = config.COMBINE_REGION
 
@@ -108,9 +101,6 @@ def ocr_img_tess(image):
 
     # 把图片变成二值图像
     region_im = binarizing(region_im, 190)
-
-    ocr_start = time.time()
-    log_warn("splitImg time: %ss", str(ocr_start - start)[:4])
 
     # region_im.show()
 
@@ -125,8 +115,6 @@ def ocr_img_tess(image):
     # lang 指定中文简体
     region_text = pytesseract.image_to_string(
         region_im, lang='chi_sim', config=tessdata_dir_config)
-
-    log_warn("OCR time: %ss", str(time.time() - ocr_start)[:4])
 
     region_text = region_text.replace("_", "一").split("\n")
     texts = [x for x in region_text if x != '']

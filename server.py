@@ -42,15 +42,23 @@ class MyHandler(BaseHTTPRequestHandler):
         datas = json.loads(str(body, 'UTF-8'))
         querypath = urlparse(self.path)
         apipath = querypath.path
+        res = None
         if apipath.startswith("/reply-answer"):
             controller.handle_answer(apipath, datas)
+        elif apipath.startswith('/reply-correct'):
+            controller.save_correct_result(apipath, datas)
+        elif apipath.startswith('/review-answer'):
+            res = controller.get_review_datas()
         elif apipath.startswith('/toggle-ai'):
             controller.toggle_ai(datas)
         self.send_response_only(200)
         self.send_header('Content-type', 'json')
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
-        self.wfile.write(b"ok")
+        if res:
+            self.wfile.write(json.dumps(res).encode('utf-8'))
+        else:
+            self.wfile.write(b"ok")
 
     def proxy_pass(self, orgin_path, target_host_path, **my_headers):
         """反向代理"""

@@ -7,6 +7,7 @@
 """
 import subprocess
 import time
+import random
 import os
 import sys
 from multiprocessing import Process, Queue
@@ -40,24 +41,27 @@ def start_answer_individual(device_id, index, shared_queue):
     """获取选项"""
     start = time.time()
     check_screenshot(device_id, index)
-    log_warn("screenShot time： %ss", str(time.time() - start)[:4])
     img = Image.open("./screenshot" + index + ".png")
     # question, options = ocr_img_tess(img)
     options = ocr_img_tess_choices(img)
-    log_info("> step 4: get device[%s] options", index)
+    log_warn("> step 4: get device[%s] options time： %ss", index, str(time.time() - start)[:4])
     print(str(options))
 
     # 等待接收各个AI的答案
-    while time.time() - start < 6:
+    while time.time() - start < config.WAIT_TIME:
         time.sleep(0.2)
     results = shared_queue.get(False)
     shared_queue.put(results, False)
 
     # 计算最佳答案
     result_index = get_prefer_result(results, options)
-    log_info("> step 5: get device[%s] prefer result is %s", index, result_index)
     if result_index is None:
-        return
+        log_warn("> step 5: can not get device[%s] result, try random...", index)
+        time.sleep(0.2)
+        result_index = random.randint(0, 2)
+    else:
+        log_info("> step 5: get device[%s] prefer result is %s", index, result_index)
+
     log_info("> step 6: tap device[%s] result: %s", index, result_index)
     tap_android_individual(device_id, result_index)
 
