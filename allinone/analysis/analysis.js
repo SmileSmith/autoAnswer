@@ -1,64 +1,82 @@
-var dom = document.getElementById("container");
-var myChart = echarts.init(dom);
+$(function() {
+  var dom = document.getElementById("container");
+  var myChart = echarts.init(dom);
 
-var seriesLabel = {
+  var seriesLabel = {
     normal: {
-        show: true,
-        textBorderColor: '#333',
-        textBorderWidth: 2
+      show: true,
+      textBorderColor: "#333",
+      textBorderWidth: 2
     }
-}
+  };
 
-option = {
+  var option = {
     title: {
-        text: 'AI Analysis'
+      text: "AI Analysis"
     },
     tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow'
-        }
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow"
+      }
     },
     legend: {
-        data: ['Single', 'Percentage']
+      data: ["Correct Count", "Correct Prop"]
     },
     grid: {
-        left: 100
+      left: 100
     },
     toolbox: {
-        show: true,
-        feature: {
-            saveAsImage: {}
-        }
+      show: true,
+      feature: {
+        saveAsImage: {}
+      }
     },
     xAxis: {
-        type: 'value',
-        name: 'Counts',
-        axisLabel: {
-            formatter: '{value}'
-        }
+      type: "value",
+      name: "Count/Prop",
+      axisLabel: {
+        formatter: "{value}"
+      }
     },
     yAxis: {
-        type: 'category',
-        inverse: true,
-        data: ['- Baidu -', '-Sougou-', '- UC -'],
+      type: "category",
+      inverse: true,
+      data: ["All", "- Baidu -", "- Baidu Per-", "-Sougou-", "- UC -"]
     },
     series: [
-        {
-            name: 'Single',
-            type: 'bar',
-            data: [165, 170, 30],
-            label: seriesLabel,
-        },
-        {
-            name: 'Percentage',
-            type: 'bar',
-            label: seriesLabel,
-            data: [150, 105, 110]
-        }
+      {
+        name: "Correct Count",
+        type: "bar",
+        data: [0, 0, 0, 0, 0],
+        label: seriesLabel
+      },
+      {
+        name: "Correct Prop",
+        type: "bar",
+        label: seriesLabel,
+        data: [0, 0, 0, 0, 0]
+      }
     ]
-};
-;
-if (option && typeof option === "object") {
+  };
+
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8080/review-answer",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      dataType: "json"
+    },
+    data: JSON.stringify({ date: "all" }),
+    success: function(response, status, xhr) {
+      data = JSON.parse(response);
+      ai_results = data.ai_results;
+      correct_results = data.correct_results
+      console.log("reply success ..." + JSON.stringify(data));
+    }
+  });
+
+  if (option && typeof option === "object") {
     myChart.setOption(option, true);
-}
+  }
+});

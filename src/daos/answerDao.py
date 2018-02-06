@@ -16,6 +16,10 @@ def save_result(result):
         values (null, ?, ?, ?, ?, ?, ?)',
                        (result.ai_type, result.index, result.text, result.type, result.prop, result.question_id))
 
+def get_all_result():
+    """获取所有正确结果"""
+    ai_results = sqlite.execute_sql('select * from ai_result')
+    return ai_results
 
 def save_correct_result(result):
     """保存正确的答案"""
@@ -23,3 +27,8 @@ def save_correct_result(result):
         id, correct_text, question_id) \
         values (null, ?, ?)',
                        (result.text, result.question_id))
+
+def get_all_correct_result():
+    """获取所有正确结果"""
+    correct_results = sqlite.execute_sql('select * from correct_result')
+    return correct_results
