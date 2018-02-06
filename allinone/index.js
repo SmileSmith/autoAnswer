@@ -11,13 +11,18 @@ $(function() {
       result: result
     };
     this.textContent = '...'
-    $.post(
-      "http://localhost:8080/reply-answer-human",
-      answerData,
-      (response) => {
+    $.ajax({
+      type:'POST',
+      url:"http://localhost:8080/reply-answer-human",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "dataType": "json"
+      },
+      data: JSON.stringify(answerData),
+      success: (response) => {
         console.log("reply success ...");
       }
-    );
+    });
     setTimeout(() => {
       this.textContent = buttonLabels[result];
     }, 500);
