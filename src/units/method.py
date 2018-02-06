@@ -60,8 +60,10 @@ def get_prefer_result(results, options):
 
     prefer_results = sorted(pri_obj.items(), key=lambda item: -item[1])
 
+    try_times = min(config.TRY_TIMES, len(prefer_results))
+
     # 尝试 信任度prop最大的三个选项
-    for try_num in range(config.TRY_TIMES):
+    for try_num in range(try_times):
 
         # 匹配的字符数，初始化为0
         match_counts = [0, 0, 0]
