@@ -132,7 +132,7 @@ def answer_by_human(datas, answer_type):
     result = int(datas["result"])
     question_round = str(datas["question"]["round"])
     adb.tap_android_all(result)
-    log_info(">>> No.%s %s Answer : %s",
+    log_info(">>> No.%s %s Human Answer : %s",
              question_round, answer_type, result)
 
 
@@ -149,3 +149,4 @@ def save_correct_result(datas):
         else:
             result = Result(0, question['answer'], 1, question_id)
             answerDao.save_correct_result(result)
+    log_info(">>> Save Correct Result Success...")
