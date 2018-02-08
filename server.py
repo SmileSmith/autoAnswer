@@ -30,6 +30,7 @@ class MyHandler(BaseHTTPRequestHandler):
                             Referer="http://answer.sm.cn/answer/index?activity=million", Host="answer.sm.cn")
         else:
             self.handle_static()
+        self.close_connection = True
 
     def do_POST(self):
         """处理POST请求"""
@@ -54,6 +55,7 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(res).encode('utf-8'))
         else:
             self.wfile.write(b"ok")
+        self.close_connection = True
 
     def proxy_pass(self, orgin_path, target_host_path, **my_headers):
         """反向代理"""
@@ -89,7 +91,7 @@ class MyHandler(BaseHTTPRequestHandler):
         """处理静态文件请求"""
         send_reply = False
         querypath = urlparse(self.path)
-        filepath, query = querypath.path, querypath.query
+        filepath = querypath.path
 
         if filepath.endswith('/'):
             filepath += 'index.html'
