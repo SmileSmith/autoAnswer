@@ -733,7 +733,7 @@
 				})
 			}(e)
 		}, y = function(n, e, o) {
-			return '\n    <div class="process-mes" ' + (window.JSInvoker && window.JSInvoker.getJSInvokerTag && "WD_FloatWindow" === window.JSInvoker.getJSInvokerTag() ? 'style="display:none"' : "") + '>\n      <span class="process-back" id="' + n + 'AnswerBack"></span>\n      <span class="process-logo"><img src="' + e + '"></span>\n      <div class="process-text">\n        <h4>' + o + '</h4>\n        <p><span>答题开始后会自动显示答案</span></p>\n      </div>\n      <span class="share-style small" id="' + n + 'OpenFloatWindow"\n        ' + (v() ? "" : 'style="display:none"') + '\n      >\n        开启小窗\n      </span>\n      <span class="share-style share" id="' + n + 'Share">分享助手</span>\n    </div>\n  '
+			return '\n    <div class="process-mes" ' + (window.JSInvoker && window.JSInvoker.getJSInvokerTag && "WD_FloatWindow" === window.JSInvoker.getJSInvokerTag() ? 'style="display:none"' : "") + '>\n      <span class="process-back" id="' + n + 'AnswerBack"></span>\n    <div class="process-text">\n        <h4>' + o + '</h4>\n    </div>\n     </div>\n  '
 		}, k = function(n, e, o, t) {
 			var i = y(n, e, o),
 				r = '\n  <div class="box-process-layout" id="' + n + '">\n    <div class="box-process box-process-info">\n      ' + i + '\n      <div class="box-wait-animate" style="display:none;">\n        <div class="wait-animate"><i></i><i></i><i></i></div>\n        正在等待下一题\n      </div>\n      <div class="box-wait-animate" id="zscrWaiting" style="display:none;">\n        <div class="wait-animate"><i></i><i></i><i></i></div>\n        欢迎大家，答题马上开始，加油！\n      </div>\n      <div class="list-answer" id="' + n + 'AnsList"></div>\n    </div>\n  </div>\n  ';
@@ -785,10 +785,10 @@
 									/^\d{1,}\.{1}/i.test(a.title.trim()) && (s = -1 === a.title.indexOf(".") ? "" : a.title.split(".")[0] + ".", c = -1 === a.title.indexOf(".") ? a.title : a.title.substr(a.title.indexOf(s) + s.length)), $("#" + a.cd_id).length || (i = '\n                  <div class="box-answer" id="' + a.cd_id + '">\n                    <h4>\n                      ' + a.title + "\n                    </h4>\n                    <p>答案：<span>" + (a.result ? a.result : "汪仔也不太懂") + "</span>\n                    </p>\n                    <a " + (a.search_infos && a.search_infos.length > 0 && "" !== a.search_infos[0].summary ? "" : 'style="display:none"') + '\n                      class="check"\n                      href="https://wap.sogou.com/web/searchList.jsp?pid=sogou-clse-ddcbe25988981920-1000&w=1580&keyword=' + encodeURIComponent(c) + '"\n                      onclick="toQuery()"\n                    >\n                      ' + (a.search_infos && a.search_infos.length > 0 && a.search_infos[0].summary) + "\n                      <span>快速查看&gt;</span>\n                    </a>\n                  </div>\n                " + i, window.scrollTo(0, 0))
 								}
 							}
-							var d = document.getElementById(l.channel + "AnsList");
 							if (i.length >= 2) {
-								i.last().remove()
+								$("#" + l.channel + "AnsList").find(".box-answer").last().remove()
 							}
+							var d = document.getElementById(l.channel + "AnsList");
 							d.innerHTML = i + d.innerHTML
 						}
 					} catch (n) {
