@@ -11,8 +11,14 @@ $(function() {
   };
 
   var option = {
+    color: ['#2f4554', '#c23531', '#dd6b66', ],
     title: {
-      text: "AI Analysis"
+      text: "AI Analysis",
+      textStyle: {
+        fontSize: 40
+      },
+      left: 'center',
+      top: '3%'
     },
     tooltip: {
       trigger: "axis",
@@ -21,10 +27,14 @@ $(function() {
       }
     },
     legend: {
-      data: ["Correct Count", "Correct Prop"]
+      data: ["All", "Correct", "Correct Prop"],
+      left: 100,
+      top: '5%'
     },
     grid: {
-      left: 100
+      left: 100,
+      height: '80%',
+      top: '10%'
     },
     toolbox: {
       show: true,
@@ -42,20 +52,26 @@ $(function() {
     yAxis: {
       type: "category",
       inverse: true,
-      data: ["All", "- Baidu -", "- Baidu Per-", "-Sougou-", "- UC -"]
+      data: ["- Baidu -", "- Baidu Per-", "-Sougou-", "- UC -"]
     },
     series: [
       {
-        name: "Correct Count",
+        name: "All",
         type: "bar",
-        data: [0, 0, 0, 0, 0],
+        data: [0, 0, 0, 0],
+        label: seriesLabel
+      },
+      {
+        name: "Correct",
+        type: "bar",
+        data: [ 0, 0, 0, 0],
         label: seriesLabel
       },
       {
         name: "Correct Prop",
         type: "bar",
         label: seriesLabel,
-        data: [0, 0, 0, 0, 0]
+        data: [0, 0, 0, 0]
       }
     ]
   };
@@ -165,11 +181,13 @@ $(function() {
 
       // ==========开始计数==========
 
-      var correct_count_array = [all_count, 0, 0, 0,0]
+      var correct_count_array = [0, 0, 0, 0]
+      var all_count_array = [0, 0, 0, 0]
 
       for (ai_type in percentage_obj) {
         for (question_id in percentage_obj[ai_type]) {
           if (ai_type === 'baidu') {
+            all_count_array[1] += 1;
             if (percentage_obj[ai_type][question_id]){
               correct_count_array[1] += 1;
             }
@@ -179,25 +197,29 @@ $(function() {
 
       for (ai_type in single_obj) {
         for (question_id in single_obj[ai_type]) {
+          let index = -1;
+          if (ai_type === 'baidu') {
+            index = 0
+          } else if (ai_type === 'sogou') {
+            index = 2
+          } else if (ai_type === 'uc') {
+            index = 3
+          }
+          all_count_array[index] += 1;
           if (single_obj[ai_type][question_id]){
-            if (ai_type === 'baidu') {
-              correct_count_array[2] += 1;
-            } else if (ai_type === 'sogou') {
-              correct_count_array[3] += 1;
-            } else if (ai_type === 'uc') {
-              correct_count_array[4] += 1;
-            }
+            correct_count_array[index] += 1;
           }
         }
       }
 
 
-      var correct_prop_array = correct_count_array.map((item)=> {
-        return parseFloat((item/all_count).toFixed(2))
+      var correct_prop_array = correct_count_array.map((item, index)=> {
+        return parseFloat((item/all_count_array[index]).toFixed(2))
       });
 
-      option.series[0].data = correct_count_array;
-      option.series[1].data = correct_prop_array;
+      option.series[0].data = all_count_array;
+      option.series[1].data = correct_count_array;
+      option.series[2].data = correct_prop_array;
 
       myChart.setOption(option, true);
 

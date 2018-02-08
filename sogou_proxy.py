@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
+from http import HTTPStatus
 
 ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.1.1; Google Pixel - \
 7.1.0 - API 25 - 1080x1920 Build/NMF26Q; wv) AppleWebKit/537.36 (KHTML, like Gecko) \
@@ -43,7 +44,6 @@ class MySogouPushHandler(BaseHTTPRequestHandler):
             print("%s - %s" % (url_error, target_host_path))
         else:
             data = res.readline()
-            # TODO:当是AI自动代替的模式时，直接解析结果调用相关控制器逻辑
         finally:
             self.send_response_only(200)
             self.end_headers()
@@ -51,6 +51,46 @@ class MySogouPushHandler(BaseHTTPRequestHandler):
                 self.wfile.write(b"console.log('Remote Server Error')")
             else:
                 self.wfile.write(data)
+
+    def handle_one_request(self):
+        """Handle a single HTTP request.
+
+        Overloaded: Do Not Log Timeout
+
+        You normally don't need to override this method; see the class
+        __doc__ string for information on how to handle specific HTTP
+        commands such as GET and POST.
+
+        """
+        try:
+            self.raw_requestline = self.rfile.readline(65537)
+            if len(self.raw_requestline) > 65536:
+                self.requestline = ''
+                self.request_version = ''
+                self.command = ''
+                self.send_error(HTTPStatus.REQUEST_URI_TOO_LONG)
+                return
+            if not self.raw_requestline:
+                self.close_connection = True
+                return
+            if not self.parse_request():
+                # An error code has been sent, just exit
+                return
+            mname = 'do_' + self.command
+            if not hasattr(self, mname):
+                self.send_error(
+                    HTTPStatus.NOT_IMPLEMENTED,
+                    "Unsupported method (%r)" % self.command)
+                return
+            method = getattr(self, mname)
+            method()
+            self.wfile.flush() #actually send the response if not already done.
+        except socket.timeout:
+            #a read or a write timed out.  Discard this connection
+            #self.log_error("Request timed out: %r", e)
+            self.close_connection = True
+            return
+
 
 def run_proxy_server(port=PORT):
     """启动本地服务器"""
