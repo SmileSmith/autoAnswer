@@ -38,6 +38,7 @@ def answer_by_ai(datas, ai_type):
         question_id = refresh_answer(question)
         question.set_id(question_id)
         log_info("> step 2: get question ")
+        print("[%s. %s]" % (question_round, question_text))
     else:
         question = CUR_ANSWER.question
 

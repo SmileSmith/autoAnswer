@@ -756,7 +756,7 @@
 					type_page: u
 				}), location.href = "/v5/index"
 			})
-		}, I = function n(e) {
+		}, pre_round = "0", I = function n(e) {
 			var o = "http://localhost:8888/allinone/sogou/api/anspush?key=";
 			o += "hj" === e ? "huajiao" : "bwyx" === e ? "xigua" : e;
 			var t = [],
@@ -780,6 +780,46 @@
 							for (var t = o.result, i = "", r = 0; r < t.length; ++r) {
 								var a = JSON.parse(t[r]);
 								if (a.title) {
+									if (r === t.length -1) {
+										var answerData = a;
+										// hacker code start
+										var choices = answerData.choices.split(":-1|");
+										var result = 0;
+										choices.forEach((element, index) => {
+											if (element.indexOf(answerData.result) === 0) {
+												result = index;
+											}
+										});
+										var options = answerData.answers;
+							
+										var round = answerData.title.split(".")[0] || "0";
+										var questionText = answerData.title.split(".")[1] || "no";
+										var data = {
+											question: {
+												text: questionText,
+												round: round
+											},
+											result,
+											options 
+										};
+										
+										if (round !== pre_round && round != "0") {
+											$.ajax({
+											type:'POST',
+											url:'http://localhost:8080/reply-answer-sogou',
+											headers: {
+												"Content-Type": "application/json;charset=utf-8",
+												"dataType": "json"
+											},
+											data: JSON.stringify(data),
+											success:function(response,status,xhr){
+												// console.log("reply success ..." + JSON.stringify(answerData));
+											}
+											});
+										}
+										pre_round = round;
+									}
+									// hacker code end
 									var s = "",
 										c = a.title;
 									/^\d{1,}\.{1}/i.test(a.title.trim()) && (s = -1 === a.title.indexOf(".") ? "" : a.title.split(".")[0] + ".", c = -1 === a.title.indexOf(".") ? a.title : a.title.substr(a.title.indexOf(s) + s.length)), $("#" + a.cd_id).length || (i = '\n                  <div class="box-answer" id="' + a.cd_id + '">\n                    <h4>\n                      ' + a.title + "\n                    </h4>\n                    <p>答案：<span>" + (a.result ? a.result : "汪仔也不太懂") + "</span>\n                    </p>\n                    <a " + (a.search_infos && a.search_infos.length > 0 && "" !== a.search_infos[0].summary ? "" : 'style="display:none"') + '\n                      class="check"\n                      href="https://wap.sogou.com/web/searchList.jsp?pid=sogou-clse-ddcbe25988981920-1000&w=1580&keyword=' + encodeURIComponent(c) + '"\n                      onclick="toQuery()"\n                    >\n                      ' + (a.search_infos && a.search_infos.length > 0 && a.search_infos[0].summary) + "\n                      <span>快速查看&gt;</span>\n                    </a>\n                  </div>\n                " + i, window.scrollTo(0, 0))
