@@ -7,7 +7,7 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from multiprocessing import Process
 from os import path
-import sys
+import webbrowser
 import json
 from src.units import adb, sqlite
 from src.controllers import controller
@@ -139,6 +139,7 @@ def run_server(port=PORT):
     httpd = HTTPServer(server_address, MyHandler)
     print('> Running Server On Port: ', port)
     print('> Press Ctrl + C to exit...\n')
+    webbrowser.open("http://localhost:%s/index.html" % (port))
     httpd.serve_forever()
 
 
