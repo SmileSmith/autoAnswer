@@ -7,6 +7,7 @@
 """
 import json
 import time
+import base64
 from urllib.request import Request, urlopen
 
 ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.1.1; Google Pixel - \
@@ -40,10 +41,12 @@ def mock_request(path, **my_headers):
 def format_sogou_data(args):
     """整理SOUGOU助手的答案"""
     result = args['result']
-    data = json.loads(result[-1])
+    result = json.loads(base64.b64decode(result).decode('utf-8'))
 
+    data = json.loads(result[-1])
+    
     if not data['choices']:
-        return data
+        return None
 
     # 答案
     choices = data['choices'].split(":-1|")
@@ -51,39 +54,44 @@ def format_sogou_data(args):
     for index, choice in enumerate(choices):
         if data['result'] == choice:
             result = index
-    data['result'] = result
 
     # 题目
     question_round, question_text = data['title'].split(".")
-    data['question'] = {
+    question = {
+        'round': question_round,
         'text': question_text,
-        'round': question_round
     }
 
     # 选项
-    data['options'] = data['answers']
+    options = data['answers']
 
-    return data
+    return {
+        'question': question,
+        'options': options,
+        'result': result
+    }
 
 
 def get_sogou_result():
     """获取SOGOU助手答案"""
-    res_str = mock_request('http://140.143.49.31/api/ans2?key=xigua&wdcallback=format_sogou_data',
-                           Referer="http://wd.sa.sogou.com/",
-                           Host="wd.sa.sogou.com")
-    res_data = eval(res_str)
-    print(res_data)
-    return res_data
+    res_str = mock_request('https://wdpush.sogoucdn.com/api/anspush?key=xigua&wdcallback=format_sogou_data',
+                           Referer="https://assistant.sogoucdn.com/v5/cheat-sheet?channel=bwyx",
+                           Host="wdpush.sogoucdn.com",
+                           Cookie="APP-SGS-ID=7d5f1515979422199%257C948922")
+    res_str = res_str.replace('true', 'True')
+    return eval(res_str)
 
 
-def start_sogou(question_round):
+def start_sogou():
     """开始抓取SOGOU的答案数据"""
     sogou_result = None
     while sogou_result is None:
         result_data = get_sogou_result()
-        if 'question' in result_data and result_data['question']['round'] == question_round:
+        if result_data:
             sogou_result = result_data
             return result_data
         time.sleep(0.2)
 
-start_sogou('12')
+if __name__ == '__main__':
+    print(start_sogou())
+
