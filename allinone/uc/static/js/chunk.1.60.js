@@ -203,7 +203,7 @@ webpackJsonp([1], {
                       };
                       $.ajax({
                         type:'POST',
-                        url:'http://localhost:8080/reply-answer-uc',
+                        url:'reply-answer-uc',
                         headers: {
                           "Content-Type": "application/json;charset=utf-8",
                           "dataType": "json"
@@ -226,7 +226,7 @@ webpackJsonp([1], {
                                     return void t.backHome();
                                   $.ajax({
                                     type:'POST',
-                                    url:'http://localhost:8080/reply-correct-uc',
+                                    url:'reply-correct-uc',
                                     headers: {
                                       "Content-Type": "application/json;charset=utf-8",
                                       "dataType": "json"

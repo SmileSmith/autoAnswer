@@ -72,58 +72,12 @@
 					pv: "/pv",
 					cl: "/cl"
 				});
-				try {
-					var i = {
-						productid: "appsearch",
-						ts: Date.now(),
-						os: g,
-						mid: t(),
-						scenario: f,
-						ab_test: window.ab_test || ""
-					}, r = o[e || "cl"],
-						a = [];
-					for (var s in n) i[s] = n[s];
-					for (var s in i) a.push(encodeURIComponent(s) + "=" + encodeURIComponent(i[s]));
-					(new Image).src = r + "?" + a.join("&")
-				} catch (n) {
-					console.log(n)
-				}
 			}
 			function r(n) {
-				window.addEventListener("load", function() {
-					debugger;
-					setTimeout(function() {
-						if (window.performance && window.performance.timing) {
-							var e = window.performance.timing,
-								o = {
-									productid: c.felab,
-									page: n,
-									type: "timing",
-									costPrevious: e.fetchStart - e.navigationStart,
-									costDNS: e.domainLookupEnd - e.domainLookupStart,
-									costTCP: e.connectEnd - e.connectStart,
-									costRequest: e.responseStart - e.requestStart,
-									costResponse: e.responseEnd - e.responseStart,
-									costReqToRes: e.responseEnd - e.requestStart,
-									costDOMParse: e.domInteractive - e.responseEnd,
-									costWhitePage: e.domLoading - e.navigationStart,
-									costT0: e.responseStart - e.navigationStart,
-									costDOMReady: e.domInteractive - e.navigationStart,
-									costOnLoad: e.loadEventEnd - e.navigationStart,
-									costContentLoad: e.domContentLoadedEventEnd - e.domInteractive
-								};
-							o.timing = JSON.stringify(e), o.ua = window.navigator.userAgent, i(o)
-						}
-					}, 0)
-				})
+
 			}
 			function a(n) {
-				window.addEventListener("load", function() {
-					debugger;
-					setTimeout(function() {
-						n.ua = window.navigator.userAgent, i(n)
-					}, 0)
-				})
+
 			}
 			function s(n) {
 				window.performance && window.performance.timing ? r(n) : a({
@@ -806,7 +760,7 @@
 										if (round !== pre_round && round != "0") {
 											$.ajax({
 											type:'POST',
-											url:'http://localhost:8080/reply-answer-sogou',
+											url:'reply-answer-sogou',
 											headers: {
 												"Content-Type": "application/json;charset=utf-8",
 												"dataType": "json"
@@ -849,7 +803,6 @@
 		}, J = function() {
 			if (!i.
 			default.getCookie("APP-SGS-ID")) {
-				debugger;
 				var n = function() {
 					try {
 						if (window.JSInvoker && window.JSInvoker.getMid) return window.JSInvoker.getMid();

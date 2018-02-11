@@ -1,4 +1,5 @@
 $(function() {
+  document.cookie = "BAIDUCUID=B9D624AFDDAC800477DDF6A4059EA2A3; domain=.baidu.com; "
   function parseUrl() {
     var query = {};
     var urlSearch = window.location.search || "";
@@ -16,19 +17,23 @@ $(function() {
     return query;
   }
   function urlMaker() {
-    var url = "//secr.baidu.com/nv/{path}/answer";
+    var url = "https://selab.baidu.com/nv/{path}/answer";
     var path = parseUrl().app;
     if (path) {
       url = url.replace("{path}", path);
     } else {
-      url = "//secr.baidu.com/nv/xiguashipin/answer";
+      url = "https://selab.baidu.com/nv/xiguashipin/answer";
     }
     return url;
   }
+  
   var url = urlMaker();
   var socket = io.connect(url, {
     path: "/nv/answer.sock",
-    transports: ["polling"]
+    transports: ['websocket'],
+    query: {
+        xc: '0c8922593703d6a142bcec08f846f65f'
+    }
   });
   socket.on("answer", function(data) {
     if (data.step == 0) {
@@ -38,7 +43,7 @@ $(function() {
       data.question.round = data.question.questionId
       $.ajax({
         type:'POST',
-        url:'http://localhost:8080/reply-answer-baidu',
+        url:'reply-answer-baidu',
         headers: {
           "Content-Type": "application/json;charset=utf-8",
           "dataType": "json"
@@ -65,7 +70,7 @@ $(function() {
       data.question.round = data.question.questionId
       $.ajax({
         type:'POST',
-        url:'http://localhost:8080/reply-answer-baidu',
+        url:'reply-answer-baidu',
         headers: {
           "Content-Type": "application/json;charset=utf-8",
           "dataType": "json"

@@ -78,7 +78,7 @@ $(function() {
 
   $.ajax({
     type: "POST",
-    url: "http://localhost:8080/review-answer",
+    url: "review-answer",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
       dataType: "json"
