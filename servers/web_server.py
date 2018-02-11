@@ -44,13 +44,13 @@ class MyHandler(BaseHTTPRequestHandler):
         querypath = urlparse(self.path)
         apipath = querypath.path
         res = None
-        if apipath.startswith("/reply-answer"):
+        if apipath.startswith("/allinone/reply-answer"):
             controller.handle_answer(apipath, datas)
-        elif apipath.startswith('/reply-correct'):
+        elif apipath.startswith('/allinone/reply-correct'):
             controller.save_correct_result(apipath, datas)
-        elif apipath.startswith('/review-answer'):
+        elif apipath.startswith('/allinone/review-answer'):
             res = controller.get_review_datas()
-        elif apipath.startswith('/toggle-ai'):
+        elif apipath.startswith('/allinone/toggle-ai'):
             controller.toggle_ai(datas)
         self.send_response_only(200)
         self.send_header('Content-type', 'json')
