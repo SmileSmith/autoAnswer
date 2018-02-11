@@ -48,7 +48,7 @@ class MyHandler(BaseHTTPRequestHandler):
             controller.handle_answer(apipath, datas)
         elif apipath.startswith('/allinone/reply-correct'):
             controller.save_correct_result(apipath, datas)
-        elif apipath.startswith('/allinone/review-answer'):
+        elif apipath.startswith('/allinone/analysis/review-answer'):
             res = controller.get_review_datas()
         elif apipath.startswith('/allinone/toggle-ai'):
             controller.toggle_ai(datas)

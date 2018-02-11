@@ -39,7 +39,7 @@ PS：注意根据需要，修改screen.conf中的分辨率，默认1080P（包�
 
 + 2、自行修改hosts文件中添加（可选，管理员模式下程序启动前会自行添加，非管理员模式请自行添加）
 
-  PS：因百度升级安全策略，采用wss+referer+cookie+特征码xc等多重校验，目前修改host是最快的解决方法
+  PS：因百度升级安全策略，采用[WSS]+[Referer]+[Cookie]+[User-Agent]+[特征码xc]等多重认证校验，目前修改host是最快的解决方法
 
   `127.0.0.1		dev.secr.baidu.com`
 
