@@ -257,14 +257,11 @@ webpackJsonp(
           bgColor: function() {
             return a.default.getCommonParamByKey("bgColor");
           },
-          bg: function() {
-            return "//sm01.alicdn.com/L1/272/6837/static/wap/img/dream/bg.png";
-          },
           appCSS: function() {
             var t = this.$store.state.AppCSS || {};
             return (
               (t.background =
-                this.bgColor + " url('" + this.bg + "') no-repeat right top"),
+                this.bgColor),
               (t.backgroundSize = "contain"),
               t
             );

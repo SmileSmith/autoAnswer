@@ -130,3 +130,12 @@ def mock_request(path, **my_headers):
     res = urlopen(req)
     res_str = str(res.read(), 'UTF-8')
     return res_str
+
+
+def change_host(host_name='dev.secr.baidu.com'):
+    """添加host"""
+    file = open("C:\\Windows\\System32\\drivers\\etc\\hosts", "r+", encoding='utf-8')
+    content = file.read()
+    if host_name not in content:
+        file.write("\n127.0.0.1 " + host_name)
+    file.close()

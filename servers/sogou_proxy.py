@@ -92,7 +92,7 @@ class MySogouPushHandler(BaseHTTPRequestHandler):
             return
 
 
-def run_proxy_server(port=PORT):
+def run_sogou_proxy(port=PORT):
     """启动本地服务器"""
     server_address = ('', port)
     httpd = HTTPServer(server_address, MySogouPushHandler)

@@ -11,7 +11,7 @@ from .aiSwitchController import is_auto
 def handle_answer(apipath, datas):
     """处理答题请求"""
     answer_type = apipath.split("-").pop()
-
+    
     if answer_type == "human":
         answerService.answer_by_human(datas, answer_type)
     elif is_auto():

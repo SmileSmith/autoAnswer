@@ -13,7 +13,7 @@ $(function() {
     this.textContent = '...'
     $.ajax({
       type:'POST',
-      url:"http://localhost:8080/reply-answer-human",
+      url:"reply-answer-human",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
         "dataType": "json"
@@ -36,7 +36,7 @@ $(function() {
   function postAISwitcher(switcher, callback) {
     $.ajax({
       type:'POST',
-      url:"http://localhost:8080/toggle-ai",
+      url:"toggle-ai",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
         "dataType": "json"
