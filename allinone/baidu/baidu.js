@@ -1,5 +1,19 @@
 $(function() {
-  document.cookie = "BAIDUCUID=B9D624AFDDAC800477DDF6A4059EA2A3; domain=.baidu.com; "
+
+  document.cookie = "BAIDUCUID=0OSCilaABulxaHutluBS8_ae2t_Ruv8NliHgigiTvaKQLBd5B; domain=.baidu.com; path=/;";
+  document.cookie = "BAIDUID=5F187DAC496719041F90FD90536CCC9F:FG=1; domain=.baidu.com; path=/;";
+
+  // 获取动态生成的XC码
+  var xc = '';
+  $.ajax({
+    type: 'get',
+    async: false,
+    url:'baidu/answer?app=xiguashipin',
+    success: (data)=> {
+      xc = data.match(/xc: \'(.*?)\'/)[1]
+    }
+  });
+
   function parseUrl() {
     var query = {};
     var urlSearch = window.location.search || "";
@@ -32,7 +46,7 @@ $(function() {
     path: "/nv/answer.sock",
     transports: ['websocket'],
     query: {
-        xc: '0c8922593703d6a142bcec08f846f65f'
+        xc: xc
     }
   });
   socket.on("answer", function(data) {

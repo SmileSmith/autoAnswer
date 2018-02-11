@@ -801,22 +801,7 @@
 		}, b = function() {
 			void 0 !== f("channel") ? l.channel = f("channel") : l.channel = "bwyx", void 0 !== f("name") ? l.channelName = f("name") : l.channelName = w(l.channel), void 0 !== f("appName") ? l.channelAppName = f("appName") : l.channelAppName = g(l.channel), void 0 !== f("icon") ? l.channelIcon = f("icon") : l.channelIcon = h(l.channel), S(), k(l.channel, l.channelIcon, l.channelName, l.channelAppName), I(l.channel)
 		}, J = function() {
-			if (!i.
-			default.getCookie("APP-SGS-ID")) {
-				var n = function() {
-					try {
-						if (window.JSInvoker && window.JSInvoker.getMid) return window.JSInvoker.getMid();
-						if (window.JSInvoker && window.JSInvoker.h5 && window.JSInvoker.h5.getMid) return window.JSInvoker.h5.getMid();
-						return "7d5f1515979422199%7C948922";
-						throw new Error("no-mid")
-					} catch (n) {
-						return i.
-						default.makeID(32)
-					}
-				}();
-				i.
-				default.setCookie("APP-SGS-ID", n, 360, "/", "localhost")
-			}
+
 		}, A = function() {
 			SgsPb.directPb({
 				productid: "appsearch",

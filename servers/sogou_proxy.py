@@ -22,7 +22,9 @@ class MySogouPushHandler(BaseHTTPRequestHandler):
         apipath = querypath.path
         if apipath.startswith("/allinone/sogou/api/anspush"):
             self.proxy_pass("/allinone/sogou/api/anspush", "https://wdpush.sogoucdn.com/api/anspush",
-                            Referer="https://assistant.sogoucdn.com/v5/cheat-sheet?channel=bwyx", Host="wdpush.sogoucdn.com")
+                            Referer="https://assistant.sogoucdn.com/v5/cheat-sheet?channel=bwyx", 
+                            Host="wdpush.sogoucdn.com",
+                            Cookie="APP-SGS-ID=7d5f1515979422199%257C948922")
 
     def proxy_pass(self, orgin_path, target_host_path, **my_headers):
         """反向代理"""

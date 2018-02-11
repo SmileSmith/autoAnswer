@@ -14,6 +14,9 @@ CURRENT_DIR = path.dirname(path.realpath(__file__))
 
 PORT = 8080
 
+ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.0; SM-C7010 Build/NRD90M; wv) \
+AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/48.0.2564.116 \
+Mobile Safari/537.36 T7/9.3 SearchCraft/2.0.0 (Baidu; P1 7.0)"
 
 class MyHandler(BaseHTTPRequestHandler):
     """处理各类请求的控制器"""
@@ -25,6 +28,11 @@ class MyHandler(BaseHTTPRequestHandler):
         if apipath.startswith("/allinone/uc/answer"):
             self.proxy_pass("/allinone/uc/answer", "http://answer.sm.cn/answer",
                             Referer="http://answer.sm.cn/answer/index?activity=million", Host="answer.sm.cn")
+        elif apipath.startswith("/allinone/baidu/answer"):
+            self.proxy_pass("/allinone/baidu/answer", "https://secr.baidu.com/answer",
+                            Referer="https://secr.baidu.com/entry?status=1-1-1-1-1-1&version=7", 
+                            Host="secr.baidu.com",
+                            Cookie="BAIDUCUID=0OSCilaABulxaHutluBS8_ae2t_Ruv8NliHgigiTvaKQLBd5B; BAIDUID=5F187DAC496719041F90FD90536CCC9F:FG=1;")
         else:
             self.handle_static()
         self.close_connection = True
@@ -62,7 +70,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 headers.replace_header(key, my_headers[key])
             else:
                 headers.add_header(key, my_headers[key])
-        # headers.replace_header("User-Agent", ANDROID_USER_AGENT)
+        headers.replace_header("User-Agent", ANDROID_USER_AGENT)
         req = Request(self.path.replace(
             orgin_path, target_host_path), headers=headers)
         data = None

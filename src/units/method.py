@@ -132,10 +132,29 @@ def mock_request(path, **my_headers):
     return res_str
 
 
-def change_host(host_name='dev.secr.baidu.com'):
-    """添加host"""
-    file = open("C:\\Windows\\System32\\drivers\\etc\\hosts", "r+", encoding='utf-8')
-    content = file.read()
-    if host_name not in content:
-        file.write("\n127.0.0.1 " + host_name)
-    file.close()
+def check_hosts(host_name='dev.secr.baidu.com'):
+    """检查host"""
+    read_file = open("C:\\Windows\\System32\\drivers\\etc\\hosts", "r", encoding='utf-8')
+    read_content = read_file.read()
+    if host_name in read_content:
+        return True
+
+    # 不存在的情况下尝试添加
+    try:
+        file = open("C:\\Windows\\System32\\drivers\\etc\\hosts", "r+", encoding='utf-8')
+    except PermissionError as error:
+        print(error)
+        print('\n缺少权限修改您电脑上的hots文件，请尝试以下两种方式：\n\
+        （1）以管理员权限打开命令行窗口\n\
+        （2）手动在hosts文件中添加一行： 127.0.0.1   dev.secr.baidu.com')
+        return False
+    else:
+        content = file.read()
+        if host_name not in content:
+            file.write("\n127.0.0.1 " + host_name)
+        file.close()
+        return True
+    
+
+    
+    
