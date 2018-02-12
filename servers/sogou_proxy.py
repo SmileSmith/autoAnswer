@@ -49,10 +49,13 @@ class MySogouPushHandler(BaseHTTPRequestHandler):
         finally:
             self.send_response_only(200)
             self.end_headers()
-            if not data:
-                self.wfile.write(b"console.log('Remote Server Error')")
-            else:
-                self.wfile.write(data)
+            try:
+                if not data:
+                    self.wfile.write(b"console.log('Remote Server Error')")
+                else:
+                    self.wfile.write(data)
+            except ConnectionAbortedError:
+                pass
 
     def handle_one_request(self):
         """Handle a single HTTP request.
