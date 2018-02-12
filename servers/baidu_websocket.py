@@ -6,6 +6,8 @@ import hashlib
 import socket
 import base64
 import struct
+import time
+from websocket import create_connection
 
 '''
 +-+-+-+-+-------+-+-------------+-------------------------------+
@@ -45,17 +47,45 @@ class websocket_thread(threading.Thread):
     def __init__(self, connection):
         super(websocket_thread, self).__init__()
         self.connection = connection
+        self.heart_alive = False
 
     def run(self):
         print('new websocket client joined!')
-        reply = 'i got u, from websocket server.\r\n'
-        while True:
-            data = self.connection.recv(8192)
-            re = parse_data(data)
-            print(re)
-            result = package_data(reply)
-            self.connection.send(result)
+        self.websocket_client = create_connection("wss://selab.baidu.com/nv/answer.sock/?xc=2e7c627ea035793709242ce812d0a659&EIO=3&transport=websocket",
+            header=[
+                "User-Agent:"+ANDROID_USER_AGENT, 
+                "Sec-WebSocket-Extensions:permessage-deflate; client_max_window_bits",
+                "Pragma:no-cache",
+                "Cache-Control:no-cache",
+                "Accept-Encoding:gzip, deflate, br",
+                "Accept-Language:zh-CN,zh;q=0.9"],
+            cookie="BAIDUCUID=0OSCilaABulxaHutluBS8_ae2t_Ruv8NliHgigiTvaKQLBd5B; BAIDUID=5F187DAC496719041F90FD90536CCC9F:FG=1;",
+            origin="http://secr.baidu.com:80",
+            host="selab.baidu.com")
+        print('proxy_websocket client connected!')
 
+        while True:
+            baidu_result = self.websocket_client.recv()
+
+            if "sid" in baidu_result:
+                self.websocket_client.send("40/nv/xiguashipin/answer?xc=2e7c627ea035793709242ce812d0a659")
+            print("Received '%s'" % baidu_result)
+
+            if "answer" in baidu_result:
+                if not self.heart_alive:
+                    heart_thread = threading.Thread(target=self.heart_break)
+                    heart_thread.start()
+                result = package_data(baidu_result)
+                self.connection.send(result)
+            # data = self.connection.recv(8192)
+            # re = parse_data(data)
+        
+    def heart_break(self):
+        self.heart_alive = True
+        while True:
+            time.sleep(20)
+            self.websocket_client.send("40")
+            
 
 def package_data(msg):
     """数据包装
@@ -148,15 +178,24 @@ def generate_token(msg):
     return base64.b64encode(ser_key)
 
 
+ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.0; SM-C7010 Build/NRD90M; wv) \
+AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/48.0.2564.116 \
+Mobile Safari/537.36 T7/9.3 SearchCraft/2.0.0 (Baidu; P1 7.0)"
+
+
 def websocket_server(port=8880, max_thread=5):
     """websocket"""
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(('127.0.0.1', port))
-    sock.listen(max_thread)
+    socket.setdefaulttimeout(3.0) 
+    websocket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    websocket_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    websocket_server.bind(('127.0.0.1', port))
+    websocket_server.listen(max_thread)
 
+    print('> Running Server On Port: ', port)
+    print('> Press Ctrl + C to exit...\n')
+    
     while True:
-        connection, address = sock.accept()
+        connection, address = websocket_server.accept()
         try:
             data = connection.recv(1024)
             headers = parse_headers(data)
@@ -171,29 +210,6 @@ Sec-WebSocket-Accept: %s\r\n\r\n' % token)
         except socket.timeout:
             print('websocket connection timeout')
 
-ANDROID_USER_AGENT = "Mozilla/5.0 (Linux; Android 7.0; SM-C7010 Build/NRD90M; wv) \
-AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/48.0.2564.116 \
-Mobile Safari/537.36 T7/9.3 SearchCraft/2.0.0 (Baidu; P1 7.0)"
-
 
 if __name__ == '__main__':
-    # websocket_server(9002, 5)
-    import time
-    from websocket import create_connection
-    ws = create_connection("wss://selab.baidu.com/nv/answer.sock/?xc=2e7c627ea035793709242ce812d0a659&EIO=3&transport=websocket",
-        header=[
-            "User-Agent:"+ANDROID_USER_AGENT, 
-            "Sec-WebSocket-Extensions:permessage-deflate; client_max_window_bits",
-            "Pragma:no-cache",
-            "Cache-Control:no-cache",
-            "Accept-Encoding:gzip, deflate, br",
-            "Accept-Language:zh-CN,zh;q=0.9"],
-        cookie="BAIDUCUID=0OSCilaABulxaHutluBS8_ae2t_Ruv8NliHgigiTvaKQLBd5B; BAIDUID=5F187DAC496719041F90FD90536CCC9F:FG=1;",
-        origin="http://secr.baidu.com:80",
-        host="selab.baidu.com")
-    for i in range(10):
-        time.sleep(1)
-        result = ws.recv()
-        if "sid" in result:
-            ws.send("40/nv/xiguashipin/answer?xc=2e7c627ea035793709242ce812d0a659")
-        print("Received '%s'" % result)
+    websocket_server(8880, 5)

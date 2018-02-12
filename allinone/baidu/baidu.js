@@ -50,6 +50,22 @@ $(function() {
     }
   });
   socket.on("answer", function(data) {
+/*   ws = new WebSocket("ws://localhost:8880");
+  ws.onopen =  function (msg) {
+    console.log('webSocket opened');
+  };
+  ws.onerror = function (error) {
+    console.log('error :' + error.name + error.number);
+  };
+  
+  ws.onclose =  function () {
+    console.log('webSocket closed');
+  };
+  ws.onmessage = function (message) {
+    // console.log('receive message : ' + message.data);
+    data_str = message.data.match(/nv\/xiguashipin\/answer,(.*)$/)[1]
+    data = eval(data_str) */
+
     if (data.step == 0) {
       data.options = data.answers.map((answer) => {
         return answer.text;

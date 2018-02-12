@@ -6,6 +6,7 @@ from multiprocessing import Process
 import webbrowser
 from servers.web_server import run_server
 from servers.sogou_proxy import run_sogou_proxy
+from servers.baidu_websocket import websocket_server
 from src.units import adb, sqlite
 from src.units.method import check_hosts
 
@@ -20,6 +21,8 @@ def run():
     if check_hosts(HOST):
         adb.init()
         sqlite.init_table()
+        # baidu_process = Process(target=websocket_server)
+        # baidu_process.start()
         sub_process = Process(target=run_sogou_proxy)
         sub_process.start()
         webbrowser.open("http://%s:%s/index.html" % (HOST, PORT))
