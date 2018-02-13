@@ -54,18 +54,28 @@ PS：注意根据需要，修改screen.conf中的分辨率，默认1080P（包�
 在src.config目录下修改对应参数
 
 #### circulate:
-  `try_times: 考虑到OCR错误的情况，匹配尝试最优选的前几个答案`
-  `ocr_threshold: OCR识别与AI返回的匹配数/总字符数>ocr_threshold时，认为是正确答案`
-  `wait_time: 百度返回题目，到点击屏幕的时间，根据网络情况配置`
+
+`try_times` - 考虑到OCR错误的情况，匹配尝试最优选的前几个答案
+
+`ocr_threshold` - OCR识别与AI返回的匹配数/总字符数>ocr_threshold时，认为是正确答
+
+`wait_time` - 百度返回题目，到点击屏幕的时间，根据网络情况配置`
 
 #### screen:
-  `屏幕分辨率相关配置: 截图OCR区域、点击答案的纵轴开始点|换行长度`
+
+`choices_region` - 选项OCR区域、|换行长度`
+
+`star` - 点击答案的纵轴开始点
+
+`gap` - 每个选项的间距
 
 #### weight:
-  `各个AI助手的权重值`
+
+对AI助手答案 信任的权重值
 
 #### ocr:
-  `tesseract安装路径和语言包路径`
+
+tesseract安装路径和语言包路径
 
 ## Update Log
 
