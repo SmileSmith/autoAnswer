@@ -64,8 +64,7 @@ $(function() {
   ws.onmessage = function (message) {
     // console.log('receive message : ' + message.data);
     data_str = message.data.match(/nv\/xiguashipin\/answer,(.*)$/)[1]
-    data = eval(data_str)
-
+    data = eval(data_str)[1]
     if (data.step == 0) {
       data.options = data.answers.map((answer) => {
         return answer.text;
