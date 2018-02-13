@@ -50,36 +50,38 @@ class websocket_thread(threading.Thread):
         self.heart_alive = False
 
     def run(self):
-        print('new websocket client joined!')
-        self.websocket_client = create_connection("wss://selab.baidu.com/nv/answer.sock/?xc=2e7c627ea035793709242ce812d0a659&EIO=3&transport=websocket",
-            header=[
-                "User-Agent:"+ANDROID_USER_AGENT, 
-                "Sec-WebSocket-Extensions:permessage-deflate; client_max_window_bits",
-                "Pragma:no-cache",
-                "Cache-Control:no-cache",
-                "Accept-Encoding:gzip, deflate, br",
-                "Accept-Language:zh-CN,zh;q=0.9"],
-            cookie="BAIDUCUID=0OSCilaABulxaHutluBS8_ae2t_Ruv8NliHgigiTvaKQLBd5B; BAIDUID=5F187DAC496719041F90FD90536CCC9F:FG=1;",
-            origin="http://secr.baidu.com:80",
-            host="selab.baidu.com")
-        print('proxy_websocket client connected!')
+        try:
+            self.websocket_client = create_connection("wss://selab.baidu.com/nv/answer.sock/?xc=2e7c627ea035793709242ce812d0a659&EIO=3&transport=websocket",
+                header=[
+                    "User-Agent:"+ANDROID_USER_AGENT, 
+                    "Sec-WebSocket-Extensions:permessage-deflate; client_max_window_bits",
+                    "Pragma:no-cache",
+                    "Cache-Control:no-cache",
+                    "Accept-Encoding:gzip, deflate, br",
+                    "Accept-Language:zh-CN,zh;q=0.9"],
+                cookie="BAIDUCUID=0OSCilaABulxaHutluBS8_ae2t_Ruv8NliHgigiTvaKQLBd5B; BAIDUID=5F187DAC496719041F90FD90536CCC9F:FG=1;",
+                origin="http://secr.baidu.com:80",
+                host="selab.baidu.com")
 
-        while True:
-            baidu_result = self.websocket_client.recv()
+            while True:
+                baidu_result = self.websocket_client.recv()
 
-            if "sid" in baidu_result:
-                self.websocket_client.send("40/nv/xiguashipin/answer?xc=2e7c627ea035793709242ce812d0a659")
-            print("Received '%s'" % baidu_result)
+                if "sid" in baidu_result:
+                    self.websocket_client.send("40/nv/xiguashipin/answer?xc=2e7c627ea035793709242ce812d0a659")
 
-            if "answer" in baidu_result:
-                if not self.heart_alive:
-                    heart_thread = threading.Thread(target=self.heart_break)
-                    heart_thread.start()
-                result = package_data(baidu_result)
-                self.connection.send(result)
-            # data = self.connection.recv(8192)
-            # re = parse_data(data)
-        
+                if "step" in baidu_result:
+                    if not self.heart_alive:
+                        heart_thread = threading.Thread(target=self.heart_break)
+                        heart_thread.setDaemon(True)
+                        heart_thread.start()
+                    result = package_data(baidu_result)
+                    self.connection.send(result)
+                # data = self.connection.recv(8192)
+                # re = parse_data(data)
+        except KeyboardInterrupt:
+            self.connection.close()
+            self.websocket_client.close()
+
     def heart_break(self):
         self.heart_alive = True
         while True:
@@ -183,16 +185,16 @@ AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/48.0.2564.116 \
 Mobile Safari/537.36 T7/9.3 SearchCraft/2.0.0 (Baidu; P1 7.0)"
 
 
-def websocket_server(port=8880, max_thread=5):
+def run_baidu_websocket(port=8880, max_thread=5):
     """websocket"""
-    socket.setdefaulttimeout(3.0) 
     websocket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     websocket_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     websocket_server.bind(('127.0.0.1', port))
     websocket_server.listen(max_thread)
+    websocket_server.settimeout(None)
 
     print('> Running Server On Port: ', port)
-    print('> Press Ctrl + C to exit...\n')
+    print('> Press Ctrl + [Pause/Break] to exit...\n')
     
     while True:
         connection, address = websocket_server.accept()
@@ -206,10 +208,13 @@ Upgrade: WebSocket\r\n\
 Connection: Upgrade\r\n\
 Sec-WebSocket-Accept: %s\r\n\r\n' % token)
             thread = websocket_thread(connection)
+            thread.setDaemon(True)
             thread.start()
         except socket.timeout:
             print('websocket connection timeout')
+        except KeyboardInterrupt:
+            connection.close()
 
 
 if __name__ == '__main__':
-    websocket_server(8880, 5)
+    run_baidu_websocket(8880, 5)

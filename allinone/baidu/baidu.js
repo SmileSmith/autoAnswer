@@ -14,7 +14,7 @@ $(function() {
     }
   });
 
-  function parseUrl() {
+/*   function parseUrl() {
     var query = {};
     var urlSearch = window.location.search || "";
     var queryStr = urlSearch.split("?")[1];
@@ -49,8 +49,8 @@ $(function() {
         xc: xc
     }
   });
-  socket.on("answer", function(data) {
-/*   ws = new WebSocket("ws://localhost:8880");
+  socket.on("answer", function(data) { */
+  ws = new WebSocket("ws://localhost:8880/baidu-websocket");
   ws.onopen =  function (msg) {
     console.log('webSocket opened');
   };
@@ -64,7 +64,7 @@ $(function() {
   ws.onmessage = function (message) {
     // console.log('receive message : ' + message.data);
     data_str = message.data.match(/nv\/xiguashipin\/answer,(.*)$/)[1]
-    data = eval(data_str) */
+    data = eval(data_str)
 
     if (data.step == 0) {
       data.options = data.answers.map((answer) => {
@@ -118,7 +118,7 @@ $(function() {
     } else {
       steperror();
     }
-  });
+  };
   function stepOne(data) {
     spliHtml(
       data.question.questionId + "." + data.question.text,
