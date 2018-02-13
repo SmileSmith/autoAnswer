@@ -36,6 +36,7 @@ BAIDU_WEIGHT = _WEIGHT_CONFIG.getfloat("weight", "baidu")
 BAIDU_P_WEIGHT = _WEIGHT_CONFIG.getfloat("weight", "baidu_percentage")
 SOGOU_WEIGHT = _WEIGHT_CONFIG.getfloat("weight", "sogou")
 UC_WEIGHT = _WEIGHT_CONFIG.getfloat("weight", "uc")
+UC_I_WEIGHT = _WEIGHT_CONFIG.getfloat("weight", "uc_individual")
 
 
 _CIRCULATE_CONFIG = configparser.ConfigParser()

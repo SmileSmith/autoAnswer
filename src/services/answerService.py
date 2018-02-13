@@ -114,8 +114,9 @@ def add_result_uc(index, options, question):
     if '|-|' in options[0]:
         new_results = options[0].split("|-|")
         log_info("> step 3: add results individual")
+        prop = config.UC_I_WEIGHT
         for index, result_text in enumerate(new_results):
-            result = Result(index, result_text, config.UC_WEIGHT, question.id)
+            result = Result(index, result_text, prop, question.id)
             result.set_type("uc", "single")
             answerDao.save_result(result)
             CUR_ANSWER.add_result(result)
