@@ -37,23 +37,35 @@ PS：注意根据需要，修改screen.conf中的分辨率，默认1080P（包�
 
 + 1、连接手机adb（可选，如果需要AI答题）
 
-+ 2、自行修改hosts文件中添加（可选，管理员模式下程序启动前会自行添加，非管理员模式请自行添加）
-
-  PS：因百度升级安全策略，采用[WSS]+[Referer]+[Cookie]+[User-Agent]+[特征码xc]等多重认证校验，目前修改host是最快的解决方法
-
-  `127.0.0.1		dev.secr.baidu.com`
-
-+ 3、开启Py的Sever做静态托管和反向代理。
++ 2、开启Py的Sever做静态托管和反向代理。
 
   `py server.py`
 
-+ 4、点击All in One Page进入答题页面
++ 3、点击All in One Page进入答题页面
 
   `1) 可点击切换 AI自动答题`
 
   `2) 可选择自己答题`
 
 + 4、点击AI Analysis进入助手分析页面
+
+## Config
+
+在src.config目录下修改对应参数
+
+#### circulate:
+  `try_times: 考虑到OCR错误的情况，匹配尝试最优选的前几个答案`
+  `ocr_threshold: OCR识别与AI返回的匹配数/总字符数>ocr_threshold时，认为是正确答案`
+  `wait_time: 百度返回题目，到点击屏幕的时间，根据网络情况配置`
+
+#### screen:
+  `屏幕分辨率相关配置: 截图OCR区域、点击答案的纵轴开始点|换行长度`
+
+#### weight:
+  `各个AI助手的权重值`
+
+#### ocr:
+  `tesseract安装路径和语言包路径`
 
 ## Update Log
 
