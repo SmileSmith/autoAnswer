@@ -134,10 +134,13 @@ def mock_request(path, **my_headers):
 
 def check_hosts(host_name='dev.secr.baidu.com'):
     """检查host"""
-    read_file = open("C:\\Windows\\System32\\drivers\\etc\\hosts", "r", encoding='utf-8')
-    read_content = read_file.read()
-    if host_name in read_content:
-        return True
+    try:
+        read_file = open("C:\\Windows\\System32\\drivers\\etc\\hosts", "r", encoding='utf-8')
+        read_content = read_file.read()
+        if host_name in read_content:
+            return True
+    except UnicodeDecodeError:
+        print("不支持的编码类型，请切换解码放式或自行修改文件编码类型")
 
     # 不存在的情况下尝试添加
     try:
