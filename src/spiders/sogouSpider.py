@@ -89,8 +89,9 @@ def start_sogou():
         result_data = get_sogou_result()
         if result_data:
             sogou_result = result_data
-            return result_data
+            break
         time.sleep(0.2)
+    return sogou_result
 
 if __name__ == '__main__':
     print(start_sogou())

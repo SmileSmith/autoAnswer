@@ -8,7 +8,7 @@
 
 import sqlite3
 
-CONNECT = sqlite3.connect('sqlite.db')
+CONNECT = sqlite3.connect('sqlite.db', check_same_thread=False)
 
 
 def execute_sql(sql, *args):

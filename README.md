@@ -6,6 +6,8 @@
 
 AI自动答题的详细流程说明请打开[（见图）](images/answer-introduce.png)
 
+AI自动答题的结果预览[（见图）](images/ai_analysis.png)
+
 答题界面见预览：
 
 ![](images/answer_view.png)

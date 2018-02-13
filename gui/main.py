@@ -4,7 +4,7 @@
 import tkinter as tk
 from tkinter import font
 
-from multiprocessing import Process
+from threading import Thread
 
 from src.controllers import controller
 from src.spiders import sogouSpider
@@ -136,14 +136,16 @@ class ControllerFrame(BaseFrame):
         self.quit.pack(side='bottom', fill='x', padx=50, ipady=10, pady=30,)
     
     def start_loop(self):
-        self.sogou = Process(target=loop_sogou)
+        self.sogou = Thread(target=loop_sogou)
+        self.sogou.setDaemon(True)
         self.sogou.start()
-        self.uc = Process(target=loop_uc)
+        self.uc = Thread(target=loop_uc)
+        self.uc.setDaemon(True)
         self.uc.start()
 
     def stop_loop(self):
-        self.sogou.terminate()
-        self.uc.terminate()
+        self.sogou.stopped = True
+        self.uc.stopped = True
 
     def quit_all(self):
         self.stop_loop()
